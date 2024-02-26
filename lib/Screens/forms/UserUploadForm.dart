@@ -178,45 +178,45 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                     );
                                   }),
                             ),
-                            SizedBox(height: 40,),
+                            SizedBox(
+                              height: 40,
+                            ),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Checkbox(
-                                  tristate: false,
+                                    tristate: false,
                                     activeColor: Color(0xfff55d00),
                                     value: checked,
-                                    onChanged: (value){
-                                        setState(() {
-                                           checked = value;
-                                        });
-                                    }
-                                ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        checked = value;
+                                      });
+                                    }),
                                 Flexible(
                                     child: InkWell(
-                                      onTap: (){
-                                        setState(() {
-                                          if(checked!){
-                                            checked = false;
-                                          }else{
-                                            checked = true;
-                                          }
-                                        });
-                                      },
-                                      child: Text("I certify that the image I am uploading is an original work created by me. By uploading this image I am granting AWE unlimited permission to use my image both in-app and for promotional and educational purposes as they see fit. I understand that adding my work to this app does not constitute  an exhibition, display, acquisition, contract or obligation by Art Windsor-Essex."),
-                                    )
-                                )
+                                  onTap: () {
+                                    setState(() {
+                                      if (checked!) {
+                                        checked = false;
+                                      } else {
+                                        checked = true;
+                                      }
+                                    });
+                                  },
+                                  child: Text(
+                                      "I certify that the image I am uploading is an original work created by me. By uploading this image I am granting AWE unlimited permission to use my image both in-app and for promotional and educational purposes as they see fit. I understand that adding my work to this app does not constitute  an exhibition, display, acquisition, contract or obligation by Art Windsor-Essex."),
+                                ))
                               ],
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 OutlinedButton(
-                                    onPressed: (){}, child: Text("Upload Image")
-                                ),
+                                    onPressed: () {},
+                                    child: Text("Upload Image")),
                                 FilledButton(
-                                    onPressed: (){}, child: Text("Submit")
-                                ),
+                                    onPressed: () {}, child: Text("Submit")),
                               ],
                             )
                           ],

@@ -1,3 +1,4 @@
+import 'package:artswindsoressex/Screens/forms/UserUploadForm.dart';
 import 'package:flutter/material.dart';
 
 class CommentForm extends StatefulWidget {
@@ -66,7 +67,7 @@ class _CommentFormState extends State<CommentForm> {
                             "The comment you're posting is related to the image below.",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 12, color: Color(0xff282828)),
+                                fontSize: 14, color: Color(0xff282828)),
                           ),
                           Image.asset("assets/awe_logo.png", width: 100)
                         ],
@@ -193,7 +194,7 @@ class _CommentFormState extends State<CommentForm> {
                           ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
