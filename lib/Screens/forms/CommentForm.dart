@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CommentForm extends StatefulWidget {
-
   static const id = "CommentForm";
 
   const CommentForm({super.key});
@@ -11,7 +10,6 @@ class CommentForm extends StatefulWidget {
 }
 
 class _CommentFormState extends State<CommentForm> {
-
   bool? checked = false;
   @override
   Widget build(BuildContext context) {
@@ -38,23 +36,23 @@ class _CommentFormState extends State<CommentForm> {
                       "Comments",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xff282828)),
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff282828)),
                     ),
-                      Image.asset("assets/awe_logo.png", width: 100)
+                    Image.asset("assets/awe_logo.png", width: 100)
                   ],
                 ),
               ),
             ),
             Container(
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25),
-                  topRight: Radius.circular(25)),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25)),
                   color: Colors.white),
               child: Padding(
-                padding: const EdgeInsets.only(left: 25,  right: 25),
+                padding: const EdgeInsets.only(left: 25, right: 25),
                 child: Column(
                   children: [
                     Center(
@@ -67,8 +65,7 @@ class _CommentFormState extends State<CommentForm> {
                             "The comment you're posting is related to the image below.",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xff282828)),
+                                fontSize: 12, color: Color(0xff282828)),
                           ),
                           Image.asset("assets/awe_logo.png", width: 100)
                         ],
@@ -80,40 +77,36 @@ class _CommentFormState extends State<CommentForm> {
                         children: [
                           TextFormField(
                             cursorColor: const Color(0xfff55d00),
-                            style: const TextStyle(
-                              fontSize: 14
-                            ),
+                            style: const TextStyle(fontSize: 14),
                             decoration: InputDecoration(
                               hintText: "Your Name",
                               hintStyle: TextStyle(
-                                color: const Color(0xff282828).withOpacity(0.4),
-                                fontSize: 12),
+                                  color:
+                                      const Color(0xff282828).withOpacity(0.4),
+                                  fontSize: 12),
                               labelText: "Name *",
-                              labelStyle: TextStyle(
-                                color: const Color(0xff282828).withOpacity(0.4),
-                                fontSize: 14),
+                              labelStyle: const TextStyle(
+                                  color: Color(0xff282828), fontSize: 14),
                               enabledBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0xfff55d00))),
+                                  borderSide:
+                                      BorderSide(color: Color(0xfff55d00))),
                             ),
                           ),
                           TextFormField(
                             cursorColor: const Color(0xfff55d00),
-                            style: const TextStyle(
-                                fontSize: 14
-                            ),
+                            style: const TextStyle(fontSize: 14),
                             decoration: InputDecoration(
                               hintText: "Your Comment",
                               hintStyle: TextStyle(
-                                  color: const Color(0xff282828).withOpacity(0.4),
+                                  color:
+                                      const Color(0xff282828).withOpacity(0.4),
                                   fontSize: 12),
                               labelText: "Comment *",
-                              labelStyle: TextStyle(
-                                  color: const Color(0xff282828).withOpacity(0.4),
-                                  fontSize: 14),
+                              labelStyle: const TextStyle(
+                                  color: const Color(0xff282828), fontSize: 14),
                               enabledBorder: const UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Color(0xfff55d00))),
+                                  borderSide:
+                                      BorderSide(color: Color(0xfff55d00))),
                             ),
                           ),
                           const SizedBox(
@@ -126,7 +119,7 @@ class _CommentFormState extends State<CommentForm> {
                                 tristate: false,
                                 activeColor: Color(0xfff55d00),
                                 value: checked,
-                                onChanged: (value){
+                                onChanged: (value) {
                                   setState(() {
                                     checked = value;
                                   });
@@ -134,9 +127,9 @@ class _CommentFormState extends State<CommentForm> {
                               ),
                               Flexible(
                                 child: InkWell(
-                                  onTap: (){
+                                  onTap: () {
                                     setState(() {
-                                      if(checked!){
+                                      if (checked!) {
                                         checked = false;
                                       } else {
                                         checked = true;
@@ -144,8 +137,7 @@ class _CommentFormState extends State<CommentForm> {
                                     });
                                   },
                                   child: const Text(
-                                    "By posting this comment, you agree that your comment will be appropriate and follow Art Windsor-Essex and St. Clair College guidelines."
-                                  ),
+                                      "By posting this comment, you agree that your comment will be appropriate and follow Art Windsor-Essex and St. Clair College guidelines."),
                                 ),
                               )
                             ],
