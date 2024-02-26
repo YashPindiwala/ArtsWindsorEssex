@@ -17,7 +17,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
     "Pop Art",
     "Romanticism",
     "Impressionism",
-    "Art Geko"
+    "Art Deco"
   ];
   bool? checked = false;
 
