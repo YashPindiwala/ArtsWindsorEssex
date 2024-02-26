@@ -41,7 +41,7 @@ class _CommentFormState extends State<CommentForm> {
                           fontWeight: FontWeight.bold,
                           color: Color(0xff282828)),
                     ),
-                    Image.asset("assets/awe_logo.png", width: 100)
+                    Image.asset("assets/awe_logo.png", width: 60)
                   ],
                 ),
               ),
@@ -77,6 +77,12 @@ class _CommentFormState extends State<CommentForm> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your Name';
+                              }
+                              return null;
+                            },
                             cursorColor: const Color(0xfff55d00),
                             style: const TextStyle(fontSize: 14),
                             decoration: InputDecoration(
@@ -100,6 +106,12 @@ class _CommentFormState extends State<CommentForm> {
                             height: 20,
                           ),
                           TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your Comment';
+                              }
+                              return null;
+                            },
                             cursorColor: const Color(0xfff55d00),
                             style: const TextStyle(fontSize: 14),
                             decoration: InputDecoration(
