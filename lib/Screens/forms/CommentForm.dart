@@ -14,13 +14,14 @@ class _CommentFormState extends State<CommentForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff6f6f6),
+      backgroundColor: const Color(0xfff6f6f6),
       appBar: AppBar(
         elevation: 0,
         shadowColor: Colors.transparent,
-        backgroundColor: Color(0xfff6f6f6),
+        backgroundColor: const Color(0xfff6f6f6),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.info_outline_rounded))
+          IconButton(
+              onPressed: () {}, icon: const Icon(Icons.info_outline_rounded))
         ],
       ),
       body: SingleChildScrollView(
@@ -29,7 +30,7 @@ class _CommentFormState extends State<CommentForm> {
           children: [
             Center(
               child: Padding(
-                padding: EdgeInsets.only(left: 25, right: 25),
+                padding: const EdgeInsets.only(left: 25, right: 25),
                 child: Column(
                   children: [
                     const Text(
@@ -90,6 +91,9 @@ class _CommentFormState extends State<CommentForm> {
                               enabledBorder: const UnderlineInputBorder(
                                   borderSide:
                                       BorderSide(color: Color(0xfff55d00))),
+                              focusedBorder: const UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Color(0xfff55d00))),
                             ),
                           ),
                           TextFormField(
@@ -103,21 +107,24 @@ class _CommentFormState extends State<CommentForm> {
                                   fontSize: 12),
                               labelText: "Comment *",
                               labelStyle: const TextStyle(
-                                  color: const Color(0xff282828), fontSize: 14),
+                                  color: Color(0xff282828), fontSize: 14),
                               enabledBorder: const UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Color(0xfff55d00))),
+                              focusedBorder: const UnderlineInputBorder(
                                   borderSide:
                                       BorderSide(color: Color(0xfff55d00))),
                             ),
                           ),
                           const SizedBox(
-                            height: 20,
+                            height: 30,
                           ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Checkbox(
                                 tristate: false,
-                                activeColor: Color(0xfff55d00),
+                                activeColor: const Color(0xfff55d00),
                                 value: checked,
                                 onChanged: (value) {
                                   setState(() {
@@ -139,9 +146,26 @@ class _CommentFormState extends State<CommentForm> {
                                   child: const Text(
                                       "By posting this comment, you agree that your comment will be appropriate and follow Art Windsor-Essex and St. Clair College guidelines."),
                                 ),
-                              )
+                              ),
                             ],
-                          )
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: FilledButton(
+                              onPressed: () {
+                                // onPressed callback
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        const Color(0xfff55d00)),
+                              ),
+                              child: const Text("Submit"),
+                            ),
+                          ),
                         ],
                       ),
                     )
