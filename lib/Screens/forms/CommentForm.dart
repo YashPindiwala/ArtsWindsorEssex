@@ -96,6 +96,9 @@ class _CommentFormState extends State<CommentForm> {
                                       BorderSide(color: Color(0xfff55d00))),
                             ),
                           ),
+                          const SizedBox(
+                            height: 20,
+                          ),
                           TextFormField(
                             cursorColor: const Color(0xfff55d00),
                             style: const TextStyle(fontSize: 14),
@@ -117,7 +120,7 @@ class _CommentFormState extends State<CommentForm> {
                             ),
                           ),
                           const SizedBox(
-                            height: 30,
+                            height: 40,
                           ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,13 +158,23 @@ class _CommentFormState extends State<CommentForm> {
                           Align(
                             alignment: Alignment.centerRight,
                             child: FilledButton(
-                              onPressed: () {
-                                // onPressed callback
-                              },
+                              onPressed: checked == true
+                                  ? () {
+                                      // onPressed callback
+                                    }
+                                  : null,
                               style: ButtonStyle(
                                 backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        const Color(0xfff55d00)),
+                                    MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
+                                    if (states
+                                        .contains(MaterialState.disabled)) {
+                                      return Colors.grey; // Color when disabled
+                                    }
+                                    return const Color(
+                                        0xfff55d00); // Default color
+                                  },
+                                ),
                               ),
                               child: const Text("Submit"),
                             ),
