@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:artswindsoressex/constants.dart';
 
 class UserUploadForm extends StatefulWidget {
   static const id = "UserUploadForm";
@@ -24,7 +25,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xffF6F6F6),
+        backgroundColor: backgroundColor,
         appBar: AppBar(
           elevation: 0,
           shadowColor: Colors.transparent,
@@ -73,8 +74,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
                               Text(
                                 "We would love to see some of your art! If you think it’s related to the selected artwork, then upload it!",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 12, color: Color(0xff282828)),
+                                style: Theme.of(context).textTheme.headlineMedium,
                               ),
                               Image.asset("assets/awe_logo.png", width: 100)
                             ],
@@ -85,60 +85,57 @@ class _UserUploadFormState extends State<UserUploadForm> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TextFormField(
-                              cursorColor: Color(0xfff55d00),
-                              style: TextStyle(fontSize: 14),
+                              cursorColor: orangeColor,
+                              style: Theme.of(context).textTheme.headlineMedium,
                               decoration: InputDecoration(
                                 hintText: "Maker Name",
                                 hintStyle: TextStyle(
-                                    color: Color(0xff282828).withOpacity(0.4),
+                                    color: textColor.withOpacity(0.4),
                                     fontSize: 12),
                                 labelText: "Name *",
-                                labelStyle: TextStyle(
-                                    color: Color(0xff282828), fontSize: 14),
+                                labelStyle: Theme.of(context).textTheme.headlineMedium,
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: Color(0xfff55d00))),
+                                        BorderSide(color: orangeColor)),
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: Color(0xfff55d00))),
+                                        BorderSide(color: orangeColor)),
                               ),
                             ),
                             TextFormField(
-                              cursorColor: Color(0xfff55d00),
-                              style: TextStyle(fontSize: 14),
+                              cursorColor: orangeColor,
+                              style: Theme.of(context).textTheme.headlineMedium,
                               decoration: InputDecoration(
                                 hintText: "Artwork Name",
                                 hintStyle: TextStyle(
                                     color: Color(0xff282828).withOpacity(0.4),
                                     fontSize: 12),
                                 labelText: "Artwork Name",
-                                labelStyle: TextStyle(
-                                    color: Color(0xff282828), fontSize: 14),
+                                labelStyle: Theme.of(context).textTheme.headlineMedium,
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: Color(0xfff55d00))),
+                                        BorderSide(color: orangeColor)),
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: Color(0xfff55d00))),
+                                        BorderSide(color: orangeColor)),
                               ),
                             ),
                             TextFormField(
                               cursorColor: Color(0xfff55d00),
-                              style: TextStyle(fontSize: 14),
+                              style: Theme.of(context).textTheme.headlineMedium,
                               decoration: InputDecoration(
                                 hintText: "Description",
                                 hintStyle: TextStyle(
                                     color: Color(0xff282828).withOpacity(0.4),
                                     fontSize: 12),
                                 labelText: "Artwork Description",
-                                labelStyle: TextStyle(
-                                    color: Color(0xff282828), fontSize: 14),
+                                labelStyle: Theme.of(context).textTheme.headlineMedium,
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: Color(0xfff55d00))),
+                                        BorderSide(color: orangeColor)),
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: Color(0xfff55d00))),
+                                        BorderSide(color: orangeColor)),
                               ),
                             ),
                             SizedBox(
@@ -158,11 +155,11 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                       labelStyle: TextStyle(
                                           color: randomList[index]
                                               ? Colors.white
-                                              : Color(0xff282828)),
-                                      selectedColor: Color(0xfff55d00),
+                                              : textColor),
+                                      selectedColor: orangeColor,
                                       backgroundColor: Colors.white,
                                       side:
-                                          BorderSide(color: Color(0xfff55d00)),
+                                          BorderSide(color: orangeColor),
                                       onSelected: (value) {
                                         setState(() {
                                           randomList[index] =
@@ -186,7 +183,6 @@ class _UserUploadFormState extends State<UserUploadForm> {
                               children: [
                                 Checkbox(
                                     tristate: false,
-                                    activeColor: Color(0xfff55d00),
                                     value: checked,
                                     onChanged: (value) {
                                       setState(() {
@@ -209,16 +205,31 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                 ))
                               ],
                             ),
+                            SizedBox(
+                              height: 25,
+                            ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                Spacer(),
+                                Spacer(),
                                 OutlinedButton(
                                     onPressed: () {},
-                                    child: Text("Upload Image")),
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide(color: orangeColor)
+                                    ),
+                                    child: Text("Upload Image")
+                                ),
+                                Spacer(),
                                 FilledButton(
-                                    onPressed: () {}, child: Text("Submit")),
+                                    onPressed: () {}, child: Text("Submit")
+                                ),
+                                Spacer(),
+                                Spacer(),
                               ],
-                            )
+                            ),
+                            SizedBox(
+                              height: 25,
+                            ),
                           ],
                         )),
                       ],
