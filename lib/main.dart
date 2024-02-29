@@ -1,3 +1,4 @@
+import 'package:artswindsoressex/Screens/AboutApp.dart';
 import 'package:artswindsoressex/Screens/UploadSubmitted.dart';
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/SplashScreen.dart';
@@ -13,20 +14,21 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.from(
           useMaterial3: true,
-          colorScheme: ColorScheme.light(
+          colorScheme: const ColorScheme.light(
             primary: orangeColor,
           ),
           // scaffoldBackgroundColor: backgroundColor,
-          textTheme: TextTheme(
+          textTheme: const TextTheme(
             headlineLarge: TextStyle(fontSize: size24, color: textColor),
             headlineMedium: TextStyle(fontSize: size14, color: textColor),
           )),
-      initialRoute: UploadSubmitted.id,
+      initialRoute: AboutApp.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         UserUploadForm.id: (context) => UserUploadForm(),
         CommentForm.id: (context) => CommentForm(),
         UploadSubmitted.id: (context) => UploadSubmitted(),
+        AboutApp.id: (context) => AboutApp(),
       },
     );
   }
