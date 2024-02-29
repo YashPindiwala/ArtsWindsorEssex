@@ -11,23 +11,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.from(
-        useMaterial3: true,
-        colorScheme: ColorScheme.light(
-          primary: orangeColor,
-        ),
-        // scaffoldBackgroundColor: backgroundColor,
-        textTheme: TextTheme(
-          headlineLarge: TextStyle(
-            fontSize: size24,
-            color: textColor
+          useMaterial3: true,
+          colorScheme: ColorScheme.light(
+            primary: orangeColor,
           ),
-          headlineMedium: TextStyle(
-            fontSize: size14,
-            color: textColor
-          ),
-        )
-      ),
-      initialRoute: UserUploadForm.id,
+          // scaffoldBackgroundColor: backgroundColor,
+          textTheme: TextTheme(
+            headlineLarge: TextStyle(fontSize: size24, color: textColor),
+            headlineMedium: TextStyle(fontSize: size14, color: textColor),
+          )),
+      initialRoute: CommentForm.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         UserUploadForm.id: (context) => UserUploadForm(),

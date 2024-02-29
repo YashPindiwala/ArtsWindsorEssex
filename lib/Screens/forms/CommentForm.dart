@@ -1,4 +1,5 @@
 import 'package:artswindsoressex/Screens/forms/UserUploadForm.dart';
+import 'package:artswindsoressex/constants.dart';
 import 'package:flutter/material.dart';
 
 class CommentForm extends StatefulWidget {
@@ -15,11 +16,11 @@ class _CommentFormState extends State<CommentForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff6f6f6),
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         elevation: 0,
         shadowColor: Colors.transparent,
-        backgroundColor: const Color(0xfff6f6f6),
+        backgroundColor: backgroundColor,
         actions: [
           IconButton(
               onPressed: () {}, icon: const Icon(Icons.info_outline_rounded))
@@ -40,7 +41,7 @@ class _CommentFormState extends State<CommentForm> {
                       style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff282828)),
+                          color: textColor),
                     ),
                     Image.asset("assets/awe_logo.png", width: 60)
                   ],
@@ -66,8 +67,7 @@ class _CommentFormState extends State<CommentForm> {
                           const Text(
                             "The comment you're posting is related to the image below.",
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 14, color: Color(0xff282828)),
+                            style: TextStyle(fontSize: 14, color: textColor),
                           ),
                           Image.asset("assets/awe_logo.png", width: 100)
                         ],
@@ -84,7 +84,7 @@ class _CommentFormState extends State<CommentForm> {
                               }
                               return null;
                             },
-                            cursorColor: const Color(0xfff55d00),
+                            cursorColor: orangeColor,
                             style: const TextStyle(fontSize: 14),
                             decoration: InputDecoration(
                               hintText: "Your Name",
@@ -94,13 +94,11 @@ class _CommentFormState extends State<CommentForm> {
                                   fontSize: 12),
                               labelText: "Name *",
                               labelStyle: const TextStyle(
-                                  color: Color(0xff282828), fontSize: 14),
+                                  color: textColor, fontSize: 14),
                               enabledBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Color(0xfff55d00))),
+                                  borderSide: BorderSide(color: orangeColor)),
                               focusedBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Color(0xfff55d00))),
+                                  borderSide: BorderSide(color: orangeColor)),
                             ),
                           ),
                           const SizedBox(
@@ -113,7 +111,7 @@ class _CommentFormState extends State<CommentForm> {
                               }
                               return null;
                             },
-                            cursorColor: const Color(0xfff55d00),
+                            cursorColor: orangeColor,
                             style: const TextStyle(fontSize: 14),
                             decoration: InputDecoration(
                               hintText: "Your Comment",
@@ -123,13 +121,11 @@ class _CommentFormState extends State<CommentForm> {
                                   fontSize: 12),
                               labelText: "Comment *",
                               labelStyle: const TextStyle(
-                                  color: Color(0xff282828), fontSize: 14),
+                                  color: textColor, fontSize: 14),
                               enabledBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Color(0xfff55d00))),
+                                  borderSide: BorderSide(color: orangeColor)),
                               focusedBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Color(0xfff55d00))),
+                                  borderSide: BorderSide(color: orangeColor)),
                             ),
                           ),
                           const SizedBox(
@@ -140,7 +136,7 @@ class _CommentFormState extends State<CommentForm> {
                             children: [
                               Checkbox(
                                 tristate: false,
-                                activeColor: const Color(0xfff55d00),
+                                activeColor: orangeColor,
                                 value: checked,
                                 onChanged: (value) {
                                   setState(() {
@@ -184,8 +180,7 @@ class _CommentFormState extends State<CommentForm> {
                                         .contains(MaterialState.disabled)) {
                                       return Colors.grey; // Color when disabled
                                     }
-                                    return const Color(
-                                        0xfff55d00); // Default color
+                                    return orangeColor; // Default color
                                   },
                                 ),
                               ),
