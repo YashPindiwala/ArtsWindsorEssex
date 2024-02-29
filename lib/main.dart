@@ -1,3 +1,4 @@
+import 'package:artswindsoressex/Screens/UploadSubmitted.dart';
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/SplashScreen.dart';
 import 'package:artswindsoressex/Screens/forms/UserUploadForm.dart';
@@ -20,11 +21,12 @@ class MyApp extends StatelessWidget {
             headlineLarge: TextStyle(fontSize: size24, color: textColor),
             headlineMedium: TextStyle(fontSize: size14, color: textColor),
           )),
-      initialRoute: UserUploadForm.id,
+      initialRoute: UploadSubmitted.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         UserUploadForm.id: (context) => UserUploadForm(),
         CommentForm.id: (context) => CommentForm(),
+        UploadSubmitted.id: (context) => UploadSubmitted(),
       },
     );
   }
