@@ -6,3 +6,4 @@ const backgroundColor = Color(0xffF6F6F6);
 
 const size24 = 24.0;
 const size14 = 14.0;
+const size12 = 12.0;

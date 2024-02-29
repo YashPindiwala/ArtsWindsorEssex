@@ -39,7 +39,7 @@ class _CommentFormState extends State<CommentForm> {
                       "Comments",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          fontSize: 24,
+                          fontSize: size24,
                           fontWeight: FontWeight.bold,
                           color: textColor),
                     ),
@@ -67,7 +67,8 @@ class _CommentFormState extends State<CommentForm> {
                           const Text(
                             "The comment you're posting is related to the image below.",
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 14, color: textColor),
+                            style:
+                                TextStyle(fontSize: size14, color: textColor),
                           ),
                           Image.asset("assets/awe_logo.png", width: 100)
                         ],
@@ -85,16 +86,16 @@ class _CommentFormState extends State<CommentForm> {
                               return null;
                             },
                             cursorColor: orangeColor,
-                            style: const TextStyle(fontSize: 14),
+                            style: const TextStyle(fontSize: size14),
                             decoration: InputDecoration(
                               hintText: "Your Name",
                               hintStyle: TextStyle(
                                   color:
                                       const Color(0xff282828).withOpacity(0.4),
-                                  fontSize: 12),
+                                  fontSize: size12),
                               labelText: "Name *",
                               labelStyle: const TextStyle(
-                                  color: textColor, fontSize: 14),
+                                  color: textColor, fontSize: size14),
                               enabledBorder: const UnderlineInputBorder(
                                   borderSide: BorderSide(color: orangeColor)),
                               focusedBorder: const UnderlineInputBorder(
@@ -112,16 +113,16 @@ class _CommentFormState extends State<CommentForm> {
                               return null;
                             },
                             cursorColor: orangeColor,
-                            style: const TextStyle(fontSize: 14),
+                            style: const TextStyle(fontSize: size14),
                             decoration: InputDecoration(
                               hintText: "Your Comment",
                               hintStyle: TextStyle(
                                   color:
                                       const Color(0xff282828).withOpacity(0.4),
-                                  fontSize: 12),
+                                  fontSize: size12),
                               labelText: "Comment *",
                               labelStyle: const TextStyle(
-                                  color: textColor, fontSize: 14),
+                                  color: textColor, fontSize: size14),
                               enabledBorder: const UnderlineInputBorder(
                                   borderSide: BorderSide(color: orangeColor)),
                               focusedBorder: const UnderlineInputBorder(
