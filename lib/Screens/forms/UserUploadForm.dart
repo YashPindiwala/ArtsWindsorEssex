@@ -220,9 +220,30 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                             color: orangeColor)),
                                     child: const Text("Upload Image")),
                                 const Spacer(),
-                                FilledButton(
-                                    onPressed: () {},
-                                    child: const Text("Submit")),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: FilledButton(
+                                    onPressed: checked == true
+                                        ? () {
+                                            // onPressed callback
+                                          }
+                                        : null,
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty
+                                          .resolveWith<Color>(
+                                        (Set<MaterialState> states) {
+                                          if (states.contains(
+                                              MaterialState.disabled)) {
+                                            return Colors
+                                                .grey; // Color when disabled
+                                          }
+                                          return orangeColor; // Default color
+                                        },
+                                      ),
+                                    ),
+                                    child: const Text("Submit"),
+                                  ),
+                                ),
                                 const Spacer(),
                                 const Spacer(),
                               ],
