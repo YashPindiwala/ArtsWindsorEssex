@@ -63,7 +63,7 @@ class _UploadSubmittedState extends State<UploadSubmitted> {
                             height: 20,
                           ),
                           const Text(
-                            "The comment you're posting is related to the image below.",
+                            "The image you've uploaded will be attached to the image below.",
                             textAlign: TextAlign.center,
                             style:
                                 TextStyle(fontSize: size14, color: textColor),
