@@ -1,6 +1,8 @@
 import 'package:artswindsoressex/constants.dart';
 import 'package:flutter/material.dart';
 
+import 'AboutApp.dart';
+
 class UploadSubmitted extends StatefulWidget {
   static const id = "UploadSubmitted";
 
@@ -21,7 +23,14 @@ class _UploadSubmittedState extends State<UploadSubmitted> {
         backgroundColor: backgroundColor,
         actions: [
           IconButton(
-              onPressed: () {}, icon: const Icon(Icons.info_outline_rounded))
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const AboutApp()),
+              );
+            },
+            icon: const Icon(Icons.info_outline_rounded),
+          )
         ],
       ),
       body: SingleChildScrollView(

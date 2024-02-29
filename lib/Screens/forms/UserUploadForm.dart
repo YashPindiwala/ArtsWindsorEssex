@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
 
+import '../AboutApp.dart';
+
 class UserUploadForm extends StatefulWidget {
   static const id = "UserUploadForm";
 
@@ -32,7 +34,14 @@ class _UserUploadFormState extends State<UserUploadForm> {
           backgroundColor: backgroundColor,
           actions: [
             IconButton(
-                onPressed: () {}, icon: const Icon(Icons.info_outline_rounded))
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AboutApp()),
+                );
+              },
+              icon: const Icon(Icons.info_outline_rounded),
+            )
           ],
         ),
         body: SingleChildScrollView(

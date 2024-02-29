@@ -2,6 +2,8 @@ import 'package:artswindsoressex/Screens/forms/UserUploadForm.dart';
 import 'package:artswindsoressex/constants.dart';
 import 'package:flutter/material.dart';
 
+import '../AboutApp.dart';
+
 class CommentForm extends StatefulWidget {
   static const id = "CommentForm";
 
@@ -23,7 +25,14 @@ class _CommentFormState extends State<CommentForm> {
         backgroundColor: backgroundColor,
         actions: [
           IconButton(
-              onPressed: () {}, icon: const Icon(Icons.info_outline_rounded))
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const AboutApp()),
+              );
+            },
+            icon: const Icon(Icons.info_outline_rounded),
+          )
         ],
       ),
       body: SingleChildScrollView(
