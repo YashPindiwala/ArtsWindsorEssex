@@ -90,8 +90,7 @@ class _CommentFormState extends State<CommentForm> {
                             decoration: InputDecoration(
                               hintText: "Your Name",
                               hintStyle: TextStyle(
-                                  color:
-                                      const Color(0xff282828).withOpacity(0.4),
+                                  color: textColor.withOpacity(0.4),
                                   fontSize: size12),
                               labelText: "Name *",
                               labelStyle: const TextStyle(

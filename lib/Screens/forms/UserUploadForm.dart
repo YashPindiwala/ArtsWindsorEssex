@@ -52,7 +52,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
                           fontWeight: FontWeight.bold,
                           color: textColor),
                     ),
-                    Image.asset("assets/awe_logo.png", width: 100)
+                    Image.asset("assets/awe_logo.png", width: 60)
                   ],
                 ),
               )),
@@ -103,6 +103,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                     borderSide: BorderSide(color: orangeColor)),
                               ),
                             ),
+                            const SizedBox(height: 20),
                             TextFormField(
                               cursorColor: orangeColor,
                               style: Theme.of(context).textTheme.headlineMedium,
@@ -120,6 +121,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                     borderSide: BorderSide(color: orangeColor)),
                               ),
                             ),
+                            const SizedBox(height: 20),
                             TextFormField(
                               cursorColor: orangeColor,
                               style: Theme.of(context).textTheme.headlineMedium,
@@ -138,7 +140,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
                               ),
                             ),
                             const SizedBox(
-                              height: 20,
+                              height: 40,
                             ),
                             const Text("Artwork Tags *"),
                             Container(
