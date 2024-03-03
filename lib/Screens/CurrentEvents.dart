@@ -108,6 +108,25 @@ class _CurrentEventsState extends State<CurrentEvents>
   Widget _buildCurrentEventsContent() {
     return ListView(
       children: [
+        const SizedBox(
+            height:
+                12), // Space between the top of the white container and the first card
+        _buildEventCard(
+          title: 'St. Clair College Art Exhibition',
+          image: 'assets/awe_logo.png',
+          description:
+              'Join us at St. Clair College South Campus as we showcase our latest artworks.',
+          date: 'July 21st from 2 PM - 5 PM',
+          admissionFee: '\$10',
+        ),
+        _buildEventCard(
+          title: 'Art Windsor-Essex Color Exhibition',
+          image: 'assets/awe_logo.png',
+          description:
+              'Join us at the Art Windsor-Essex building for our colorful displays. All the current artwork in the show was produced by local artists.',
+          date: 'July 21st from 2 PM to 5 PM',
+          admissionFee: '\$5',
+        ),
         _buildEventCard(
           title: 'St. Clair College Art Exhibition',
           image: 'assets/awe_logo.png',
@@ -129,11 +148,25 @@ class _CurrentEventsState extends State<CurrentEvents>
   }
 
   Widget _buildPastEventsContent() {
-    return const Center(
-      child: Text(
-        'Past Events Content',
-        style: TextStyle(fontSize: 24),
-      ),
+    return ListView(
+      children: [
+        _buildEventCard(
+          title: 'St. Clair College Art Exhibition',
+          image: 'assets/awe_logo.png',
+          description:
+              'Join us at St. Clair College South Campus as we showcase our latest artworks.',
+          date: 'July 21st from 2 PM - 5 PM',
+          admissionFee: '\$10',
+        ),
+        _buildEventCard(
+          title: 'Art Windsor-Essex Color Exhibition',
+          image: 'assets/awe_logo.png',
+          description:
+              'Join us at the Art Windsor-Essex building for our colorful displays. All the current artwork in the show was produced by local artists.',
+          date: 'July 21st from 2 PM to 5 PM',
+          admissionFee: '\$5',
+        ),
+      ],
     );
   }
 
@@ -184,7 +217,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                 Expanded(
                   child: Text(
                     description,
-                    style: const TextStyle(fontSize: size12),
+                    style: const TextStyle(fontSize: size13, color: textColor),
                   ),
                 ),
               ],
@@ -200,19 +233,19 @@ class _CurrentEventsState extends State<CurrentEvents>
                     Expanded(
                       child: Text(
                         date,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: size12,
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey[600],
+                          color: textColor,
                         ),
                       ),
                     ),
                     Text(
                       'Admission: $admissionFee',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: size12,
                         fontWeight: FontWeight.bold,
-                        color: Colors.grey[600],
+                        color: textColor,
                       ),
                     ),
                   ],

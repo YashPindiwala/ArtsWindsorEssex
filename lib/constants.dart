@@ -15,4 +15,5 @@ const size24 = 24.0;
 const size18 = 18.0;
 const size16 = 16.0;
 const size14 = 14.0;
+const size13 = 13.0;
 const size12 = 12.0;
