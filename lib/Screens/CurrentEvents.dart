@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
 
+import 'AboutApp.dart';
+
 class CurrentEvents extends StatefulWidget {
   static const id = "CurrentEvents";
 
@@ -28,12 +30,23 @@ class _CurrentEventsState extends State<CurrentEvents>
         elevation: 0,
         shadowColor: Colors.transparent,
         backgroundColor: backgroundColor,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const AboutApp()),
+              );
+            },
+            icon: const Icon(Icons.info_outline_rounded),
+          )
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 25, right: 25),
+          const Padding(
+            padding: EdgeInsets.only(left: 25, right: 25),
             child: Column(
               children: [
                 SizedBox(
@@ -55,7 +68,7 @@ class _CurrentEventsState extends State<CurrentEvents>
           ),
           const SizedBox(height: 20),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 25),
+            margin: const EdgeInsets.symmetric(horizontal: 25),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               color: Colors.white,
@@ -77,13 +90,8 @@ class _CurrentEventsState extends State<CurrentEvents>
           const SizedBox(height: 20),
           Expanded(
             child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25),
-                  topRight: Radius.circular(25),
-                ),
-                color: Colors.white,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              color: Colors.white,
               child: TabBarView(
                 controller: _tabController,
                 children: [
@@ -99,23 +107,106 @@ class _CurrentEventsState extends State<CurrentEvents>
   }
 
   Widget _buildCurrentEventsContent() {
-    return SingleChildScrollView(
-      child: Center(
-        child: Text(
-          'Current Events Content',
-          style: TextStyle(fontSize: 24),
+    return ListView(
+      children: [
+        _buildEventCard(
+          title: 'Event Title 1',
+          image: 'assets/awe_logo.png',
+          description:
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+          date: 'Date 1',
+          admissionFee: '\$10',
         ),
-      ),
+        _buildEventCard(
+          title: 'Event Title 2',
+          image: 'assets/awe_logo.png',
+          description:
+              'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          date: 'Date 2',
+          admissionFee: '\$15',
+        ),
+      ],
     );
   }
 
   Widget _buildPastEventsContent() {
-    return SingleChildScrollView(
-      child: Center(
-        child: Text(
-          'Past Events Content',
-          style: TextStyle(fontSize: 24),
-        ),
+    return const Center(
+      child: Text(
+        'Past Events Content',
+        style: TextStyle(fontSize: 24),
+      ),
+    );
+  }
+
+  Widget _buildEventCard({
+    required String title,
+    required String image,
+    required String description,
+    required String date,
+    required String admissionFee,
+  }) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      elevation: 5,
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Image.asset(
+              image,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: 200,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  description,
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        date,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Admission: $admissionFee',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
