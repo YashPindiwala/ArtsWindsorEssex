@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
 
 class AboutApp extends StatefulWidget {
-  static final id = "AboutApp";
+  static const id = "AboutApp";
 
   const AboutApp({super.key});
 
