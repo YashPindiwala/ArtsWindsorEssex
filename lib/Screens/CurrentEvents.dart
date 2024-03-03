@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
-
 import 'AboutApp.dart';
 
 class CurrentEvents extends StatefulWidget {
@@ -110,20 +109,20 @@ class _CurrentEventsState extends State<CurrentEvents>
     return ListView(
       children: [
         _buildEventCard(
-          title: 'Event Title 1',
+          title: 'St. Clair College Art Exhibition',
           image: 'assets/awe_logo.png',
           description:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-          date: 'Date 1',
+              'Join us at St. Clair College South Campus as we showcase our latest artworks.',
+          date: 'July 21st from 2 PM - 5 PM',
           admissionFee: '\$10',
         ),
         _buildEventCard(
-          title: 'Event Title 2',
+          title: 'Art Windsor-Essex Color Exhibition',
           image: 'assets/awe_logo.png',
           description:
-              'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-          date: 'Date 2',
-          admissionFee: '\$15',
+              'Join us at the Art Windsor-Essex building for our colorful displays. All the current artwork in the show was produced by local artists.',
+          date: 'July 21st from 2 PM to 5 PM',
+          admissionFee: '\$5',
         ),
       ],
     );
@@ -146,21 +145,49 @@ class _CurrentEventsState extends State<CurrentEvents>
     required String admissionFee,
   }) {
     return Card(
+      color: mintColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
-      elevation: 5,
+      elevation: 0,
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Image.asset(
-              image,
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: 200,
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Text(
+              title,
+              style: const TextStyle(
+                  fontSize: size18,
+                  fontWeight: FontWeight.bold,
+                  color: purpleColor),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: Image.asset(
+                      image,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    description,
+                    style: const TextStyle(fontSize: size12),
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(
@@ -168,26 +195,13 @@ class _CurrentEventsState extends State<CurrentEvents>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  description,
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 10),
                 Row(
                   children: [
                     Expanded(
                       child: Text(
                         date,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: size12,
                           fontWeight: FontWeight.bold,
                           color: Colors.grey[600],
                         ),
@@ -196,7 +210,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                     Text(
                       'Admission: $admissionFee',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: size12,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey[600],
                       ),
