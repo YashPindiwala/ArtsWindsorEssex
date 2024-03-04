@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:artswindsoressex/SplashScreen.dart';
 import 'package:artswindsoressex/Screens/forms/UserUploadForm.dart';
 import 'package:artswindsoressex/Screens/forms/CommentForm.dart';
+import 'package:artswindsoressex/Screens/DetailScreen.dart';
 import 'constants.dart';
 
 void main() => runApp(MyApp());
@@ -22,13 +23,14 @@ class MyApp extends StatelessWidget {
             headlineLarge: TextStyle(fontSize: size24, color: textColor),
             headlineMedium: TextStyle(fontSize: size14, color: textColor),
           )),
-      initialRoute: UploadSubmitted.id,
+      initialRoute: DetailScreen.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         UserUploadForm.id: (context) => UserUploadForm(),
         CommentForm.id: (context) => CommentForm(),
         UploadSubmitted.id: (context) => UploadSubmitted(),
         AboutApp.id: (context) => AboutApp(),
+        DetailScreen.id: (context) => DetailScreen(),
       },
     );
   }
