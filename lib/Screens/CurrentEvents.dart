@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
 import 'AboutApp.dart';
@@ -36,10 +35,7 @@ class _CurrentEventsState extends State<CurrentEvents>
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const AboutApp()),
-              );
+              Navigator.pushNamed(context, AboutApp.id);
             },
             icon: const Icon(Icons.info_outline_rounded),
           )
