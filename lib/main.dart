@@ -1,4 +1,5 @@
 import 'package:artswindsoressex/Screens/AboutApp.dart';
+import 'package:artswindsoressex/Screens/CurrentEvents.dart';
 import 'package:artswindsoressex/Screens/UploadSubmitted.dart';
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/SplashScreen.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         CommentForm.id: (context) => CommentForm(),
         UploadSubmitted.id: (context) => UploadSubmitted(),
         AboutApp.id: (context) => AboutApp(),
+        CurrentEvents.id: (context) => CurrentEvents(),
         DetailScreen.id: (context) => DetailScreen(),
       },
     );
