@@ -93,22 +93,22 @@ class _DetailScreenState extends State<DetailScreen> {
               SizedBox(
                 height: 10,
               ),
+              FilledButton(
+                  onPressed: () {
+
+                  },
+                  child: Text(
+                    "Add Comment"
+                  ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
               Visibility(
                 visible: _isCommentVisible,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      FilledButton(
-                        onPressed: () {
-
-                        },
-                        child: Text(
-                            "Add Comment"
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
                       Text(
                         "Comments",
                         style: Theme.of(context).textTheme.headlineLarge,
