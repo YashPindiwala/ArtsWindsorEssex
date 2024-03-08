@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:artswindsoressex/Screens/CollectionCard.dart';
+import 'package:artswindsoressex/Utils/CollectionCard.dart';
 import 'package:artswindsoressex/Screens/DetailScreen.dart';
 
 class CollectionList extends StatefulWidget {
@@ -17,10 +17,10 @@ class _CollectionListState extends State<CollectionList> {
         padding: EdgeInsets.zero,
         itemBuilder: (context, index) {
           return InkWell(
-            onTap: (){
+            onTap: () {
               Navigator.pushNamed(context, DetailScreen.id);
             },
-             child: CollectionCard(),
+            child: CollectionCard(),
           );
         },
         separatorBuilder: (context, index) {
@@ -28,7 +28,6 @@ class _CollectionListState extends State<CollectionList> {
             height: 20,
           );
         },
-        itemCount: 5
-    );
+        itemCount: 5);
   }
 }
