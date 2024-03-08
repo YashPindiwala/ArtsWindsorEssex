@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
 import 'package:artswindsoressex/Screens/AboutApp.dart';
+import 'package:artswindsoressex/Screens/CollectionList.dart';
 
 class CollectionScreen extends StatefulWidget {
   static const id = "CollectionScreen";
@@ -25,8 +26,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: SingleChildScrollView(
-        child: Container(
+      body: Container(
           padding: EdgeInsets.symmetric(vertical: 25,horizontal: 25),
           child: Column(
             children: [
@@ -79,10 +79,13 @@ class _CollectionScreenState extends State<CollectionScreen> {
                     itemCount: _tags.length
                 ),
               ),
+              SizedBox(height: 10,),
+              Expanded(
+                  child: CollectionList(),
+              )
             ],
           ),
         )
-      ),
-    );
+      );
   }
 }
