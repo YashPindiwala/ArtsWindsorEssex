@@ -1,13 +1,15 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
+import '../Utils/EventCard.dart';
+import '../Utils/ExpandedCardModal.dart';
 import 'AboutApp.dart';
+import 'Models/EventModel.dart';
 
 class CurrentEvents extends StatefulWidget {
   static const id = "CurrentEvents";
 
-  const CurrentEvents({Key? key}) : super(key: key);
+  const CurrentEvents({super.key});
 
   @override
   State<CurrentEvents> createState() => _CurrentEventsState();
@@ -126,109 +128,10 @@ class _CurrentEventsState extends State<CurrentEvents>
                 child: Container(
                   color: Colors.transparent,
                   padding: const EdgeInsets.all(20),
-                  child: _buildExpandedCard(),
+                  child: ExpandedCardModal(selectedEvent: _selectedEvent),
                 ),
               ),
             ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildExpandedCard() {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
-      height: MediaQuery.of(context).size.height * 0.6,
-      color: _selectedEvent.cardColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: Text(
-              _selectedEvent.title,
-              style: const TextStyle(
-                fontSize: size18,
-                fontWeight: FontWeight.bold,
-                color: purpleColor,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: Image.asset(
-                      _selectedEvent.image,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    _selectedEvent.description,
-                    style: const TextStyle(fontSize: size13, color: textColor),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        _selectedEvent.date,
-                        style: const TextStyle(
-                          fontSize: size12,
-                          fontWeight: FontWeight.bold,
-                          color: textColor,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      'Admission: ${_selectedEvent.admissionFee}',
-                      style: const TextStyle(
-                        fontSize: size12,
-                        fontWeight: FontWeight.bold,
-                        color: textColor,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    // Implement your action here
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: _selectedEvent.cardColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: Text(
-                    'Visit Our Site',
-                    style: TextStyle(
-                      color: _selectedEvent.titleColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
@@ -238,46 +141,7 @@ class _CurrentEventsState extends State<CurrentEvents>
     return ListView(
       children: [
         const SizedBox(height: 12),
-        _buildEventCard(
-          title: 'St. Clair College Art Exhibition',
-          image: 'assets/awe_logo.png',
-          description:
-              'Join us at St. Clair College South Campus as we showcase our latest artworks.',
-          date: 'July 21st from 2 PM - 5 PM',
-          admissionFee: '\$10',
-          cardColor: pinkColor,
-          titleColor: orangeColor,
-        ),
-        _buildEventCard(
-          title: 'Art Windsor-Essex Color Exhibition',
-          image: 'assets/awe_logo.png',
-          description:
-              'Join us at the Art Windsor-Essex building for our colorful displays. All the current artwork in the show was produced by local artists.',
-          date: 'July 21st from 2 PM to 5 PM',
-          admissionFee: '\$5',
-          cardColor: mintColor,
-          titleColor: purpleColor,
-        ),
-        _buildEventCard(
-          title: 'Art Windsor-Essex Color Exhibition',
-          image: 'assets/awe_logo.png',
-          description:
-              'Join us at the Art Windsor-Essex building for our colorful displays. All the current artwork in the show was produced by local artists.',
-          date: 'July 21st from 2 PM to 5 PM',
-          admissionFee: '\$5',
-          cardColor: yellowColor,
-          titleColor: hotPinkColor,
-        ),
-        _buildEventCard(
-          title: 'Art Windsor-Essex Color Exhibition',
-          image: 'assets/awe_logo.png',
-          description:
-              'Join us at the Art Windsor-Essex building for our colorful displays. All the current artwork in the show was produced by local artists.',
-          date: 'July 21st from 2 PM to 5 PM',
-          admissionFee: '\$5',
-          cardColor: pinkColor,
-          titleColor: orangeColor,
-        ),
+        _buildEventCards(currentEvents),
       ],
     );
   }
@@ -285,135 +149,24 @@ class _CurrentEventsState extends State<CurrentEvents>
   Widget _buildPastEventsContent() {
     return ListView(
       children: [
-        _buildEventCard(
-          title: 'St. Clair College Art Exhibition',
-          image: 'assets/awe_logo.png',
-          description:
-              'Join us at St. Clair College South Campus as we showcase our latest artworks.',
-          date: 'July 21st from 2 PM - 5 PM',
-          admissionFee: '\$10',
-          cardColor: pinkColor,
-          titleColor: orangeColor,
-        ),
-        _buildEventCard(
-          title: 'Art Windsor-Essex Color Exhibition',
-          image: 'assets/awe_logo.png',
-          description:
-              'Join us at the Art Windsor-Essex building for our colorful displays. All the current artwork in the show was produced by local artists.',
-          date: 'July 21st from 2 PM to 5 PM',
-          admissionFee: '\$5',
-          cardColor: mintColor,
-          titleColor: purpleColor,
-        ),
+        _buildEventCards(pastEvents),
       ],
     );
   }
 
-  Widget _buildEventCard({
-    required String title,
-    required String image,
-    required String description,
-    required String date,
-    required String admissionFee,
-    required Color cardColor,
-    required Color titleColor,
-  }) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedEvent = EventDetails(
-            title: title,
-            image: image,
-            description: description,
-            date: date,
-            admissionFee: admissionFee,
-            cardColor: cardColor,
-            titleColor: titleColor,
-          );
-          _showModal = true;
-        });
-      },
-      child: Card(
-        color: cardColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        elevation: 0,
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontSize: size18,
-                  fontWeight: FontWeight.bold,
-                  color: titleColor,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: Image.asset(
-                        image,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      description,
-                      style:
-                          const TextStyle(fontSize: size13, color: textColor),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          date,
-                          style: const TextStyle(
-                            fontSize: size12,
-                            fontWeight: FontWeight.bold,
-                            color: textColor,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        'Admission: $admissionFee',
-                        style: const TextStyle(
-                          fontSize: size12,
-                          fontWeight: FontWeight.bold,
-                          color: textColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+  Widget _buildEventCards(List<EventDetails> events) {
+    return Column(
+      children: events.map((event) {
+        return EventCard(
+          eventDetails: event,
+          onPressed: () {
+            setState(() {
+              _selectedEvent = event;
+              _showModal = true;
+            });
+          },
+        );
+      }).toList(),
     );
   }
 
@@ -422,30 +175,4 @@ class _CurrentEventsState extends State<CurrentEvents>
     _tabController.dispose();
     super.dispose();
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: CurrentEvents(),
-  ));
-}
-
-class EventDetails {
-  final String title;
-  final String image;
-  final String description;
-  final String date;
-  final String admissionFee;
-  final Color cardColor;
-  final Color titleColor;
-
-  EventDetails({
-    required this.title,
-    required this.image,
-    required this.description,
-    required this.date,
-    required this.admissionFee,
-    required this.cardColor,
-    required this.titleColor,
-  });
 }

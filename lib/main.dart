@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
             headlineLarge: TextStyle(fontSize: size24, color: textColor),
             headlineMedium: TextStyle(fontSize: size14, color: textColor),
           )),
-      initialRoute: DetailScreen.id,
+      initialRoute: CurrentEvents.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         UserUploadForm.id: (context) => UserUploadForm(),
