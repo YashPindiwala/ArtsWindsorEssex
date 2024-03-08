@@ -6,7 +6,7 @@ import 'package:artswindsoressex/SplashScreen.dart';
 import 'package:artswindsoressex/Screens/forms/UserUploadForm.dart';
 import 'package:artswindsoressex/Screens/forms/CommentForm.dart';
 import 'package:artswindsoressex/Screens/DetailScreen.dart';
-import 'Screens/ArtHubScreen.dart';
+import 'package:artswindsoressex/Screens/CollectionScreen.dart';
 import 'constants.dart';
 
 void main() => runApp(MyApp());
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
             headlineLarge: TextStyle(fontSize: size24, color: textColor),
             headlineMedium: TextStyle(fontSize: size14, color: textColor),
           )),
-      initialRoute: ArtHubScreen.id,
+      initialRoute: CollectionScreen.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         UserUploadForm.id: (context) => UserUploadForm(),
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         AboutApp.id: (context) => AboutApp(),
         CurrentEvents.id: (context) => CurrentEvents(),
         DetailScreen.id: (context) => DetailScreen(),
-        ArtHubScreen.id: (context) => ArtHubScreen(),
+        CollectionScreen.id: (context) => CollectionScreen(),
       },
     );
   }
