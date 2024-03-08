@@ -18,6 +18,7 @@ class _DetailScreenState extends State<DetailScreen> {
   String _imagePath = "assets/exampledetail.jpg";
   List<String> _tags = ["Abstract", "Pop"];
   bool _isCommentVisible = true;
+  String _heroTag = "collection";
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +52,15 @@ class _DetailScreenState extends State<DetailScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(25),
-                  child: AspectRatio(
-                      aspectRatio: 2/2,
-                      child: Image.asset(_imagePath, fit: BoxFit.fill,),
-                  )
+                Hero(
+                    tag: _heroTag,
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(25),
+                        child: AspectRatio(
+                          aspectRatio: 2/2,
+                          child: Image.asset(_imagePath, fit: BoxFit.fill,),
+                        )
+                    ),
                 ),
                 SizedBox(
                   height: 10,
@@ -93,22 +97,22 @@ class _DetailScreenState extends State<DetailScreen> {
               SizedBox(
                 height: 10,
               ),
+              FilledButton(
+                  onPressed: () {
+
+                  },
+                  child: Text(
+                    "Add Comment"
+                  ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
               Visibility(
                 visible: _isCommentVisible,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      FilledButton(
-                        onPressed: () {
-
-                        },
-                        child: Text(
-                            "Add Comment"
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
                       Text(
                         "Comments",
                         style: Theme.of(context).textTheme.headlineLarge,
