@@ -13,11 +13,12 @@ class CollectionScreen extends StatefulWidget {
 class _CollectionScreenState extends State<CollectionScreen> {
 
   String _heading = "Look Again! Outside St Clair College";
-  List<String> _tags = [
-    "Abstract",
-    "Pop Art",
-    "Cubism",
-    "Surrealism",
+  List<Map<String, dynamic>> _tags = [
+    {"tag":"Cubism", "active" : true},
+    {"tag":"Surrealism", "active" :false},
+    {"tag":"Pop Art", "active" : false},
+    {"tag":"Romanticism", "active" :false},
+    {"tag":"Impressionism", "active" :false},
   ];
 
   @override
@@ -56,10 +57,20 @@ class _CollectionScreenState extends State<CollectionScreen> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return TextButton(
-                          onPressed: (){},
+                          onPressed: () {
+                            setState(() {
+                              _tags.forEach((element) {
+                                element["active"] = false;
+                              });
+                              _tags[index]["active"] = !_tags[index]["active"];
+                            });
+                          },
                           child: Text(
-                            _tags[index],
-                          ),
+                              _tags[index]["tag"],
+                              style: _tags[index]["active"] ? null : TextStyle(
+                                  color: textColor
+                              )
+                          )
                       );
                     },
                     separatorBuilder: (context, index) {
