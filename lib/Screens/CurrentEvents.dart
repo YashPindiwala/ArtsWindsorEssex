@@ -6,6 +6,8 @@ import '../Utils/ExpandedCardModal.dart';
 import 'AboutApp.dart';
 import 'Models/EventModel.dart';
 import 'package:artswindsoressex/Utils/CardLoadingShimmer.dart';
+import 'package:artswindsoressex/API/ApiManager.dart';
+import 'package:artswindsoressex/API/Endpoints.dart';
 
 class CurrentEvents extends StatefulWidget {
   static const id = "CurrentEvents";
@@ -103,7 +105,24 @@ class _CurrentEventsState extends State<CurrentEvents>
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                      CardLoadingShimmer(),
+                      FutureBuilder(
+                        future: ApiManager.fetchData(toString(Endpoint.GET_EVENT)),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return CardLoadingShimmer(); // Show loading indicator while waiting for data
+                          } else if (snapshot.connectionState == ConnectionState.done) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else if (snapshot.hasData) {
+                              return _buildCurrentEventsContent(); // Show data if available
+                            } else {
+                              return Text('No data'); // Show message if no data is available
+                            }
+                          } else {
+                            return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
+                          }
+                        },
+                      ),
                       // _buildCurrentEventsContent(),
                       _buildPastEventsContent(),
                     ],
