@@ -38,7 +38,7 @@ class EventDetails {
     colorIndex++;
     return EventDetails(
       title: json['title'] ?? '',
-      image: json['image'] ?? 'assets/exampledetail.jpg', // remove the example jpg
+      image: json['image_path'] ?? '', // remove the example jpg
       description: json['description'] ?? '',
       date: '$formattedDate at $formattedTime' ?? '',
       admissionFee: json['admission_fee'].toString() ?? '',

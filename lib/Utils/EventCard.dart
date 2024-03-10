@@ -46,7 +46,7 @@ class EventCard extends StatelessWidget {
                     child: SizedBox(
                       width: 100,
                       height: 100,
-                      child: Image.asset(
+                      child: Image.network(
                         eventDetails.image,
                         fit: BoxFit.cover,
                       ),
