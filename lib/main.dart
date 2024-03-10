@@ -1,5 +1,6 @@
 import 'package:artswindsoressex/Screens/AboutApp.dart';
 import 'package:artswindsoressex/Screens/CurrentEvents.dart';
+import 'package:artswindsoressex/Screens/HomeScreen.dart';
 import 'package:artswindsoressex/Screens/UploadSubmitted.dart';
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/SplashScreen.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
             headlineLarge: TextStyle(fontSize: size24, color: textColor),
             headlineMedium: TextStyle(fontSize: size14, color: textColor),
           )),
-      initialRoute: CollectionScreen.id,
+      initialRoute: HomeScreen.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         UserUploadForm.id: (context) => UserUploadForm(),
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         CurrentEvents.id: (context) => CurrentEvents(),
         DetailScreen.id: (context) => DetailScreen(),
         CollectionScreen.id: (context) => CollectionScreen(),
+        HomeScreen.id: (context) => HomeScreen(),
       },
     );
   }
