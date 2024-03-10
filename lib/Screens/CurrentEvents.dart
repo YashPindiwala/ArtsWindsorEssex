@@ -8,6 +8,7 @@ import 'package:artswindsoressex/Utils/CardLoadingShimmer.dart';
 import 'package:artswindsoressex/API/ApiManager.dart';
 import 'package:artswindsoressex/API/Endpoints.dart';
 import 'package:artswindsoressex/Screens/Models/EventModel.dart';
+import 'package:intl/intl.dart';
 
 class CurrentEvents extends StatefulWidget {
   static const id = "CurrentEvents";
@@ -117,6 +118,10 @@ class _CurrentEventsState extends State<CurrentEvents>
                               return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
                               List<EventDetails> details = EventDetails.listFromJson(snapshot.data);
+                              details.where((event) {
+                                DateTime eventDate = DateFormat.yMMMMEEEEd().parse(event.date);
+                                return eventDate.isAfter(DateTime.now());
+                              }).toList();
                               return _buildCurrentEventsContent(details); // Show data if available
                             } else {
                               return Text('No data'); // Show message if no data is available
@@ -176,7 +181,7 @@ class _CurrentEventsState extends State<CurrentEvents>
   Widget _buildPastEventsContent() {
     return ListView(
       children: [
-        _buildEventCards(currentEvents),
+        _buildEventCards(pastEvents),
       ],
     );
   }
