@@ -5,6 +5,7 @@ import '../Utils/EventCard.dart';
 import '../Utils/ExpandedCardModal.dart';
 import 'AboutApp.dart';
 import 'Models/EventModel.dart';
+import 'package:artswindsoressex/Utils/CardLoadingShimmer.dart';
 
 class CurrentEvents extends StatefulWidget {
   static const id = "CurrentEvents";
@@ -102,7 +103,8 @@ class _CurrentEventsState extends State<CurrentEvents>
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                      _buildCurrentEventsContent(),
+                      CardLoadingShimmer(),
+                      // _buildCurrentEventsContent(),
                       _buildPastEventsContent(),
                     ],
                   ),
