@@ -31,7 +31,6 @@ class EventDetails {
     String formattedDate = DateFormat.yMMMMEEEEd().format(date);
     String formattedTime = DateFormat.jm().format(date);
 
-    print('$formattedDate at $formattedTime');
     return EventDetails(
       title: json['title'] ?? '',
       image: json['image'] ?? 'assets/exampledetail.jpg', // remove the example jpg

@@ -24,13 +24,14 @@ class _CurrentEventsState extends State<CurrentEvents>
   late TabController _tabController;
   bool _showModal = false;
   late EventDetails _selectedEvent;
-  late Future events;
+  late Future _currentEvents,_pastEvents;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    _fetchEvents();
+    _fetchCurrentEvents();
+    _fetchPastEvents();
   }
 
   @override
@@ -109,7 +110,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                     controller: _tabController,
                     children: [
                       FutureBuilder(
-                        future: events,
+                        future: _currentEvents,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
                             return CardLoadingShimmer(); // Show loading indicator while waiting for data
@@ -118,10 +119,6 @@ class _CurrentEventsState extends State<CurrentEvents>
                               return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
                               List<EventDetails> details = EventDetails.listFromJson(snapshot.data);
-                              details.where((event) {
-                                DateTime eventDate = DateFormat.yMMMMEEEEd().parse(event.date);
-                                return eventDate.isAfter(DateTime.now());
-                              }).toList();
                               return _buildCurrentEventsContent(details); // Show data if available
                             } else {
                               return Text('No data'); // Show message if no data is available
@@ -132,7 +129,25 @@ class _CurrentEventsState extends State<CurrentEvents>
                         },
                       ),
                       // _buildCurrentEventsContent(),
-                      _buildPastEventsContent(),
+                      FutureBuilder(
+                        future: _pastEvents,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return CardLoadingShimmer(); // Show loading indicator while waiting for data
+                          } else if (snapshot.connectionState == ConnectionState.done) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else if (snapshot.hasData) {
+                              List<EventDetails> details = EventDetails.listFromJson(snapshot.data);
+                              return _buildPastEventsContent(details); // Show data if available
+                            } else {
+                              return Text('No data'); // Show message if no data is available
+                            }
+                          } else {
+                            return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
+                          }
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -166,8 +181,12 @@ class _CurrentEventsState extends State<CurrentEvents>
     );
   }
 
-  _fetchEvents(){
-    events = ApiManager.fetchData(toString(Endpoint.GET_EVENT));
+  _fetchCurrentEvents(){
+    _currentEvents = ApiManager.fetchData(toString(Endpoint.GET_EVENT_CURR));
+  }
+
+  _fetchPastEvents(){
+    _pastEvents = ApiManager.fetchData(toString(Endpoint.GET_EVENT_PAST));
   }
 
   Widget _buildCurrentEventsContent(List<EventDetails> events) {
@@ -178,10 +197,10 @@ class _CurrentEventsState extends State<CurrentEvents>
     );
   }
 
-  Widget _buildPastEventsContent() {
+  Widget _buildPastEventsContent(List<EventDetails> events) {
     return ListView(
       children: [
-        _buildEventCards(pastEvents),
+        _buildEventCards(events),
       ],
     );
   }
