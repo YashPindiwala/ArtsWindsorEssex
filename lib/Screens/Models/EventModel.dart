@@ -12,7 +12,7 @@ class EventDetails {
   final String admissionFee;
   final Color cardColor;
   final Color titleColor;
-  static Random _random = Random();
+  static int colorIndex = 0;
 
   EventDetails({
     required this.title,
@@ -25,25 +25,29 @@ class EventDetails {
   });
 
   factory EventDetails.fromJson(Map<String, dynamic> json) {
-    int randomIndex = _random.nextInt(listOfColors.length).abs();
+    if(colorIndex >= listOfColors.length)
+      colorIndex = 0;
 
     DateTime date = DateTime.parse(json['event_date']);
     String formattedDate = DateFormat.yMMMMEEEEd().format(date);
     String formattedTime = DateFormat.jm().format(date);
 
+    Color card = listOfColors[colorIndex]["card"]!;
+    Color title = listOfColors[colorIndex]["title"]!;
+
+    colorIndex++;
     return EventDetails(
       title: json['title'] ?? '',
       image: json['image'] ?? 'assets/exampledetail.jpg', // remove the example jpg
       description: json['description'] ?? '',
       date: '$formattedDate at $formattedTime' ?? '',
       admissionFee: json['admission_fee'].toString() ?? '',
-      cardColor: listOfColors[randomIndex]["card"]!,
-      titleColor: listOfColors[randomIndex]["title"]!,
+      cardColor: card,
+      titleColor: title,
     );
   }
 
   static List<EventDetails> listFromJson(List<dynamic> jsonList) {
-    print(jsonList);
     return jsonList.map((json) => EventDetails.fromJson(json)).toList();
   }
 }
