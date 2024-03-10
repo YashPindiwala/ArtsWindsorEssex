@@ -23,11 +23,13 @@ class _CurrentEventsState extends State<CurrentEvents>
   late TabController _tabController;
   bool _showModal = false;
   late EventDetails _selectedEvent;
+  late Future events;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _fetchEvents();
   }
 
   @override
@@ -106,7 +108,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                     controller: _tabController,
                     children: [
                       FutureBuilder(
-                        future: ApiManager.fetchData(toString(Endpoint.GET_EVENT)),
+                        future: events,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
                             return CardLoadingShimmer(); // Show loading indicator while waiting for data
@@ -156,6 +158,10 @@ class _CurrentEventsState extends State<CurrentEvents>
         ],
       ),
     );
+  }
+
+  _fetchEvents(){
+    events = ApiManager.fetchData(toString(Endpoint.GET_EVENT));
   }
 
   Widget _buildCurrentEventsContent() {
