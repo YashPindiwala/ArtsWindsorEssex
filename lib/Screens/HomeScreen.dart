@@ -7,7 +7,7 @@ class HomeScreen extends StatefulWidget {
 
   static const _initialCameraPosition = CameraPosition(
     target: LatLng(42.24656086052182, -83.01904262309124),
-    zoom: 17.0,
+    zoom: 16.5, //Controls how far the map view is zoomed
   );
 
   const HomeScreen({super.key});
@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           const GoogleMap(
             myLocationButtonEnabled: false,
-            zoomControlsEnabled: true,
+            zoomControlsEnabled: false,
             initialCameraPosition: HomeScreen._initialCameraPosition,
           ),
           Positioned(

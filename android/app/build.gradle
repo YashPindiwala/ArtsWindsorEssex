@@ -31,9 +31,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
 
-//        defaultConfig {
-//            minSdkVersion 20
-//        }
     }
 
     kotlinOptions {
@@ -61,6 +58,10 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
         }
+    }
+
+    defaultConfig {
+        minSdkVersion 20
     }
 }
 
