@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../constants.dart';
+import 'dart:math';
 
 class EventDetails {
   final String title;
@@ -10,6 +11,7 @@ class EventDetails {
   final String admissionFee;
   final Color cardColor;
   final Color titleColor;
+  static Random _random = Random();
 
   EventDetails({
     required this.title,
@@ -20,6 +22,24 @@ class EventDetails {
     required this.cardColor,
     required this.titleColor,
   });
+
+  factory EventDetails.fromJson(Map<String, dynamic> json) {
+    int randomIndex = _random.nextInt(listOfColors.length).abs();
+    return EventDetails(
+      title: json['title'] ?? '',
+      image: json['image'] ?? 'assets/exampledetail.jpg', // remove the example jpg
+      description: json['description'] ?? '',
+      date: json['event_date'] ?? '',
+      admissionFee: json['admission_fee'].toString() ?? '',
+      cardColor: listOfColors[randomIndex]["card"]!,
+      titleColor: listOfColors[randomIndex]["title"]!,
+    );
+  }
+
+  static List<EventDetails> listFromJson(List<dynamic> jsonList) {
+    print(jsonList);
+    return jsonList.map((json) => EventDetails.fromJson(json)).toList();
+  }
 }
 
 List<EventDetails> currentEvents = [

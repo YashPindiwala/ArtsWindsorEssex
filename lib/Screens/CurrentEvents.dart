@@ -4,10 +4,10 @@ import 'package:artswindsoressex/constants.dart';
 import '../Utils/EventCard.dart';
 import '../Utils/ExpandedCardModal.dart';
 import 'AboutApp.dart';
-import 'Models/EventModel.dart';
 import 'package:artswindsoressex/Utils/CardLoadingShimmer.dart';
 import 'package:artswindsoressex/API/ApiManager.dart';
 import 'package:artswindsoressex/API/Endpoints.dart';
+import 'package:artswindsoressex/Screens/Models/EventModel.dart';
 
 class CurrentEvents extends StatefulWidget {
   static const id = "CurrentEvents";
@@ -116,7 +116,8 @@ class _CurrentEventsState extends State<CurrentEvents>
                             if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
-                              return _buildCurrentEventsContent(); // Show data if available
+                              List<EventDetails> details = EventDetails.listFromJson(snapshot.data);
+                              return _buildCurrentEventsContent(details); // Show data if available
                             } else {
                               return Text('No data'); // Show message if no data is available
                             }
@@ -164,11 +165,10 @@ class _CurrentEventsState extends State<CurrentEvents>
     events = ApiManager.fetchData(toString(Endpoint.GET_EVENT));
   }
 
-  Widget _buildCurrentEventsContent() {
+  Widget _buildCurrentEventsContent(List<EventDetails> events) {
     return ListView(
       children: [
-        const SizedBox(height: 12),
-        _buildEventCards(currentEvents),
+        _buildEventCards(events),
       ],
     );
   }
@@ -176,7 +176,7 @@ class _CurrentEventsState extends State<CurrentEvents>
   Widget _buildPastEventsContent() {
     return ListView(
       children: [
-        _buildEventCards(pastEvents),
+        _buildEventCards(currentEvents),
       ],
     );
   }
