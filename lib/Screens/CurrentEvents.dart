@@ -119,7 +119,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                               return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
                               List<EventDetails> details = EventDetails.listFromJson(snapshot.data);
-                              return _buildCurrentEventsContent(details); // Show data if available
+                              return _buildEventsContent(details); // Show data if available
                             } else {
                               return Text('No data'); // Show message if no data is available
                             }
@@ -128,7 +128,6 @@ class _CurrentEventsState extends State<CurrentEvents>
                           }
                         },
                       ),
-                      // _buildCurrentEventsContent(),
                       FutureBuilder(
                         future: _pastEvents,
                         builder: (context, snapshot) {
@@ -139,7 +138,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                               return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
                               List<EventDetails> details = EventDetails.listFromJson(snapshot.data);
-                              return _buildPastEventsContent(details); // Show data if available
+                              return _buildEventsContent(details); // Show data if available
                             } else {
                               return Text('No data'); // Show message if no data is available
                             }
@@ -154,28 +153,28 @@ class _CurrentEventsState extends State<CurrentEvents>
               ),
             ],
           ),
-          if (_showModal)
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  _showModal = false;
-                });
-              },
-              child: Container(
-                color: Colors.black.withOpacity(0.4),
-              ),
-            ),
-          if (_showModal)
-            Center(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                child: Container(
-                  color: Colors.transparent,
-                  padding: const EdgeInsets.all(20),
-                  child: ExpandedCardModal(selectedEvent: _selectedEvent),
-                ),
-              ),
-            ),
+          // if (_showModal)
+          //   GestureDetector(
+          //     onTap: () {
+          //       setState(() {
+          //         _showModal = false;
+          //       });
+          //     },
+          //     child: Container(
+          //       color: Colors.black.withOpacity(0.4),
+          //     ),
+          //   ),
+          // if (_showModal)
+          //   Center(
+          //     child: BackdropFilter(
+          //       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          //       child: Container(
+          //         color: Colors.transparent,
+          //         padding: const EdgeInsets.all(20),
+          //         child: ExpandedCardModal(selectedEvent: _selectedEvent),
+          //       ),
+          //     ),
+          //   ),
         ],
       ),
     );
@@ -189,35 +188,15 @@ class _CurrentEventsState extends State<CurrentEvents>
     _pastEvents = ApiManager.fetchData(toString(Endpoint.GET_EVENT_PAST));
   }
 
-  Widget _buildCurrentEventsContent(List<EventDetails> events) {
-    return ListView(
-      children: [
-        _buildEventCards(events),
-      ],
-    );
-  }
-
-  Widget _buildPastEventsContent(List<EventDetails> events) {
-    return ListView(
-      children: [
-        _buildEventCards(events),
-      ],
-    );
-  }
-
-  Widget _buildEventCards(List<EventDetails> events) {
-    return Column(
-      children: events.map((event) {
-        return EventCard(
-          eventDetails: event,
-          onPressed: () {
-            setState(() {
-              _selectedEvent = event;
-              _showModal = true;
-            });
-          },
-        );
-      }).toList(),
+  Widget _buildEventsContent(List<EventDetails> events) {
+    return ListView.separated(
+        itemBuilder: (context, index) {
+          return EventCard(eventDetails: events[index]);
+        },
+        separatorBuilder: (context, index) {
+          return SizedBox(height: 10,);
+        },
+        itemCount: events.length
     );
   }
 
