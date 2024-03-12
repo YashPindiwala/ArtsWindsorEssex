@@ -34,8 +34,9 @@ class ExpandedCardModal extends StatelessWidget {
                   child: AspectRatio(
                     aspectRatio: 3.3 / 2,
                     child: CachedNetworkImage(
-                      imageUrl: selectedEvent.image,
-                      fit: BoxFit.fill,
+                        imageUrl: selectedEvent.image,
+                        fit: BoxFit.fill,
+                        errorWidget: (context, url, error) => Image.asset("assets/awe_logo.png",)
                     )
                   )
               ),

@@ -3,6 +3,7 @@ import '../Screens/Models/EventModel.dart';
 import '../constants.dart';
 import 'ExpandedCardModal.dart';
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class EventCard extends StatelessWidget {
   final EventDetails eventDetails;
@@ -54,10 +55,11 @@ class EventCard extends StatelessWidget {
                     child: SizedBox(
                       width: 100,
                       height: 100,
-                      child: Image.network(
-                        eventDetails.image,
-                        fit: BoxFit.cover,
-                      ),
+                      child: CachedNetworkImage(
+                        imageUrl: eventDetails.image,
+                        fit: BoxFit.fill,
+                        errorWidget: (context, url, error) => Image.asset("assets/awe_logo.png",)
+                      )
                     ),
                   ),
                   const SizedBox(width: 10),
