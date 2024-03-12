@@ -8,7 +8,7 @@ class HomeScreen extends StatefulWidget {
   static const id = "HomeScreen";
 
   static const _initialCameraPosition = CameraPosition(
-    target: LatLng(42.24656086052182, -83.01904262309124),
+    target: LatLng(42.24833109246298, -83.01939482309436),
     zoom: 16.5, //Controls how far the map view is zoomed
   );
 
