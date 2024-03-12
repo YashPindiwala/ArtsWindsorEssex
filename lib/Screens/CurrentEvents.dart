@@ -9,6 +9,7 @@ import 'package:artswindsoressex/API/ApiManager.dart';
 import 'package:artswindsoressex/API/Endpoints.dart';
 import 'package:artswindsoressex/Screens/Models/EventModel.dart';
 import 'package:intl/intl.dart';
+import 'package:artswindsoressex/API/EventRequest.dart';
 
 class CurrentEvents extends StatefulWidget {
   static const id = "CurrentEvents";
@@ -153,39 +154,17 @@ class _CurrentEventsState extends State<CurrentEvents>
               ),
             ],
           ),
-          // if (_showModal)
-          //   GestureDetector(
-          //     onTap: () {
-          //       setState(() {
-          //         _showModal = false;
-          //       });
-          //     },
-          //     child: Container(
-          //       color: Colors.black.withOpacity(0.4),
-          //     ),
-          //   ),
-          // if (_showModal)
-          //   Center(
-          //     child: BackdropFilter(
-          //       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          //       child: Container(
-          //         color: Colors.transparent,
-          //         padding: const EdgeInsets.all(20),
-          //         child: ExpandedCardModal(selectedEvent: _selectedEvent),
-          //       ),
-          //     ),
-          //   ),
         ],
       ),
     );
   }
 
-  _fetchCurrentEvents(){
-    _currentEvents = ApiManager.fetchData(toString(Endpoint.GET_EVENT_CURR));
+  _fetchCurrentEvents() async {
+    _currentEvents = EventRequest.getCurrentEvents();
   }
 
   _fetchPastEvents(){
-    _pastEvents = ApiManager.fetchData(toString(Endpoint.GET_EVENT_PAST));
+    _pastEvents = EventRequest.getPastEvents();
   }
 
   Widget _buildEventsContent(List<EventDetails> events) {
