@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
 import '../Screens/Models/EventModel.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 
 class ExpandedCardModal extends StatelessWidget {
   final EventDetails selectedEvent;
@@ -31,8 +33,10 @@ class ExpandedCardModal extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15),
                   child: AspectRatio(
                     aspectRatio: 3.3 / 2,
-                    child: Image.network(
-                      selectedEvent.image, fit: BoxFit.fill,),
+                    child: CachedNetworkImage(
+                      imageUrl: selectedEvent.image,
+                      fit: BoxFit.fill,
+                    )
                   )
               ),
               SizedBox(height: 10,),
