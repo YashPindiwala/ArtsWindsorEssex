@@ -1,7 +1,7 @@
+import 'package:artswindsoressex/Screens/Models/LocationModel.dart';
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import 'AboutApp.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,7 +20,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String locationName = "St. Clair College";
-
   late GoogleMapController _googleMapController;
 
   @override
@@ -41,6 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
               zoomControlsEnabled: false,
               initialCameraPosition: HomeScreen._initialCameraPosition,
               onMapCreated: (controller) => _googleMapController = controller,
+              markers: Set<Marker>.from(locations.map((location) => Marker(
+                    markerId: MarkerId(location.title),
+                    position: LatLng(double.parse(location.latitude),
+                        double.parse(location.longitude)),
+                    infoWindow: InfoWindow(title: location.title),
+                  ))),
             ),
             Positioned(
               top: 50.0,
