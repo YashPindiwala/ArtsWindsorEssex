@@ -120,7 +120,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                               return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
                               List<EventDetails> details = EventDetails.listFromJson(snapshot.data);
-                              return _buildEventsContent(details); // Show data if available
+                              return _buildEventsContent(details,Endpoint.GET_EVENT_CURR); // Show data if available
                             } else {
                               return Text('No data'); // Show message if no data is available
                             }
@@ -139,7 +139,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                               return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
                               List<EventDetails> details = EventDetails.listFromJson(snapshot.data);
-                              return _buildEventsContent(details); // Show data if available
+                              return _buildEventsContent(details,Endpoint.GET_EVENT_PAST); // Show data if available
                             } else {
                               return Text('No data'); // Show message if no data is available
                             }
@@ -163,20 +163,32 @@ class _CurrentEventsState extends State<CurrentEvents>
     _currentEvents = EventRequest.getCurrentEvents();
   }
 
-  _fetchPastEvents(){
+  Future<void> _fetchPastEvents() async {
     _pastEvents = EventRequest.getPastEvents();
   }
 
-  Widget _buildEventsContent(List<EventDetails> events) {
-    return ListView.separated(
-        padding: EdgeInsets.only(bottom: 100,top: 10),
-        itemBuilder: (context, index) {
-          return EventCard(eventDetails: events[index]);
+  Widget _buildEventsContent(List<EventDetails> events,Endpoint endpoint) {
+    return RefreshIndicator(
+        displacement: 10,
+        child: ListView.separated(
+            padding: EdgeInsets.only(bottom: 100,top: 10),
+            itemBuilder: (context, index) {
+              return EventCard(eventDetails: events[index]);
+            },
+            separatorBuilder: (context, index) {
+              return SizedBox(height: 10,);
+            },
+            itemCount: events.length
+        ),
+        onRefresh: () async {
+          if (endpoint == Endpoint.GET_EVENT_PAST)
+            _fetchPastEvents();
+          else
+            _fetchCurrentEvents();
+          setState(() {
+
+          });
         },
-        separatorBuilder: (context, index) {
-          return SizedBox(height: 10,);
-        },
-        itemCount: events.length
     );
   }
 
