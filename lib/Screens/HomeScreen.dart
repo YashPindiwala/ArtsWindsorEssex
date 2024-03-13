@@ -89,8 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
               CameraUpdate.newCameraPosition(HomeScreen._initialCameraPosition),
             );
           },
-          backgroundColor: Colors.white, // Change the background color
-          child: const Icon(Icons.my_location_rounded), // Change the icon
+          backgroundColor: orangeColor, // Change the background color
+          child: const Icon(Icons.my_location_rounded, color: Colors.white),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
