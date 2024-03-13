@@ -89,6 +89,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                   color: Colors.white,
                 ),
                 child: TabBar(
+                  padding: EdgeInsets.symmetric(horizontal: 25),
                   controller: _tabController,
                   indicator: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
@@ -163,7 +164,7 @@ class _CurrentEventsState extends State<CurrentEvents>
     _currentEvents = EventRequest.getCurrentEvents();
   }
 
-  Future<void> _fetchPastEvents() async {
+  _fetchPastEvents() async {
     _pastEvents = EventRequest.getPastEvents();
   }
 
