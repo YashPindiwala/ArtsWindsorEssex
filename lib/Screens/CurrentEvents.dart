@@ -169,6 +169,7 @@ class _CurrentEventsState extends State<CurrentEvents>
 
   Widget _buildEventsContent(List<EventDetails> events) {
     return ListView.separated(
+        padding: EdgeInsets.only(bottom: 100,top: 10),
         itemBuilder: (context, index) {
           return EventCard(eventDetails: events[index]);
         },
