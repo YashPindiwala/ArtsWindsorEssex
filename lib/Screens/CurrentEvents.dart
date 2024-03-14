@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
+import '../API/Endpoints.dart';
 import '../Utils/EventCard.dart';
 import 'AboutApp.dart';
 import 'package:artswindsoressex/Utils/CardLoadingShimmer.dart';
@@ -83,6 +84,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                   color: Colors.white,
                 ),
                 child: TabBar(
+                  padding: EdgeInsets.symmetric(horizontal: 25),
                   controller: _tabController,
                   indicator: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
@@ -118,7 +120,9 @@ class _CurrentEventsState extends State<CurrentEvents>
                               List<EventDetails> details =
                                   EventDetails.listFromJson(snapshot.data);
                               return _buildEventsContent(
-                                  details); // Show data if available
+                                  details,
+                                  Endpoint
+                                      .GET_EVENT_CURR); // Show data if available
                             } else {
                               return Text(
                                   'No data'); // Show message if no data is available
@@ -142,7 +146,9 @@ class _CurrentEventsState extends State<CurrentEvents>
                               List<EventDetails> details =
                                   EventDetails.listFromJson(snapshot.data);
                               return _buildEventsContent(
-                                  details); // Show data if available
+                                  details,
+                                  Endpoint
+                                      .GET_EVENT_PAST); // Show data if available
                             } else {
                               return Text(
                                   'No data'); // Show message if no data is available
@@ -167,21 +173,32 @@ class _CurrentEventsState extends State<CurrentEvents>
     _currentEvents = EventRequest.getCurrentEvents();
   }
 
-  _fetchPastEvents() {
+  _fetchPastEvents() async {
     _pastEvents = EventRequest.getPastEvents();
   }
 
-  Widget _buildEventsContent(List<EventDetails> events) {
-    return ListView.separated(
-        itemBuilder: (context, index) {
-          return EventCard(eventDetails: events[index]);
-        },
-        separatorBuilder: (context, index) {
-          return SizedBox(
-            height: 10,
-          );
-        },
-        itemCount: events.length);
+  Widget _buildEventsContent(List<EventDetails> events, Endpoint endpoint) {
+    return RefreshIndicator(
+      displacement: 10,
+      child: ListView.separated(
+          padding: EdgeInsets.only(bottom: 100, top: 10),
+          itemBuilder: (context, index) {
+            return EventCard(eventDetails: events[index]);
+          },
+          separatorBuilder: (context, index) {
+            return SizedBox(
+              height: 10,
+            );
+          },
+          itemCount: events.length),
+      onRefresh: () async {
+        if (endpoint == Endpoint.GET_EVENT_PAST)
+          _fetchPastEvents();
+        else
+          _fetchCurrentEvents();
+        setState(() {});
+      },
+    );
   }
 
   @override
