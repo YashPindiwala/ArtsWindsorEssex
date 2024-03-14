@@ -2,9 +2,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
 import '../Utils/EventCard.dart';
-import '../Utils/ExpandedCardModal.dart';
 import 'AboutApp.dart';
-import 'Models/EventModel.dart';
+import 'package:artswindsoressex/Utils/CardLoadingShimmer.dart';
+import 'package:artswindsoressex/Screens/Models/EventModel.dart';
+import 'package:artswindsoressex/API/EventRequest.dart';
 
 class CurrentEvents extends StatefulWidget {
   static const id = "CurrentEvents";
@@ -18,13 +19,14 @@ class CurrentEvents extends StatefulWidget {
 class _CurrentEventsState extends State<CurrentEvents>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  bool _showModal = false;
-  late EventDetails _selectedEvent;
+  late Future _currentEvents, _pastEvents;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _fetchCurrentEvents();
+    _fetchPastEvents();
   }
 
   @override
@@ -102,72 +104,84 @@ class _CurrentEventsState extends State<CurrentEvents>
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                      _buildCurrentEventsContent(),
-                      _buildPastEventsContent(),
+                      FutureBuilder(
+                        future: _currentEvents,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CardLoadingShimmer(); // Show loading indicator while waiting for data
+                          } else if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else if (snapshot.hasData) {
+                              List<EventDetails> details =
+                                  EventDetails.listFromJson(snapshot.data);
+                              return _buildEventsContent(
+                                  details); // Show data if available
+                            } else {
+                              return Text(
+                                  'No data'); // Show message if no data is available
+                            }
+                          } else {
+                            return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
+                          }
+                        },
+                      ),
+                      FutureBuilder(
+                        future: _pastEvents,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CardLoadingShimmer(); // Show loading indicator while waiting for data
+                          } else if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else if (snapshot.hasData) {
+                              List<EventDetails> details =
+                                  EventDetails.listFromJson(snapshot.data);
+                              return _buildEventsContent(
+                                  details); // Show data if available
+                            } else {
+                              return Text(
+                                  'No data'); // Show message if no data is available
+                            }
+                          } else {
+                            return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
+                          }
+                        },
+                      ),
                     ],
                   ),
                 ),
               ),
             ],
           ),
-          if (_showModal)
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  _showModal = false;
-                });
-              },
-              child: Container(
-                color: Colors.black.withOpacity(0.4),
-              ),
-            ),
-          if (_showModal)
-            Center(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                child: Container(
-                  color: Colors.transparent,
-                  padding: const EdgeInsets.all(20),
-                  child: ExpandedCardModal(selectedEvent: _selectedEvent),
-                ),
-              ),
-            ),
         ],
       ),
     );
   }
 
-  Widget _buildCurrentEventsContent() {
-    return ListView(
-      children: [
-        const SizedBox(height: 12),
-        _buildEventCards(currentEvents),
-      ],
-    );
+  _fetchCurrentEvents() async {
+    _currentEvents = EventRequest.getCurrentEvents();
   }
 
-  Widget _buildPastEventsContent() {
-    return ListView(
-      children: [
-        _buildEventCards(pastEvents),
-      ],
-    );
+  _fetchPastEvents() {
+    _pastEvents = EventRequest.getPastEvents();
   }
 
-  Widget _buildEventCards(List<EventDetails> events) {
-    return Column(
-      children: events.map((event) {
-        return EventCard(
-          eventDetails: event,
-          onPressed: () {
-            setState(() {
-              _selectedEvent = event;
-              _showModal = true;
-            });
-          },
-        );
-      }).toList(),
-    );
+  Widget _buildEventsContent(List<EventDetails> events) {
+    return ListView.separated(
+        itemBuilder: (context, index) {
+          return EventCard(eventDetails: events[index]);
+        },
+        separatorBuilder: (context, index) {
+          return SizedBox(
+            height: 10,
+          );
+        },
+        itemCount: events.length);
   }
 
   @override

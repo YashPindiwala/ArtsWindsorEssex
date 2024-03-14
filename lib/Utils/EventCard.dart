@@ -1,27 +1,36 @@
 import 'package:flutter/material.dart';
 import '../Screens/Models/EventModel.dart';
 import '../constants.dart';
+import 'ExpandedCardModal.dart';
+import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class EventCard extends StatelessWidget {
   final EventDetails eventDetails;
-  final Function() onPressed;
+  // final Function() onPressed;
 
   const EventCard({
     required this.eventDetails,
-    required this.onPressed,
+    // required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: (){
+        showDialog(
+            barrierDismissible: true,
+            context: context,
+            builder: (context) => _cardDialog(),
+        );
+      },
       child: Card(
         color: eventDetails.cardColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
         elevation: 0,
-        margin: const EdgeInsets.symmetric(vertical: 10),
+        // margin: const EdgeInsets.symmetric(vertical: 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -46,10 +55,11 @@ class EventCard extends StatelessWidget {
                     child: SizedBox(
                       width: 100,
                       height: 100,
-                      child: Image.asset(
-                        eventDetails.image,
-                        fit: BoxFit.cover,
-                      ),
+                      child: CachedNetworkImage(
+                        imageUrl: eventDetails.image,
+                        fit: BoxFit.fill,
+                        errorWidget: (context, url, error) => Image.asset("assets/awe_logo.png",)
+                      )
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -98,4 +108,29 @@ class EventCard extends StatelessWidget {
       ),
     );
   }
+
+  _cardDialog(){
+    return BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5.0,sigmaY: 5.0),
+        child: Dialog(
+            surfaceTintColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ExpandedCardModal(selectedEvent: eventDetails),
+                SizedBox(height: 10,),
+                FilledButton(
+                  onPressed: () {},
+                  child: Text("Visit Our Site", style: TextStyle(color: eventDetails.titleColor),),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: eventDetails.cardColor, // Background color
+                  ),
+                )
+              ],
+            )
+        ),
+    );
+  }
+
 }

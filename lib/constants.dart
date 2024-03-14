@@ -17,3 +17,9 @@ const size16 = 16.0;
 const size14 = 14.0;
 const size13 = 13.0;
 const size12 = 12.0;
+
+List<Map<String, Color>> listOfColors = [
+  {"card" : pinkColor, "title" : orangeColor},
+  {"card" : mintColor, "title" : purpleColor},
+  {"card" : yellowColor, "title" : hotPinkColor},
+];

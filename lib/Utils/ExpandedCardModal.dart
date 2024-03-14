@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
 import '../Screens/Models/EventModel.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 
 class ExpandedCardModal extends StatelessWidget {
   final EventDetails selectedEvent;
@@ -10,101 +12,76 @@ class ExpandedCardModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String admissionFeeText = "Admission Fee";
     return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
-      height: MediaQuery.of(context).size.height * 0.6,
-      color: selectedEvent.cardColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: Text(
-              selectedEvent.title,
-              style: const TextStyle(
-                fontSize: size18,
-                fontWeight: FontWeight.bold,
-                color: purpleColor,
-              ),
-            ),
+          width: MediaQuery
+              .of(context)
+              .size
+              .width * 0.8,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height * 0.6,
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          decoration: BoxDecoration(
+            color: selectedEvent.cardColor,
+            borderRadius: BorderRadius.circular(25),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRect(
+          child: Column(
+            children: [
+              ClipRRect(
                   borderRadius: BorderRadius.circular(15),
-                  child: SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: Image.asset(
-                      selectedEvent.image,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                  child: AspectRatio(
+                    aspectRatio: 3.3 / 2,
+                    child: CachedNetworkImage(
+                        imageUrl: selectedEvent.image,
+                        fit: BoxFit.fill,
+                        errorWidget: (context, url, error) => Image.asset("assets/awe_logo.png",)
+                    )
+                  )
+              ),
+              SizedBox(height: 10,),
+              Text(
+                selectedEvent.title,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headlineLarge
+                    ?.copyWith(
+                    color: selectedEvent.titleColor,
+                    fontSize: size18
                 ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    selectedEvent.description,
-                    style: const TextStyle(fontSize: size13, color: textColor),
-                  ),
-                ),
-              ],
-            ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 10,),
+              Text(
+                selectedEvent.description,
+                textAlign: TextAlign.center,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headlineMedium,
+              ),
+              Spacer(),
+              Text(
+                selectedEvent.date,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headlineMedium,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 10,),
+              Text(
+                "${admissionFeeText} - ${selectedEvent.admissionFee}",
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headlineMedium,
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        selectedEvent.date,
-                        style: const TextStyle(
-                          fontSize: size12,
-                          fontWeight: FontWeight.bold,
-                          color: textColor,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      'Admission: ${selectedEvent.admissionFee}',
-                      style: const TextStyle(
-                        fontSize: size12,
-                        fontWeight: FontWeight.bold,
-                        color: textColor,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    // Implement your action here
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: selectedEvent.cardColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: Text(
-                    'Visit Our Site',
-                    style: TextStyle(
-                      color: selectedEvent.titleColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+        );
   }
 }
