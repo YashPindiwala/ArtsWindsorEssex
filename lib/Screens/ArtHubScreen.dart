@@ -42,7 +42,7 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
     return Scaffold(
       backgroundColor: backgroundColor,
       body: Container(
-          padding: EdgeInsets.only(top: 25,left: 25,right: 25),
+          padding: EdgeInsets.all(25),
           child: Column(
             children: [
               Row(
@@ -69,9 +69,14 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
                 ),
                 height: MediaQuery.of(context).size.height * 0.06,
                 child: ListView.separated(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return TextButton(
+                          style: ButtonStyle(
+                            overlayColor: MaterialStateProperty.all(Colors.transparent),
+                            enableFeedback: false,
+                          ),
                           onPressed: () {
                             setState(() {
                               listOfMaps.forEach((element) {

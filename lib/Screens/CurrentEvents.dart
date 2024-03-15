@@ -34,44 +34,30 @@ class _CurrentEventsState extends State<CurrentEvents>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
-        shadowColor: Colors.transparent,
-        backgroundColor: backgroundColor,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const AboutApp()),
-              );
-            },
-            icon: const Icon(Icons.info_outline_rounded),
-          )
-        ],
-      ),
       body: Stack(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 25, right: 25),
+               Padding(
+                padding: EdgeInsets.all(25),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 60,
-                      child: Center(
-                        child: Text(
-                          "Art Windsor-Essex Events",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: size24,
-                            fontWeight: FontWeight.bold,
-                            color: textColor,
-                          ),
-                        ),
-                      ),
+                    Row(
+                      children: [
+                        Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, AboutApp.id);
+                          },
+                          icon: const Icon(Icons.info_outline_rounded),
+                        )
+                      ],
+                    ),
+                    Text(
+                      "Art Windsor-Essex Events",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headlineLarge
                     ),
                   ],
                 ),
@@ -84,6 +70,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                   color: Colors.white,
                 ),
                 child: TabBar(
+                  enableFeedback: false,
                   padding: EdgeInsets.symmetric(horizontal: 25),
                   controller: _tabController,
                   indicator: BoxDecoration(

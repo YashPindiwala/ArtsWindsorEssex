@@ -10,8 +10,17 @@ import 'package:artswindsoressex/Screens/DetailScreen.dart';
 import 'package:artswindsoressex/Screens/CollectionScreen.dart';
 import 'package:artswindsoressex/Screens/Navigation.dart';
 import 'constants.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/src/services/system_chrome.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: [SystemUiOverlay.top]
+  );
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override

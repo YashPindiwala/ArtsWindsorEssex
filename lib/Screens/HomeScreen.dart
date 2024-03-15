@@ -30,9 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, // Hide debug banner
-      home: Scaffold(
+    return Scaffold(
         body: Stack(
           children: [
             GoogleMap(
@@ -48,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ))),
             ),
             Positioned(
-              top: 50.0,
+              top: 70.0,
               left: 50.0,
               right: 50.0,
               child: Container(
@@ -69,31 +67,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            Row(
-              children: [
-                const Spacer(),
-                IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, AboutApp.id);
-                  },
-                  icon: const Icon(Icons.info_outline_rounded),
-                ),
-              ],
-            ),
+            Container(
+              padding: EdgeInsets.all(25),
+              child: Row(
+                children: [
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, AboutApp.id);
+                    },
+                    icon: const Icon(Icons.info_outline_rounded),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // Animate the map to the initial camera position
-            _googleMapController.animateCamera(
-              CameraUpdate.newCameraPosition(HomeScreen._initialCameraPosition),
-            );
-          },
-          backgroundColor: orangeColor, // Change the background color
-          child: const Icon(Icons.my_location_rounded, color: Colors.white),
+        floatingActionButton: Container(
+            padding: EdgeInsets.only(bottom: 75,right: 10),
+            child: FloatingActionButton(
+              onPressed: () {
+                // Animate the map to the initial camera position
+                _googleMapController.animateCamera(
+                  CameraUpdate.newCameraPosition(HomeScreen._initialCameraPosition),
+                );
+              },
+              backgroundColor: orangeColor.withOpacity(0.90), // Change the background color
+              child: const Icon(Icons.my_location_rounded, color: Colors.white),
+            ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      ),
-    );
+      );
   }
 }

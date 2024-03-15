@@ -52,9 +52,14 @@ class _CollectionScreenState extends State<CollectionScreen> {
                     borderRadius: BorderRadius.circular(25)),
                 height: MediaQuery.of(context).size.height * 0.06,
                 child: ListView.separated(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return TextButton(
+                          style: ButtonStyle(
+                            overlayColor: MaterialStateProperty.all(Colors.transparent),
+                            enableFeedback: false,
+                          ),
                           onPressed: () {
                             setState(() {
                               _tags.forEach((element) {
