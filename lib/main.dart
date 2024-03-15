@@ -26,7 +26,8 @@ class MyApp extends StatelessWidget {
           textTheme: const TextTheme(
             headlineLarge: TextStyle(fontSize: size24, color: textColor),
             headlineMedium: TextStyle(fontSize: size14, color: textColor),
-          )),
+          )
+      ),
       initialRoute: SplashScreen.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),

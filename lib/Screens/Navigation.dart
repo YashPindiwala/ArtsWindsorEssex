@@ -38,43 +38,51 @@ class _NavigationState extends State<Navigation> {
             bottom: 25,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(50),
-              child: BottomNavigationBar(
-                currentIndex: _currentIndex,
-                iconSize: 30,
-                type: BottomNavigationBarType.fixed,
-                backgroundColor: orangeColor.withOpacity(0.90),
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                selectedItemColor: Colors.white,
-                unselectedItemColor: Colors.white.withOpacity(0.65),
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.qr_code_2),
-                    label: "Qr",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.image),
-                    label: "Collection",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.map),
-                    label: "Map",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.map),
-                    label: "Art_Hub",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.event),
-                    label: "Event",
-                  ),
-                ],
-                onTap: (value) {
-                  setState(() {
-                    _currentIndex = value;
-                  });
-                },
-              ),
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  splashColor: Colors.transparent
+                ),
+                child: BottomNavigationBar(
+                  enableFeedback: false,
+                  currentIndex: _currentIndex,
+                  iconSize: 26,
+                  type: BottomNavigationBarType.fixed,
+                  backgroundColor: orangeColor.withOpacity(0.90),
+                  showSelectedLabels: false,
+                  selectedFontSize: 0.0,
+                  unselectedFontSize: 0.0,
+                  showUnselectedLabels: false,
+                  selectedItemColor: Colors.white,
+                  unselectedItemColor: Colors.white.withOpacity(0.65),
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.qr_code_2),
+                      label: "Qr",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.image),
+                      label: "Collection",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.map),
+                      label: "Map",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.map),
+                      label: "Art_Hub",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.event),
+                      label: "Event",
+                    ),
+                  ],
+                  onTap: (value) {
+                    setState(() {
+                      _currentIndex = value;
+                    });
+                  },
+                ),
+              )
             ),
           ),
         ],
