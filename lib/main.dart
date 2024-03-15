@@ -17,7 +17,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.manual,
-    overlays: [SystemUiOverlay.top]
+    overlays: [SystemUiOverlay.top,SystemUiOverlay.bottom]
   );
   runApp(MyApp());
 }
