@@ -19,6 +19,9 @@ void main() {
     SystemUiMode.manual,
     overlays: [SystemUiOverlay.top,SystemUiOverlay.bottom]
   );
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   runApp(MyApp());
 }
 
