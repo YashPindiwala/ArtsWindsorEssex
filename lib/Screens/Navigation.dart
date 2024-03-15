@@ -14,7 +14,7 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   List<Widget> _screens = [
     Placeholder(),
     CollectionScreen(),

@@ -10,23 +10,49 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+  double position = -320;
+  double logo = 0.0;
+  String change = "Change happens here.";
+
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(milliseconds: 500),() => setState(() {
+      position = 0;
+      logo = 1.0;
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned(
-            left: 50,
-            top: 0,
-            child: SvgPicture.asset("assets/top_graphic.svg"),
+          AnimatedPositioned(
+              left: 50,
+              top: position,
+              child: SvgPicture.asset("assets/top_graphic.svg"),
+              duration: Duration(milliseconds: 1500)
           ),
           Center(
-            child: Image.asset('assets/awe_logo.png'),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                AnimatedOpacity(
+                  duration: Duration(milliseconds: 1500),
+                  opacity: logo,
+                  child: Image.asset('assets/awe_logo.png'),
+                )
+                // Text(change)
+              ],
+            )
           ),
-          Positioned(
-            right: 50,
-            bottom: 0,
-            child: SvgPicture.asset("assets/bottom_graphic.svg"),
+          AnimatedPositioned(
+              right: 50,
+              bottom: position,
+              child: SvgPicture.asset("assets/bottom_graphic.svg"),
+              duration: Duration(milliseconds: 1500)
           ),
         ],
       )
