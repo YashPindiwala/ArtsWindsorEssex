@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:artswindsoressex/Utils/GridViewStaggered.dart';
 import 'AboutApp.dart';
+import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
 import 'package:artswindsoressex/Utils/GridLoadingShimmer.dart';
+import 'package:artswindsoressex/API/ArtworkRequest.dart';
 
 class ArtHubScreen extends StatefulWidget {
   static const id = "ArtHubScreen";
@@ -35,8 +37,13 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
     "assets/image5.png",
   ];
 
-  final List<int> _itemHeights = [150, 100, 200, 120, 180, 150, 100, 220, 160];
+  late Future _allArtworks;
 
+  @override
+  void initState() {
+    super.initState();
+    _fetchAllArtworks();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +112,7 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
               ),
               Expanded(
                 child: FutureBuilder(
-                  future: Future.delayed(Duration(seconds: 5)),
+                  future: _allArtworks,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return GridLoadingShimmer(); // Show loading indicator while waiting for data
@@ -113,27 +120,10 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
                       if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else if (snapshot.hasData) {
-                        return Text("Data available");// Show data if available
+                        List<ArtworkModel> artworks = ArtworkModel.listFromJson(snapshot.data);
+                        return GridViewStaggered(artworks: artworks,);// Show data if available
                       } else {
-                        return MasonryGridView.count(
-                          padding: EdgeInsets.only(bottom: 100),
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 12,
-                          shrinkWrap: true,
-                          itemCount: image.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25)
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(25),
-                                child: Image.asset(image[index],fit: BoxFit.fill,),
-                              ),
-                            );
-                          },
-                        );// Show message if no data is available
+                        return Text("No Data");// Show message if no data is available
                       }
                     } else {
                       return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
@@ -145,5 +135,9 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
           ),
       )
     );
+  }
+  //Methods
+  _fetchAllArtworks() async {
+    _allArtworks = ArtworkRequest.getAllArtworks();
   }
 }
