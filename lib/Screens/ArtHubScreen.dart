@@ -8,6 +8,7 @@ import 'package:artswindsoressex/API/ArtworkRequest.dart';
 
 class ArtHubScreen extends StatefulWidget {
   static const id = "ArtHubScreen";
+
   const ArtHubScreen({super.key});
 
   @override
@@ -17,24 +18,11 @@ class ArtHubScreen extends StatefulWidget {
 class _ArtHubScreenState extends State<ArtHubScreen> {
 
   List<Map<String, dynamic>> listOfMaps = [
-    {"tag":"Cubism", "active" : false},
-    {"tag":"Surrealism", "active" :false},
-    {"tag":"Pop Art", "active" : false},
-    {"tag":"Romanticism", "active" :false},
-    {"tag":"Impressionism", "active" :false},
-  ];
-
-  List<String> image = [
-    "assets/image1.png",
-    "assets/image2.png",
-    "assets/image3.png",
-    "assets/image4.png",
-    "assets/image5.png",
-    "assets/image1.png",
-    "assets/image2.png",
-    "assets/image3.png",
-    "assets/image4.png",
-    "assets/image5.png",
+    {"tag": "Cubism", "active": false},
+    {"tag": "Surrealism", "active": false},
+    {"tag": "Pop Art", "active": false},
+    {"tag": "Romanticism", "active": false},
+    {"tag": "Impressionism", "active": false},
   ];
 
   late Future _allArtworks;
@@ -48,9 +36,9 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
-      body: Container(
-          padding: EdgeInsets.all(25),
+        backgroundColor: backgroundColor,
+        body: Container(
+          padding: EdgeInsets.only(top: 25,left: 25,right: 25),
           child: Column(
             children: [
               Row(
@@ -66,23 +54,30 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
               ),
               Text(
                 "Look Again! Outside: St. Clair College Art Hub",
-                style: Theme.of(context).textTheme.headlineLarge,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headlineLarge,
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20,),
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(25)
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(25)
                 ),
-                height: MediaQuery.of(context).size.height * 0.06,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.06,
                 child: ListView.separated(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return TextButton(
                           style: ButtonStyle(
-                            overlayColor: MaterialStateProperty.all(Colors.transparent),
+                            overlayColor: MaterialStateProperty.all(
+                                Colors.transparent),
                             enableFeedback: false,
                           ),
                           onPressed: () {
@@ -90,14 +85,17 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
                               listOfMaps.forEach((element) {
                                 element["active"] = false;
                               });
-                              listOfMaps[index]["active"] = !listOfMaps[index]["active"];
+                              listOfMaps[index]["active"] =
+                              !listOfMaps[index]["active"];
                             });
                           },
                           child: Text(
-                            listOfMaps[index]["tag"],
-                            style: listOfMaps[index]["active"] ? null : TextStyle(
-                              color: textColor
-                            )
+                              listOfMaps[index]["tag"],
+                              style: listOfMaps[index]["active"]
+                                  ? null
+                                  : TextStyle(
+                                  color: textColor
+                              )
                           )
                       );
                     },
@@ -111,31 +109,42 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
                 height: 20,
               ),
               Expanded(
-                child: FutureBuilder(
-                  future: _allArtworks,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return GridLoadingShimmer(); // Show loading indicator while waiting for data
-                    } else if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else if (snapshot.hasData) {
-                        List<ArtworkModel> artworks = ArtworkModel.listFromJson(snapshot.data);
-                        return GridViewStaggered(artworks: artworks,);// Show data if available
+                  child: FutureBuilder(
+                    future: _allArtworks,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return GridLoadingShimmer(); // Show loading indicator while waiting for data
+                      } else
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else if (snapshot.hasData) {
+                          List<ArtworkModel> artworks = ArtworkModel
+                              .listFromJson(snapshot.data);
+                          return RefreshIndicator(
+                            displacement: 10,
+                            child: GridViewStaggered(artworks: artworks),
+                            onRefresh: () async {
+                              _fetchAllArtworks();
+                              setState(() {});
+                            },
+                          ); // Show data if available
+                        } else {
+                          return Text(
+                              "No Data"); // Show message if no data is available
+                        }
                       } else {
-                        return Text("No Data");// Show message if no data is available
+                        return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
                       }
-                    } else {
-                      return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
-                    }
-                  },
-                )
+                    },
+                  )
               )
             ],
           ),
-      )
+        )
     );
   }
+
   //Methods
   _fetchAllArtworks() async {
     _allArtworks = ArtworkRequest.getAllArtworks();
