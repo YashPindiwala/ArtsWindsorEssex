@@ -3,8 +3,12 @@ import 'package:artswindsoressex/constants.dart';
 import 'package:artswindsoressex/Utils/GridViewStaggered.dart';
 import 'AboutApp.dart';
 import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
+import 'package:artswindsoressex/Screens/Models/TagModel.dart';
 import 'package:artswindsoressex/Utils/GridLoadingShimmer.dart';
+import 'package:artswindsoressex/Utils/ListViewShimmerHZ.dart';
+import 'package:artswindsoressex/Utils/TagsView.dart';
 import 'package:artswindsoressex/API/ArtworkRequest.dart';
+import 'package:artswindsoressex/API/TagRequest.dart';
 
 class ArtHubScreen extends StatefulWidget {
   static const id = "ArtHubScreen";
@@ -25,12 +29,13 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
     {"tag": "Impressionism", "active": false},
   ];
 
-  late Future _allArtworks;
+  late Future _allArtworks,_allTags;
 
   @override
   void initState() {
     super.initState();
     _fetchAllArtworks();
+    _fetchAllTags();
   }
 
   @override
@@ -61,49 +66,25 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20,),
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(25)
-                ),
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.06,
-                child: ListView.separated(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return TextButton(
-                          style: ButtonStyle(
-                            overlayColor: MaterialStateProperty.all(
-                                Colors.transparent),
-                            enableFeedback: false,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              listOfMaps.forEach((element) {
-                                element["active"] = false;
-                              });
-                              listOfMaps[index]["active"] =
-                              !listOfMaps[index]["active"];
-                            });
-                          },
-                          child: Text(
-                              listOfMaps[index]["tag"],
-                              style: listOfMaps[index]["active"]
-                                  ? null
-                                  : TextStyle(
-                                  color: textColor
-                              )
-                          )
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return SizedBox(width: 10,);
-                    },
-                    itemCount: listOfMaps.length
-                ),
+              FutureBuilder(
+                  future: _allTags,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return ListViewShimmerHZ(); // Show loading indicator while waiting for data
+                    } else
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else if (snapshot.hasData) {
+                        List<TagModel> tags = TagModel.listFromJson(snapshot.data);
+                        return TagsView(tags: tags); // Show data if available
+                      } else {
+                        return Text("No Data"); // Show message if no data is available
+                      }
+                    } else {
+                      return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
+                    }
+                  },
               ),
               SizedBox(
                 height: 20,
@@ -148,5 +129,8 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
   //Methods
   _fetchAllArtworks() async {
     _allArtworks = ArtworkRequest.getAllArtworks();
+  }
+  _fetchAllTags() async {
+    _allTags = TagRequest.getAllTags();
   }
 }
