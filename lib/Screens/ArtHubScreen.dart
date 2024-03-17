@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'AboutApp.dart';
+import 'package:artswindsoressex/Utils/GridLoadingShimmer.dart';
 
 class ArtHubScreen extends StatefulWidget {
   static const id = "ArtHubScreen";
@@ -103,25 +104,42 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
                 height: 20,
               ),
               Expanded(
-                child: MasonryGridView.count(
-                  padding: EdgeInsets.only(bottom: 100),
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 12,
-                  shrinkWrap: true,
-                  itemCount: image.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25)
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(25),
-                        child: Image.asset(image[index],fit: BoxFit.fill,),
-                      ),
-                    );
+                child: FutureBuilder(
+                  future: Future.delayed(Duration(seconds: 5)),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return GridLoadingShimmer(); // Show loading indicator while waiting for data
+                    } else if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else if (snapshot.hasData) {
+                        return Text("Data available");// Show data if available
+                      } else {
+                        return MasonryGridView.count(
+                          padding: EdgeInsets.only(bottom: 100),
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 12,
+                          shrinkWrap: true,
+                          itemCount: image.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25)
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(25),
+                                child: Image.asset(image[index],fit: BoxFit.fill,),
+                              ),
+                            );
+                          },
+                        );// Show message if no data is available
+                      }
+                    } else {
+                      return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
+                    }
                   },
-                ),
+                )
               )
             ],
           ),
