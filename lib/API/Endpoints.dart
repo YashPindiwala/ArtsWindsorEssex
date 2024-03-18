@@ -17,7 +17,7 @@ String toString(Endpoint endpoint) {
       return "artworks?type=all";
     case Endpoint.GET_ARTWORK_DIGITAL:
       return "artworks?type=digital";
-    case Endpoint.GET_ARTWORK_DIGITAL:
+    case Endpoint.GET_ARTWORK_NOT_DIGITAL:
       return "artworks?type=notDigital";
     case Endpoint.GET_TAGS:
       return "tags";

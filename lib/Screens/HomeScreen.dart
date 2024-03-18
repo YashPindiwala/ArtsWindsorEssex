@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'AboutApp.dart';
+import 'package:card_loading/card_loading.dart';
+import 'package:artswindsoressex/API/ArtworkRequest.dart';
+import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
 
 class HomeScreen extends StatefulWidget {
   static const id = "HomeScreen";
@@ -21,6 +24,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String locationName = "St. Clair College";
   late GoogleMapController _googleMapController;
+  late Future _getNonDigitalArt;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchNonDigitalArt();
+  }
 
   @override
   void dispose() {
@@ -33,17 +43,49 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         body: Stack(
           children: [
-            GoogleMap(
-              myLocationButtonEnabled: false,
-              zoomControlsEnabled: false,
-              initialCameraPosition: HomeScreen._initialCameraPosition,
-              onMapCreated: (controller) => _googleMapController = controller,
-              markers: Set<Marker>.from(locations.map((location) => Marker(
-                    markerId: MarkerId(location.title),
-                    position: LatLng(double.parse(location.latitude),
-                        double.parse(location.longitude)),
-                    infoWindow: InfoWindow(title: location.title),
-                  ))),
+            FutureBuilder(
+              future: _getNonDigitalArt,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CardLoading(
+                    height: MediaQuery.of(context).size.height,
+                  );//Show loading indicator while waiting for data
+                } else
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else if (snapshot.hasData) {
+                    List<ArtworkModel> artworks = ArtworkModel
+                        .listFromJson(snapshot.data);
+                    List<LocationDetails> locations = [];
+                    for (var artwork in artworks) {
+                      if (artwork.location != null) {
+                        locations.add(artwork.location);
+                        print(locations.toString());
+                      }
+                    }
+                    return GoogleMap(
+                        myLocationButtonEnabled: false,
+                        zoomControlsEnabled: false,
+                        initialCameraPosition: HomeScreen._initialCameraPosition,
+                        onMapCreated: (controller) => _googleMapController = controller,
+                        markers: Set<Marker>.from(locations.map((location) => Marker(
+                            markerId: MarkerId(location.title!),
+                            position: LatLng(double.parse(location.latitude!),
+                            double.parse(location.longitude!)),
+                            infoWindow: InfoWindow(title: location.title!),
+                          ),
+                        )
+                     )
+                    );// Show data if available
+                  } else {
+                    return Text(
+                        "No Data"); // Show message if no data is available
+                  }
+                } else {
+                  return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
+                }
+              },
             ),
             Positioned(
               top: 70.0,
@@ -98,5 +140,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       );
+  }
+  _fetchNonDigitalArt() async {
+    _getNonDigitalArt = ArtworkRequest.getAllNonDigitalArtwork();
   }
 }
