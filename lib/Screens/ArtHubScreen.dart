@@ -21,14 +21,6 @@ class ArtHubScreen extends StatefulWidget {
 
 class _ArtHubScreenState extends State<ArtHubScreen> {
 
-  List<Map<String, dynamic>> listOfMaps = [
-    {"tag": "Cubism", "active": false},
-    {"tag": "Surrealism", "active": false},
-    {"tag": "Pop Art", "active": false},
-    {"tag": "Romanticism", "active": false},
-    {"tag": "Impressionism", "active": false},
-  ];
-
   late Future _allArtworks,_allTags;
 
   @override

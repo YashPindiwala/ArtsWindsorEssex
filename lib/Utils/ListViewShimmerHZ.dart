@@ -7,7 +7,7 @@ class ListViewShimmerHZ extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardLoading(
-          height: 45,
+          height: MediaQuery.of(context).size.height*0.06,
           width: double.infinity,
           borderRadius: BorderRadius.circular(25),
         );
