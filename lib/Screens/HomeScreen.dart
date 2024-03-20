@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:artswindsoressex/Screens/Models/LocationModel.dart';
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
@@ -6,6 +7,7 @@ import 'AboutApp.dart';
 import 'package:card_loading/card_loading.dart';
 import 'package:artswindsoressex/API/ArtworkRequest.dart';
 import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomeScreen extends StatefulWidget {
   static const id = "HomeScreen";
@@ -22,14 +24,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late PermissionStatus locationPermission;
   String locationName = "St. Clair College";
   late GoogleMapController _googleMapController;
   late Future _getNonDigitalArt;
+  bool showMap = false;
 
   @override
   void initState() {
     super.initState();
     _fetchNonDigitalArt();
+    askForPermission();
   }
 
   @override
@@ -64,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                   }
                   return GoogleMap(
+                      mapToolbarEnabled: false,
                       myLocationButtonEnabled: false,
                       zoomControlsEnabled: false,
                       initialCameraPosition: HomeScreen._initialCameraPosition,
@@ -144,5 +150,62 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _fetchNonDigitalArt() async {
     _getNonDigitalArt = ArtworkRequest.getAllNonDigitalArtwork();
+  }
+
+  askForPermission() async {
+    locationPermission = await Permission.locationWhenInUse.request();
+
+    if (locationPermission.isGranted) {
+      _fetchNonDigitalArt();
+    } else if (locationPermission.isDenied) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Permission Required"),
+            content: Text("To proceed, please grant location permission."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  exit(0); // Close dialog
+                },
+                child: Text("Cancel"),
+              ),
+              TextButton(
+                onPressed: () async {
+                  // Request permission again
+                  PermissionStatus status =
+                      await Permission.locationWhenInUse.request();
+                  if (status.isGranted) {
+                    _fetchNonDigitalArt();
+                  } else {
+                    // Handle if permission is still denied
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Permission Denied"),
+                          content: Text(
+                              "Without location permission, the app cannot proceed."),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Close dialog
+                              },
+                              child: Text("OK"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                },
+                child: Text("Grant Permission"),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }
