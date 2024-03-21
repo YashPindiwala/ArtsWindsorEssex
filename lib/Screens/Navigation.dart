@@ -4,6 +4,7 @@ import 'package:artswindsoressex/constants.dart';
 import 'package:artswindsoressex/Screens/CollectionScreen.dart';
 import 'package:artswindsoressex/Screens/ArtHubScreen.dart';
 import 'package:artswindsoressex/Screens/CurrentEvents.dart';
+import 'package:artswindsoressex/Screens/QRCodeScreen.dart';
 
 class Navigation extends StatefulWidget {
   static const id = "Navigation";
@@ -16,7 +17,7 @@ class Navigation extends StatefulWidget {
 class _NavigationState extends State<Navigation> {
   int _currentIndex = 2;
   List<Widget> _screens = [
-    Placeholder(),
+    QrScannerScreen(),
     CollectionScreen(),
     HomeScreen(),
     ArtHubScreen(),

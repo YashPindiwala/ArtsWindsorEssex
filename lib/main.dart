@@ -12,6 +12,7 @@ import 'package:artswindsoressex/Screens/Navigation.dart';
 import 'constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/services/system_chrome.dart';
+import 'package:artswindsoressex/Screens/QRCodeScreen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
         CollectionScreen.id: (context) => CollectionScreen(),
         HomeScreen.id: (context) => HomeScreen(),
         Navigation.id: (context) => Navigation(),
+        QrScannerScreen.id: (context) => QrScannerScreen(),
       },
     );
   }
