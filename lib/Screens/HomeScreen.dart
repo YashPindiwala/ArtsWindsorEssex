@@ -163,13 +163,14 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context) {
           return AlertDialog(
             title: Text("Permission Required"),
-            content: Text("To proceed, please grant location permission."),
+            content: Text(
+                "To proceed, please grant location permission. If denied, the app will close."),
             actions: [
               TextButton(
                 onPressed: () {
-                  exit(0); // Close dialog
+                  exit(0); // Close dialog and exit app
                 },
-                child: Text("Cancel"),
+                child: Text("Deny"),
               ),
               TextButton(
                 onPressed: () async {
@@ -177,6 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   PermissionStatus status =
                       await Permission.locationWhenInUse.request();
                   if (status.isGranted) {
+                    Navigator.of(context).pop(); // Close outer dialog
                     _fetchNonDigitalArt();
                   } else {
                     // Handle if permission is still denied
@@ -190,7 +192,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           actions: [
                             TextButton(
                               onPressed: () {
-                                Navigator.of(context).pop(); // Close dialog
+                                Navigator.of(context).popUntil((route) =>
+                                    route.isFirst); // Close all dialogs
                               },
                               child: Text("OK"),
                             ),
