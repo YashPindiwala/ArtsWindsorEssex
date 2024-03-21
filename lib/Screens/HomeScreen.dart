@@ -63,10 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ArtworkModel.listFromJson(snapshot.data);
                   List<LocationDetails> locations = [];
                   for (var artwork in artworks) {
-                    if (artwork.location != null) {
-                      locations.add(artwork.location);
-                      print(locations.toString());
-                    }
+                    locations.add(artwork.location);
                   }
                   return GoogleMap(
                       mapToolbarEnabled: false,
