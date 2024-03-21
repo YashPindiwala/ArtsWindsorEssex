@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:artswindsoressex/constants.dart';
 
 class QrScannerScreen extends StatefulWidget {
   static const id = "QRCodeScreen";
@@ -26,10 +27,13 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
           QRView(
             key: qrKey,
             onQRViewCreated: _onQRViewCreated,
+            formatsAllowed: [
+              BarcodeFormat.qrcode,
+            ],
             overlay: QrScannerOverlayShape(
-              borderColor: Colors.white,
-              borderRadius: 10,
-              borderWidth: 5,
+              borderColor: orangeColor,
+              borderRadius: 20,
+              borderWidth: 10,
               cutOutSize: MediaQuery.of(context).size.width / 2,
             ),
           ),
@@ -49,19 +53,19 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
                 )
             ),
           ),
-          if (result != null)
-            Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
-                color: Colors.white,
-              ),
-              child: Text(
-                'Scanned Code: ${result!.code}',
-                style: TextStyle(fontSize: 18.0),
-              ),
-            ),
+          // if (result != null)
+          //   Container(
+          //     alignment: Alignment.center,
+          //     padding: EdgeInsets.all(10.0),
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(5.0),
+          //       color: Colors.white,
+          //     ),
+          //     child: Text(
+          //       'Scanned Code: ${result!.code}',
+          //       style: TextStyle(fontSize: 18.0),
+          //     ),
+          //   ),
         ],
       ),
     );
