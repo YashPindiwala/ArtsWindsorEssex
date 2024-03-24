@@ -11,6 +11,7 @@ import 'package:artswindsoressex/API/ArtworkRequest.dart';
 import 'package:artswindsoressex/API/TagRequest.dart';
 import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/ArtHubProvider.dart';
+import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
 
 class ArtHubScreen extends StatefulWidget {
   static const id = "ArtHubScreen";
@@ -60,26 +61,15 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20,),
-              FutureBuilder(
-                future: _allTags,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return ListViewShimmerHZ(); // Show loading indicator while waiting for data
-                  } else if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else if (snapshot.hasData) {
-                      List<TagModel> tags = TagModel.listFromJson(
-                          snapshot.data);
-                      return TagsView(tags: tags); // Show data if available
-                    } else {
-                      return Text(
-                          "No Data"); // Show message if no data is available
+              Consumer<TagProvider>(
+                  builder: (context, tagProvider, child) {
+                    List<TagModel> tags = tagProvider.tags;
+                    if(!tagProvider.loaded){
+                      return ListViewShimmerHZ();
+                    }else {
+                      return TagsView(tags: tags);
                     }
-                  } else {
-                    return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
-                  }
-                },
+                  },
               ),
               SizedBox(
                 height: 20,
