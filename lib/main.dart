@@ -15,6 +15,7 @@ import 'package:flutter/src/services/system_chrome.dart';
 import 'package:artswindsoressex/Screens/QRCodeScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/EventProvider.dart';
+import 'package:artswindsoressex/ChangeNotifiers/ArtHubProvider.dart';
 
 
 void main() {
@@ -30,6 +31,7 @@ void main() {
       MultiProvider(
         providers: [
           ChangeNotifierProvider<EventProvider>(create: (context) => EventProvider()),
+          ChangeNotifierProvider<ArtHubProvider>(create: (context) => ArtHubProvider()),
         ],
         child: MyApp(),
       )

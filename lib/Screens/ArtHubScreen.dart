@@ -9,6 +9,8 @@ import 'package:artswindsoressex/Utils/ListViewShimmerHZ.dart';
 import 'package:artswindsoressex/Utils/TagsView.dart';
 import 'package:artswindsoressex/API/ArtworkRequest.dart';
 import 'package:artswindsoressex/API/TagRequest.dart';
+import 'package:provider/provider.dart';
+import 'package:artswindsoressex/ChangeNotifiers/ArtHubProvider.dart';
 
 class ArtHubScreen extends StatefulWidget {
   static const id = "ArtHubScreen";
@@ -21,7 +23,7 @@ class ArtHubScreen extends StatefulWidget {
 
 class _ArtHubScreenState extends State<ArtHubScreen> {
 
-  late Future _allArtworks,_allTags;
+  late Future _allArtworks, _allTags;
 
   @override
   void initState() {
@@ -35,7 +37,7 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
     return Scaffold(
         backgroundColor: backgroundColor,
         body: Container(
-          padding: EdgeInsets.only(top: 25,left: 25,right: 25),
+          padding: EdgeInsets.only(top: 25, left: 25, right: 25),
           child: Column(
             children: [
               Row(
@@ -59,59 +61,49 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
               ),
               SizedBox(height: 20,),
               FutureBuilder(
-                  future: _allTags,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return ListViewShimmerHZ(); // Show loading indicator while waiting for data
-                    } else
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else if (snapshot.hasData) {
-                        List<TagModel> tags = TagModel.listFromJson(snapshot.data);
-                        return TagsView(tags: tags); // Show data if available
-                      } else {
-                        return Text("No Data"); // Show message if no data is available
-                      }
+                future: _allTags,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return ListViewShimmerHZ(); // Show loading indicator while waiting for data
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else if (snapshot.hasData) {
+                      List<TagModel> tags = TagModel.listFromJson(
+                          snapshot.data);
+                      return TagsView(tags: tags); // Show data if available
                     } else {
-                      return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
+                      return Text(
+                          "No Data"); // Show message if no data is available
                     }
-                  },
+                  } else {
+                    return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
+                  }
+                },
               ),
               SizedBox(
                 height: 20,
               ),
               Expanded(
-                  child: FutureBuilder(
-                    future: _allArtworks,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return GridLoadingShimmer(); // Show loading indicator while waiting for data
-                      } else
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else if (snapshot.hasData) {
-                          List<ArtworkModel> artworks = ArtworkModel
-                              .listFromJson(snapshot.data);
-                          return RefreshIndicator(
-                            displacement: 10,
-                            child: GridViewStaggered(artworks: artworks),
-                            onRefresh: () async {
-                              _fetchAllArtworks();
-                              setState(() {});
-                            },
-                          ); // Show data if available
-                        } else {
-                          return Text(
-                              "No Data"); // Show message if no data is available
-                        }
+                  child: Consumer<ArtHubProvider>(
+                    builder: (context, artHubProvider, child) {
+                      List<ArtworkModel> details = artHubProvider.artHub;
+                      if (!artHubProvider.loaded) {
+                        return Center(
+                          child: GridLoadingShimmer(),
+                        );
                       } else {
-                        return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
+                        return RefreshIndicator(
+                          displacement: 10,
+                          child: GridViewStaggered(artworks: details),
+                          onRefresh: () async {
+                            Provider.of<ArtHubProvider>(context, listen: false).fetchArtHub();
+                          },
+                        );// Show data if available
                       }
                     },
-                  )
-              )
+                  ),
+              ),
             ],
           ),
         )
@@ -122,6 +114,7 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
   _fetchAllArtworks() async {
     _allArtworks = ArtworkRequest.getAllArtworks();
   }
+
   _fetchAllTags() async {
     _allTags = TagRequest.getAllTags();
   }
