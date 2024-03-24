@@ -8,6 +8,8 @@ import 'package:card_loading/card_loading.dart';
 import 'package:artswindsoressex/API/ArtworkRequest.dart';
 import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
+import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const id = "HomeScreen";
@@ -48,44 +50,33 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          FutureBuilder(
-            future: _getNonDigitalArt,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
+          Consumer<ArtworkProvider>(
+            builder: (context, artworkProvider, child) {
+              List<ArtworkModel> list = artworkProvider.artworks;
+              List<LocationDetails> locations = [];
+              for (var artwork in list) {
+                locations.add(artwork.location);
+              }
+              if(!artworkProvider.loaded){
                 return CardLoading(
-                  height: MediaQuery.of(context).size.height,
-                ); //Show loading indicator while waiting for data
-              } else if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else if (snapshot.hasData) {
-                  List<ArtworkModel> artworks =
-                      ArtworkModel.listFromJson(snapshot.data);
-                  List<LocationDetails> locations = [];
-                  for (var artwork in artworks) {
-                    locations.add(artwork.location);
-                  }
-                  return GoogleMap(
-                      mapToolbarEnabled: false,
-                      myLocationButtonEnabled: false,
-                      zoomControlsEnabled: false,
-                      initialCameraPosition: HomeScreen._initialCameraPosition,
-                      onMapCreated: (controller) =>
-                          _googleMapController = controller,
-                      markers: Set<Marker>.from(locations.map(
-                        (location) => Marker(
-                          markerId: MarkerId(location.title!),
-                          position: LatLng(double.parse(location.latitude!),
-                              double.parse(location.longitude!)),
-                          infoWindow: InfoWindow(title: location.title!),
-                        ),
-                      ))); // Show data if available
-                } else {
-                  return Text(
-                      "No Data"); // Show message if no data is available
-                }
+                  height: MediaQuery.of(context).size.height
+                );
               } else {
-                return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
+                return GoogleMap(
+                    mapToolbarEnabled: false,
+                    myLocationButtonEnabled: false,
+                    zoomControlsEnabled: false,
+                    initialCameraPosition: HomeScreen._initialCameraPosition,
+                    onMapCreated: (controller) =>
+                    _googleMapController = controller,
+                    markers: Set<Marker>.from(locations.map(
+                          (location) => Marker(
+                        markerId: MarkerId(location.title!),
+                        position: LatLng(double.parse(location.latitude!),
+                            double.parse(location.longitude!)),
+                        infoWindow: InfoWindow(title: location.title!),
+                      ),
+                    ))); // Show data if available
               }
             },
           ),
