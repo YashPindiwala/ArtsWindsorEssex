@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:artswindsoressex/Screens/Navigation.dart';
+import 'package:artswindsoressex/ChangeNotifiers/EventProvider.dart';
+import 'package:provider/provider.dart';
+
+
 
 class SplashScreen extends StatefulWidget {
   static const id = 'SplashScreen';
@@ -18,6 +22,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void initState() {
     super.initState();
+    Provider.of<EventProvider>(context, listen: false).fetchCurrEvents();
+    Provider.of<EventProvider>(context, listen: false).fetchPastEvents();
     Future.delayed(Duration(milliseconds: 500),() => setState(() {
       position = 0;
       logo = 1.0;

@@ -7,6 +7,8 @@ import 'AboutApp.dart';
 import 'package:artswindsoressex/Utils/CardLoadingShimmer.dart';
 import 'package:artswindsoressex/Screens/Models/EventModel.dart';
 import 'package:artswindsoressex/API/EventRequest.dart';
+import 'package:artswindsoressex/ChangeNotifiers/EventProvider.dart';
+import 'package:provider/provider.dart';
 
 class CurrentEvents extends StatefulWidget {
   static const id = "CurrentEvents";
@@ -20,14 +22,11 @@ class CurrentEvents extends StatefulWidget {
 class _CurrentEventsState extends State<CurrentEvents>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  late Future _currentEvents, _pastEvents;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    _fetchCurrentEvents();
-    _fetchPastEvents();
   }
 
   @override
@@ -93,55 +92,27 @@ class _CurrentEventsState extends State<CurrentEvents>
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                      FutureBuilder(
-                        future: _currentEvents,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return CardLoadingShimmer(); // Show loading indicator while waiting for data
-                          } else if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            } else if (snapshot.hasData) {
-                              List<EventDetails> details =
-                                  EventDetails.listFromJson(snapshot.data);
-                              return _buildEventsContent(
-                                  details,
-                                  Endpoint
-                                      .GET_EVENT_CURR); // Show data if available
-                            } else {
-                              return Text(
-                                  'No data'); // Show message if no data is available
-                            }
+                      Consumer<EventProvider>(
+                        builder: (context, eventProvider, child) {
+                          List<EventDetails> details = eventProvider.eventsCurr;
+                          if (!eventProvider.loaded) {
+                            return Center(
+                              child: CardLoadingShimmer(),
+                            );
                           } else {
-                            return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
+                            return _buildEventsContent(details, Endpoint.GET_EVENT_CURR);
                           }
                         },
                       ),
-                      FutureBuilder(
-                        future: _pastEvents,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return CardLoadingShimmer(); // Show loading indicator while waiting for data
-                          } else if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            } else if (snapshot.hasData) {
-                              List<EventDetails> details =
-                                  EventDetails.listFromJson(snapshot.data);
-                              return _buildEventsContent(
-                                  details,
-                                  Endpoint
-                                      .GET_EVENT_PAST); // Show data if available
-                            } else {
-                              return Text(
-                                  'No data'); // Show message if no data is available
-                            }
+                      Consumer<EventProvider>(
+                        builder: (context, eventProvider, child) {
+                          List<EventDetails> details = eventProvider.eventsPast;
+                          if (!eventProvider.loaded) {
+                            return Center(
+                              child: CardLoadingShimmer(),
+                            );
                           } else {
-                            return CircularProgressIndicator(); // Show a generic loading indicator for other connection states
+                            return _buildEventsContent(details, Endpoint.GET_EVENT_PAST);
                           }
                         },
                       ),
@@ -154,14 +125,6 @@ class _CurrentEventsState extends State<CurrentEvents>
         ],
       ),
     );
-  }
-
-  _fetchCurrentEvents() async {
-    _currentEvents = EventRequest.getCurrentEvents();
-  }
-
-  _fetchPastEvents() async {
-    _pastEvents = EventRequest.getPastEvents();
   }
 
   Widget _buildEventsContent(List<EventDetails> events, Endpoint endpoint) {
@@ -180,10 +143,9 @@ class _CurrentEventsState extends State<CurrentEvents>
           itemCount: events.length),
       onRefresh: () async {
         if (endpoint == Endpoint.GET_EVENT_PAST)
-          _fetchPastEvents();
+          Provider.of<EventProvider>(context,listen: false).fetchPastEvents();
         else
-          _fetchCurrentEvents();
-        setState(() {});
+          Provider.of<EventProvider>(context,listen: false).fetchPastEvents();
       },
     );
   }

@@ -13,6 +13,9 @@ import 'constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/services/system_chrome.dart';
 import 'package:artswindsoressex/Screens/QRCodeScreen.dart';
+import 'package:provider/provider.dart';
+import 'package:artswindsoressex/ChangeNotifiers/EventProvider.dart';
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +26,14 @@ void main() {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  runApp(MyApp());
+  runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<EventProvider>(create: (context) => EventProvider()),
+        ],
+        child: MyApp(),
+      )
+  );
 }
 
 class MyApp extends StatelessWidget {
