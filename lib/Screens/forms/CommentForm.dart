@@ -26,6 +26,7 @@ class _CommentFormState extends State<CommentForm> {
       appBar: AppBar(
         elevation: 0,
         shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         backgroundColor: backgroundColor,
         actions: [
           IconButton(
@@ -54,7 +55,7 @@ class _CommentFormState extends State<CommentForm> {
             Image.asset("assets/awe_logo.png", width: 60),
             Expanded(
                 child: Container(
-                  padding: EdgeInsets.all(25),
+                  padding: EdgeInsets.only(top: 25,left: 25,right: 25),
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(25),

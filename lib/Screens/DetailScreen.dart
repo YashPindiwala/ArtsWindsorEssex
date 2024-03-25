@@ -25,23 +25,25 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
+      appBar: AppBar(
+        backgroundColor: backgroundColor,
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        actions: [
+          // IconButton(
+          //   onPressed: () {
+          //     Navigator.pushNamed(context, AboutApp.id);
+          //   },
+          //   icon: const Icon(Icons.info_outline_rounded),
+          // ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 25,vertical: 25),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-                Row(
-                  children: [
-                    Spacer(),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, AboutApp.id);
-                      },
-                      icon: const Icon(Icons.info_outline_rounded),
-                    ),
-                  ],
-                ),
                 Text(
                   _artist,
                   style: Theme.of(context).textTheme.headlineLarge,
