@@ -24,4 +24,27 @@ class ApiManager{
       throw Exception('Failed to connect to the server');
     }
   }
+
+  static Future<bool> post(String endPoint, dynamic data) async {
+    await dotenv.load();
+    // await Future.delayed(Duration(seconds: 2));
+    try {
+      var response = await http.post(
+          Uri.parse(baseUrl + endPoint),
+          headers: {
+            "x-api-key" : dotenv.env["API_KEY"] ?? "",
+            "Content-Type" : "application/json",
+          },
+          body: jsonEncode(data)
+      );
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      throw Exception('Failed to connect to the server $e');
+    }
+  }
+
 }
