@@ -57,20 +57,19 @@ class _HomeScreenState extends State<HomeScreen> {
               for (var artwork in list) {
                 locations.add(artwork.location);
               }
-              if(!artworkProvider.loaded){
-                return CardLoading(
-                  height: MediaQuery.of(context).size.height
-                );
+              if (!artworkProvider.loaded) {
+                return CardLoading(height: MediaQuery.of(context).size.height);
               } else {
                 return GoogleMap(
+                    myLocationEnabled: true,
                     mapToolbarEnabled: false,
                     myLocationButtonEnabled: false,
                     zoomControlsEnabled: false,
                     initialCameraPosition: HomeScreen._initialCameraPosition,
                     onMapCreated: (controller) =>
-                    _googleMapController = controller,
+                        _googleMapController = controller,
                     markers: Set<Marker>.from(locations.map(
-                          (location) => Marker(
+                      (location) => Marker(
                         markerId: MarkerId(location.title!),
                         position: LatLng(double.parse(location.latitude!),
                             double.parse(location.longitude!)),
