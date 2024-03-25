@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
 import 'AboutApp.dart';
+import 'package:artswindsoressex/Screens/forms/CommentForm.dart';
 
 class DetailScreen extends StatefulWidget {
   static const id = "DetailScreen";
@@ -99,7 +100,7 @@ class _DetailScreenState extends State<DetailScreen> {
               ),
               FilledButton(
                   onPressed: () {
-
+                    Navigator.pushNamed(context, CommentForm.id);
                   },
                   child: Text(
                     "Add Comment"
