@@ -177,6 +177,12 @@ class _CommentFormState extends State<CommentForm> {
                                         CommentModel newComment = CommentModel(comment: commentController.text.trim(), artwork_id: 12, visible: true);
                                         print(newComment);
                                         bool result = await CommentRequest.postComment(newComment);
+                                        if(result){
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) => confirmDialog(),
+                                          );
+                                        }
                                     // onPressed callback
                                   } : null,
                                   style: ButtonStyle(
@@ -203,6 +209,23 @@ class _CommentFormState extends State<CommentForm> {
             )
           ],
       ),
+    );
+  }
+  Widget confirmDialog(){
+    return AlertDialog(
+      content: Text(
+          "Your comment has been posted!",
+      ),
+      contentTextStyle: Theme.of(context).textTheme.headlineMedium?.copyWith(fontSize: 20.0),
+      actions: [
+        TextButton(
+            onPressed: (){
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+            child: Text("Ok")
+        )
+      ],
     );
   }
 }
