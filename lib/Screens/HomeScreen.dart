@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
           );
           if (distanceInMeters <= 3) {
             markers.add(Marker(
-              markerId: MarkerId(artwork.title),
+              markerId: MarkerId("${artwork.location.latitude}${artwork.location.longitude}"),
               position: LatLng(double.parse(artwork.location.latitude), double.parse(artwork.location.longitude)),
               infoWindow: InfoWindow(title: artwork.title),
               icon: ArtworkModel.orangeMarker
@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ));
           } else {
             markers.add(Marker(
-              markerId: MarkerId(artwork.title),
+              markerId: MarkerId("${artwork.location.latitude}${artwork.location.longitude}"),
               position: LatLng(double.parse(artwork.location.latitude), double.parse(artwork.location.longitude)),
               infoWindow: InfoWindow(title: artwork.title),
               icon: ArtworkModel.greyMarker,
