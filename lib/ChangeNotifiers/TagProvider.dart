@@ -10,9 +10,6 @@ class TagProvider extends ChangeNotifier {
   TagModel? _selectedTag;
   TagModel? get selectedTag => _selectedTag;
 
-  List<bool> _isSelected = [];
-  List<bool> get isSelected => _isSelected;
-
   bool _loaded = false;
   bool get loaded => _loaded;
 
@@ -31,18 +28,12 @@ class TagProvider extends ChangeNotifier {
       // Handle error
       print('Error fetching tags: $e');
     } finally {
-      _isSelected = List.filled(_tags.length, false);
       notifyListeners();
     }
   }
 
   void selectTag(TagModel tag) {
     _selectedTag = tag;
-    notifyListeners();
-  }
-
-  void select(int index){
-    _isSelected[index] = !_isSelected[index];
     notifyListeners();
   }
 }

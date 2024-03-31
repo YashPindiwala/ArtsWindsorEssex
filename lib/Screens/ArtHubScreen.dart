@@ -64,10 +64,11 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
               Consumer<TagProvider>(
                   builder: (context, tagProvider, child) {
                     List<TagModel> tags = tagProvider.tags;
+                    var noSelection = tagProvider.selectedTag == TagProvider.noSelection;
                     if(!tagProvider.loaded){
                       return ListViewShimmerHZ();
                     }else {
-                      return TagsView(tags: tags);
+                      return TagsView(tags: tags, deselectAll: noSelection,);
                     }
                   },
               ),

@@ -5,8 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
 
 class TagsView extends StatefulWidget {
-  const TagsView({super.key,required this.tags});
+  const TagsView({super.key,required this.tags, required this.deselectAll});
   final List<TagModel> tags;
+  final bool deselectAll;
 
   @override
   State<TagsView> createState() => _TagsViewState();
@@ -18,10 +19,13 @@ class _TagsViewState extends State<TagsView> {
   @override
   void initState() {
     super.initState();
-    _isSelected = List.filled(widget.tags.length, false);
+    deselectAll();
   }
   @override
   Widget build(BuildContext context) {
+    if(widget.deselectAll){
+      deselectAll();
+    }
     return Container(
         decoration: BoxDecoration(
         color: Colors.white, borderRadius: BorderRadius.circular(25)),
@@ -53,5 +57,8 @@ class _TagsViewState extends State<TagsView> {
           ),
         ),
     );
+  }
+  void deselectAll(){
+    _isSelected = List.filled(widget.tags.length, false);
   }
 }
