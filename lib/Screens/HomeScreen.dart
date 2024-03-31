@@ -38,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     accuracy: LocationAccuracy.high,
     distanceFilter: 3,
   );
+  late Set<Marker> markers = Set();
 
 
   @override
@@ -68,11 +69,23 @@ class _HomeScreenState extends State<HomeScreen> {
             double.parse(artwork.location.latitude),
             double.parse(artwork.location.longitude),
           );
-          if(distanceInMeters <= 3){
+          if (distanceInMeters <= 3) {
+            markers.add(Marker(
+              markerId: MarkerId(artwork.title),
+              position: LatLng(double.parse(artwork.location.latitude), double.parse(artwork.location.longitude)),
+              infoWindow: InfoWindow(title: artwork.title),
+              icon: ArtworkModel.orangeMarker
+            ));
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(artwork.title),
             ));
-            break;
+          } else {
+            markers.add(Marker(
+              markerId: MarkerId(artwork.title),
+              position: LatLng(double.parse(artwork.location.latitude), double.parse(artwork.location.longitude)),
+              infoWindow: InfoWindow(title: artwork.title),
+              icon: ArtworkModel.greyMarker,
+            ));
           }
         }
       });
@@ -105,14 +118,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     onMapCreated: (controller) =>
                         _googleMapController = controller,
-                    markers: Set<Marker>.from(locations.map(
-                      (location) => Marker(
-                        markerId: MarkerId(location.title!),
-                        position: LatLng(double.parse(location.latitude!),
-                            double.parse(location.longitude!)),
-                        infoWindow: InfoWindow(title: location.title!),
-                      ),
-                    ))); // Show data if available
+                    markers: markers,
+                ); // Show data if available
               }
             },
           ),

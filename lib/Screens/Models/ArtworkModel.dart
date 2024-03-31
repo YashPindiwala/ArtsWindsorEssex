@@ -4,6 +4,7 @@ import 'TagModel.dart';
 import 'dart:ui';
 import '../../constants.dart';
 import 'dart:math';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ArtworkModel {
   final String title;
@@ -15,6 +16,8 @@ class ArtworkModel {
   final Color cardColor;
   final Color titleColor;
   static int colorIndex = 0;
+  static final BitmapDescriptor orangeMarker = BitmapDescriptor.defaultMarkerWithHue(30);
+  static final BitmapDescriptor greyMarker = BitmapDescriptor.defaultMarkerWithHue(150);
 
   ArtworkModel({
     required this.title,
