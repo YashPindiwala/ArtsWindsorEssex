@@ -106,9 +106,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     onMapCreated: (controller) =>
                         _googleMapController = controller,
                     markers: Set<Marker>.from(locations.map(
-                      (location){
-                        return BitmapDescriptor.defaultMarkerWithHue(ArtworkModel.orangeMarker);
-                      }
+                      (location) => Marker(
+                        markerId: MarkerId(location.title!),
+                        position: LatLng(double.parse(location.latitude!),
+                            double.parse(location.longitude!)),
+                        infoWindow: InfoWindow(title: location.title!),
+                      ),
                     ))); // Show data if available
               }
             },
