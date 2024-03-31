@@ -52,8 +52,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                   if (!tagProvider.loaded) {
                     return ListViewShimmerHZ();
                   } else {
-                    // return TagsView(tags: tags);
-                    return Placeholder();
+                    return TagsView(tags: tags, deselectAll: false,);
                   }
                 },
               ),
