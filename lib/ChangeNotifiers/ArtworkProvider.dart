@@ -8,6 +8,7 @@ class ArtworkProvider extends ChangeNotifier{
   bool _loaded = false;
   bool get loaded => _loaded;
 
+
   Future<dynamic> fetchArtwork() async{
     _loaded = false;
     notifyListeners();

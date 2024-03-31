@@ -10,6 +10,8 @@ import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
+import 'package:geolocator/geolocator.dart';
+import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
   static const id = "HomeScreen";
@@ -29,13 +31,18 @@ class _HomeScreenState extends State<HomeScreen> {
   late PermissionStatus locationPermission;
   String locationName = "St. Clair College";
   late GoogleMapController _googleMapController;
-  late Future _getNonDigitalArt;
   bool showMap = false;
+  late LatLng currentPosition = LatLng(42.24833109246298, -83.01939482309436);
+  late StreamSubscription<Position> _positionStreamSubscription;
+  final LocationSettings locationSettings = LocationSettings(
+    accuracy: LocationAccuracy.high,
+    distanceFilter: 3,
+  );
+
 
   @override
   void initState() {
     super.initState();
-    _fetchNonDigitalArt();
     askForPermission();
   }
 
@@ -43,6 +50,33 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     _googleMapController.dispose();
     super.dispose();
+  }
+
+  _streamLocation(List<ArtworkModel> artworks){
+    _positionStreamSubscription = Geolocator.getPositionStream(locationSettings: locationSettings).listen((Position position) {
+      setState(() {
+        currentPosition = LatLng(position.latitude, position.longitude);
+        _googleMapController.animateCamera(
+          CameraUpdate.newCameraPosition(CameraPosition(target: currentPosition, zoom: 18.5)),
+        );
+        List<ArtworkModel> list = artworks;
+        List<LocationDetails> locations = [];
+        for (var artwork in list) {
+          double distanceInMeters = Geolocator.distanceBetween(
+            currentPosition.latitude,
+            currentPosition.longitude,
+            double.parse(artwork.location.latitude),
+            double.parse(artwork.location.longitude),
+          );
+          if(distanceInMeters <= 3){
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(artwork.title),
+            ));
+            break;
+          }
+        }
+      });
+    });
   }
 
   @override
@@ -65,16 +99,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     mapToolbarEnabled: false,
                     myLocationButtonEnabled: false,
                     zoomControlsEnabled: false,
-                    initialCameraPosition: HomeScreen._initialCameraPosition,
+                    initialCameraPosition: CameraPosition(
+                      target: currentPosition,
+                      zoom: 17.5,
+                    ),
                     onMapCreated: (controller) =>
                         _googleMapController = controller,
                     markers: Set<Marker>.from(locations.map(
-                      (location) => Marker(
-                        markerId: MarkerId(location.title!),
-                        position: LatLng(double.parse(location.latitude!),
-                            double.parse(location.longitude!)),
-                        infoWindow: InfoWindow(title: location.title!),
-                      ),
+                      (location){
+                        return BitmapDescriptor.defaultMarkerWithHue(ArtworkModel.orangeMarker);
+                      }
                     ))); // Show data if available
               }
             },
@@ -123,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             // Animate the map to the initial camera position
             _googleMapController.animateCamera(
-              CameraUpdate.newCameraPosition(HomeScreen._initialCameraPosition),
+              CameraUpdate.newCameraPosition(CameraPosition(target: currentPosition,zoom: 17.5)),
             );
           },
           backgroundColor:
@@ -135,15 +169,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _fetchNonDigitalArt() async {
-    _getNonDigitalArt = ArtworkRequest.getAllNonDigitalArtwork();
-  }
-
   askForPermission() async {
     locationPermission = await Permission.locationWhenInUse.request();
 
     if (locationPermission.isGranted) {
-      _fetchNonDigitalArt();
+      //get the location
+      List<ArtworkModel> art = Provider.of<ArtworkProvider>(context, listen: false).artworks;
+      _streamLocation(art);
     } else if (locationPermission.isDenied) {
       showDialog(
         context: context,
@@ -166,7 +198,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       await Permission.locationWhenInUse.request();
                   if (status.isGranted) {
                     Navigator.of(context).pop(); // Close outer dialog
-                    _fetchNonDigitalArt();
                   } else {
                     // Handle if permission is still denied
                     showDialog(
