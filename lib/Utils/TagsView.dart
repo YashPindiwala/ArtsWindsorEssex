@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/Screens/Models/TagModel.dart';
 import 'package:artswindsoressex/constants.dart';
+import 'package:provider/provider.dart';
+import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
 
 class TagsView extends StatefulWidget {
   const TagsView({super.key,required this.tags});
@@ -30,7 +32,6 @@ class _TagsViewState extends State<TagsView> {
             children: widget.tags
                 .map((tag) {
               int index = widget.tags.indexOf(tag);
-              print("Index: $index, Selected: ${_isSelected[index]}"); // Debugging print
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Text(tag.tag,),
@@ -38,13 +39,12 @@ class _TagsViewState extends State<TagsView> {
             }).toList(),
             isSelected: _isSelected,
             onPressed: (index) {
-              print("Pressed Index: $index"); // Debugging print
-              setState(() {
                 for (int i = 0; i < _isSelected.length; i++) {
                   _isSelected[i] = false; // Deselect all buttons
                 }
-                _isSelected[index] = !_isSelected[index];
-              });
+                _isSelected[index] = true; // Select the pressed button
+                var tag = widget.tags[index];
+                Provider.of<TagProvider>(context,listen: false).selectTag(tag);
             },
             selectedColor: orangeColor,
             fillColor: Colors.transparent,

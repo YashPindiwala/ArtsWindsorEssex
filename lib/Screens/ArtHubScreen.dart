@@ -29,8 +29,8 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchAllArtworks();
-    _fetchAllTags();
+    // _fetchAllArtworks();
+    // _fetchAllTags();
   }
 
   @override
@@ -83,13 +83,22 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
                           child: GridLoadingShimmer(),
                         );
                       } else {
-                        return RefreshIndicator(
-                          displacement: 10,
-                          child: GridViewStaggered(artworks: details),
-                          onRefresh: () async {
-                            Provider.of<ArtHubProvider>(context, listen: false).fetchArtHub();
+                        return Consumer<TagProvider>(
+                          builder: (context, value, child) {
+                            var matching = details.where((element) =>
+                                element.tags.any((tag) => tag.tag == value.selectedTag?.tag)).toList();
+                            return RefreshIndicator(
+                              displacement: 10,
+                              child: GridViewStaggered(
+                                artworks: matching.isNotEmpty ? matching : details,
+                              ),
+                              onRefresh: () async {
+                                Provider.of<ArtHubProvider>(context, listen: false).fetchArtHub();
+                                Provider.of<TagProvider>(context, listen: false).selectTag(TagProvider.noSelection);
+                              },
+                            );
                           },
-                        );// Show data if available
+                        ); // Show data if available
                       }
                     },
                   ),
@@ -100,12 +109,12 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
     );
   }
 
-  //Methods
-  _fetchAllArtworks() async {
-    _allArtworks = ArtworkRequest.getAllArtworks();
-  }
-
-  _fetchAllTags() async {
-    _allTags = TagRequest.getAllTags();
-  }
+  // //Methods
+  // _fetchAllArtworks() async {
+  //   _allArtworks = ArtworkRequest.getAllArtworks();
+  // }
+  //
+  // _fetchAllTags() async {
+  //   _allTags = TagRequest.getAllTags();
+  // }
 }
