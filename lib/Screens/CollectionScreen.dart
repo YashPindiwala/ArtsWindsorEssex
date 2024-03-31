@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
 import 'package:artswindsoressex/Screens/AboutApp.dart';
 import 'package:artswindsoressex/Utils/CollectionList.dart';
+import 'package:artswindsoressex/Utils/TagsView.dart';
+import 'package:provider/provider.dart';
+import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
+import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
+import 'package:artswindsoressex/Screens/Models/TagModel.dart';
+import 'package:artswindsoressex/Utils/ListViewShimmerHZ.dart';
+import 'package:artswindsoressex/Utils/CardLoadingShimmer.dart';
 
 class CollectionScreen extends StatefulWidget {
   static const id = "CollectionScreen";
@@ -13,13 +20,6 @@ class CollectionScreen extends StatefulWidget {
 
 class _CollectionScreenState extends State<CollectionScreen> {
   String _heading = "Look Again! Outside St Clair College";
-  List<Map<String, dynamic>> _tags = [
-    {"tag": "Cubism", "active": true},
-    {"tag": "Surrealism", "active": false},
-    {"tag": "Pop Art", "active": false},
-    {"tag": "Romanticism", "active": false},
-    {"tag": "Impressionism", "active": false},
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -46,45 +46,29 @@ class _CollectionScreenState extends State<CollectionScreen> {
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               SizedBox(height: 10),
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(25)),
-                height: MediaQuery.of(context).size.height * 0.06,
-                child: ListView.separated(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return TextButton(
-                          style: ButtonStyle(
-                            overlayColor: MaterialStateProperty.all(Colors.transparent),
-                            enableFeedback: false,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _tags.forEach((element) {
-                                element["active"] = false;
-                              });
-                              _tags[index]["active"] = !_tags[index]["active"];
-                            });
-                          },
-                          child: Text(_tags[index]["tag"],
-                              style: _tags[index]["active"]
-                                  ? null
-                                  : TextStyle(color: textColor)));
-                    },
-                    separatorBuilder: (context, index) {
-                      return SizedBox(
-                        width: 10,
-                      );
-                    },
-                    itemCount: _tags.length),
+              Consumer<TagProvider>(
+                builder: (context, tagProvider, child) {
+                  List<TagModel> tags = tagProvider.tags;
+                  if (!tagProvider.loaded) {
+                    return ListViewShimmerHZ();
+                  } else {
+                    return TagsView(tags: tags);
+                  }
+                },
               ),
               SizedBox(
                 height: 10,
               ),
               Expanded(
-                child: CollectionList(),
+                child: Consumer<ArtworkProvider>(
+                  builder: (context, value, child) {
+                    if(!value.loaded){
+                      return CardLoadingShimmer();
+                    }else{
+                      return CollectionList(artworks: value.artworks,);
+                    }
+                  },
+                ),
               )
             ],
           ),

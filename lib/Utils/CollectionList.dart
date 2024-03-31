@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/Utils/CollectionCard.dart';
 import 'package:artswindsoressex/Screens/DetailScreen.dart';
+import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
 
 class CollectionList extends StatefulWidget {
-  const CollectionList({super.key});
+  final List<ArtworkModel> artworks;
+  const CollectionList({super.key, required this.artworks});
 
   @override
   State<CollectionList> createState() => _CollectionListState();
@@ -14,13 +16,14 @@ class _CollectionListState extends State<CollectionList> {
   Widget build(BuildContext context) {
     return ListView.separated(
         shrinkWrap: true,
-        padding: EdgeInsets.zero,
+        padding: EdgeInsets.only(bottom: 100),
         itemBuilder: (context, index) {
+          ArtworkModel  artwork = widget.artworks[index];
           return InkWell(
             onTap: () {
               Navigator.pushNamed(context, DetailScreen.id);
             },
-            child: CollectionCard(),
+            child: CollectionCard(artName: artwork.title, image: artwork.image, artNameColor: artwork.titleColor, cardColor: artwork.cardColor,),
           );
         },
         separatorBuilder: (context, index) {
@@ -28,6 +31,6 @@ class _CollectionListState extends State<CollectionList> {
             height: 20,
           );
         },
-        itemCount: 5);
+        itemCount: widget.artworks.length);
   }
 }
