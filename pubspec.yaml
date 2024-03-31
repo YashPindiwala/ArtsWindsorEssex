@@ -49,6 +49,7 @@ dependencies:
   permission_handler: ^11.3.0
   qr_code_scanner: ^1.0.1
   provider: ^6.1.2
+  flutter_launcher_icons: ^0.13.1
 
 
 dev_dependencies:
@@ -77,6 +78,13 @@ flutter:
   assets:
     - assets/
     - .env
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/awe_logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
