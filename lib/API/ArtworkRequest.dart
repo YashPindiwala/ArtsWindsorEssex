@@ -13,4 +13,9 @@ class ArtworkRequest{
     List<ArtworkModel> list = ArtworkModel.listFromJson(data["data"]);
     return list;
   }
+  static Future<ArtworkModel> getArtwork(String id) async {
+    Map<String, dynamic> data = await ApiManager.fetchData(toString(Endpoint.GET_ARTWORK) + id );
+    ArtworkModel artworkModel = ArtworkModel.fromJson(data["data"]);
+    return artworkModel;
+  }
 }

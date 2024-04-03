@@ -4,6 +4,7 @@ enum Endpoint {
   GET_ARTWORK_DIGITAL,
   GET_ARTWORK_NOT_DIGITAL,
   GET_ARTWORK_ALL,
+  GET_ARTWORK,
   GET_TAGS,
   POST_COMMENT
 }
@@ -20,6 +21,8 @@ String toString(Endpoint endpoint) {
       return "artworks?type=digital";
     case Endpoint.GET_ARTWORK_NOT_DIGITAL:
       return "artworks?type=notDigital";
+      case Endpoint.GET_ARTWORK:
+      return "artworks/";
     case Endpoint.GET_TAGS:
       return "tags";
     case Endpoint.POST_COMMENT:

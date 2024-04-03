@@ -5,6 +5,10 @@ class TagModel {
     required this.tag,
   });
 
+  TagModel.empty()
+      : tag = 'Unknown';
+
+
   factory TagModel.fromJson(Map<String, dynamic> json) {
     return TagModel(
       tag: json['tag'] ?? '',

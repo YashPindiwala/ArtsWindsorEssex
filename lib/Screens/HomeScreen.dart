@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
             double.parse(artwork.location.latitude),
             double.parse(artwork.location.longitude),
           );
-          if (distanceInMeters <= 3) {
+          if (distanceInMeters <= 10) {
             markers.add(Marker(
               markerId: MarkerId("${artwork.location.latitude}${artwork.location.longitude}"),
               position: LatLng(double.parse(artwork.location.latitude), double.parse(artwork.location.longitude)),

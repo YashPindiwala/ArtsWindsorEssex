@@ -7,17 +7,21 @@ import 'dart:math';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ArtworkModel {
-  final String title;
-  final String description;
-  final String image;
-  final LocationDetails location;
-  final ArtistModel artist;
-  final List<TagModel> tags;
-  final Color cardColor;
-  final Color titleColor;
+  String title = "";
+  String description = "";
+  String image = "";
+  LocationDetails location = LocationDetails.empty();
+  ArtistModel artist = ArtistModel.empty();
+  List<TagModel> tags = [];
+  Color cardColor = orangeColor;
+  Color titleColor = orangeColor;
+  bool comments_disabled = false;
+  bool upload_disabled = false;
   static int colorIndex = 0;
   static final BitmapDescriptor orangeMarker = BitmapDescriptor.defaultMarkerWithHue(30);
   static final BitmapDescriptor greyMarker = BitmapDescriptor.defaultMarkerWithHue(150);
+
+  ArtworkModel.empty();
 
   ArtworkModel({
     required this.title,
@@ -26,6 +30,8 @@ class ArtworkModel {
     required this.location,
     required this.artist,
     required this.tags,
+    required this.comments_disabled,
+    required this.upload_disabled,
     required this.cardColor,
     required this.titleColor,
   });
@@ -49,8 +55,10 @@ class ArtworkModel {
       description: json['description'] ?? '',
       image: json['image'] ?? '',
       location: new LocationDetails(title: json["title"] ?? "", latitude: location["lat"] ?? "", longitude: location["long"] ?? ""),
-      artist: new ArtistModel(firstName: json['first_name'] ?? "", lastName: json['last_name'] ?? ""),
+      artist: new ArtistModel(firstName: json['artist']['first_name'] ?? "", lastName: json['artist']['last_name'] ?? ""),
       tags: tagsList,
+      comments_disabled: json["comments_disabled"],
+      upload_disabled: json["upload_disabled"],
       cardColor: card,
       titleColor: title,
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:artswindsoressex/constants.dart';
+import 'package:artswindsoressex/Screens/DetailScreen.dart';
 
 class QrScannerScreen extends StatefulWidget {
   static const id = "QRCodeScreen";
@@ -53,19 +54,6 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
                 )
             ),
           ),
-          // if (result != null)
-          //   Container(
-          //     alignment: Alignment.center,
-          //     padding: EdgeInsets.all(10.0),
-          //     decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(5.0),
-          //       color: Colors.white,
-          //     ),
-          //     child: Text(
-          //       'Scanned Code: ${result!.code}',
-          //       style: TextStyle(fontSize: 18.0),
-          //     ),
-          //   ),
         ],
       ),
     );
@@ -73,10 +61,8 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
 
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-      });
+    controller.scannedDataStream.take(1).listen((scanData) {
+        Navigator.pushNamed(context, DetailScreen.id,arguments: {'result' : scanData!.code});
     });
   }
 }
