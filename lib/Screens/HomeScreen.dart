@@ -12,6 +12,8 @@ import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
+import 'package:artswindsoressex/ChangeNotifiers/NavigationProvider.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const id = "HomeScreen";
@@ -76,9 +78,11 @@ class _HomeScreenState extends State<HomeScreen> {
               infoWindow: InfoWindow(title: artwork.title),
               icon: ArtworkModel.orangeMarker
             ));
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(artwork.title),
-            ));
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) => _scanDialog(artworkModel: artwork),
+            );
           } else {
             markers.add(Marker(
               markerId: MarkerId("${artwork.location.latitude}${artwork.location.longitude}"),
@@ -90,6 +94,34 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       });
     });
+  }
+
+  Widget _scanDialog({ArtworkModel? artworkModel}){
+    return AlertDialog(
+      title: Text(
+        "There is an artwork nearby!",
+        style: Theme.of(context).textTheme.headlineLarge,
+      ),
+      content: Text(
+        "Artwork: ${artworkModel!.title}" ?? "",
+        style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 20),
+      ),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text("Cancel")
+        ),
+        FilledButton(
+            onPressed: () {
+              Provider.of<NavigationProvider>(context, listen: false).navigate(0);
+              Navigator.pop(context);
+            },
+            child: Text("Interact")
+        )
+      ],
+    );
   }
 
   @override

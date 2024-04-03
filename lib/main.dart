@@ -18,6 +18,7 @@ import 'package:artswindsoressex/ChangeNotifiers/EventProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/ArtHubProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
+import 'package:artswindsoressex/ChangeNotifiers/NavigationProvider.dart';
 
 
 void main() {
@@ -36,6 +37,7 @@ void main() {
           ChangeNotifierProvider<ArtHubProvider>(create: (context) => ArtHubProvider()),
           ChangeNotifierProvider<TagProvider>(create: (context) => TagProvider()),
           ChangeNotifierProvider<ArtworkProvider>(create: (context) => ArtworkProvider()),
+          ChangeNotifierProvider<NavigationProvider>(create: (context) => NavigationProvider()),
         ],
         child: MyApp(),
       )
