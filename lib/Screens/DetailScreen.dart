@@ -6,8 +6,11 @@ import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
 import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
 import 'package:artswindsoressex/Screens/Models/TagModel.dart';
+import 'package:artswindsoressex/Screens/Models/CommentModel.dart';
 import 'package:card_loading/card_loading.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:artswindsoressex/API/CommentRequest.dart';
+import 'package:artswindsoressex/Utils/ListViewShimmerHZ.dart';
 
 class DetailScreen extends StatefulWidget {
   static const id = "DetailScreen";
@@ -61,7 +64,7 @@ class _DetailScreenState extends State<DetailScreen> {
             builder: (context, value, child) {
               if(!value.loaded){
                 return CardLoading(
-                  height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height
                 );
               } else{
                 ArtworkModel artwork = value.artwork;
@@ -132,7 +135,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     ),
                     FilledButton(
                       onPressed: artwork.comments_disabled ? () {
-                        Navigator.pushNamed(context, CommentForm.id);
+                        Navigator.pushNamed(context, CommentForm.id, arguments: {"artwork_id" : artwork.artwork_id});
                       }: null,
                       child: Text("Add Comment"),
                     ),
@@ -140,7 +143,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       height: 10,
                     ),
                     Visibility(
-                      visible: artwork.comments_disabled,
+                      visible: true,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -152,24 +155,38 @@ class _DetailScreenState extends State<DetailScreen> {
                             height: 10,
                           ),
                           SizedBox(
-                            height: 300,
-                            child: ListView.separated(
-                                shrinkWrap: true,
-                                physics: BouncingScrollPhysics(),
-                                padding: EdgeInsets.zero,
-                                scrollDirection: Axis.vertical,
-                                itemBuilder: (context, index) {
-                                  return Text(
-                                    "Is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium,
+                            // height: 300,
+                            child: FutureBuilder<List<CommentModel>>(
+                              future: CommentRequest.getRelatedComments(artwork.artwork_id.toString()),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else if (snapshot.hasData) {
+                                  List<CommentModel> comments = snapshot.data!;
+                                  comments = comments.where((element) => element.visible == true).toList();
+                                  return ListView.separated(
+                                    shrinkWrap: true,
+                                    physics: BouncingScrollPhysics(),
+                                    padding: EdgeInsets.zero,
+                                    scrollDirection: Axis.vertical,
+                                    itemBuilder: (context, index) {
+                                      CommentModel comment = comments[index];
+                                      return Text(
+                                        comment.comment, // Use actual comment text
+                                        style: Theme.of(context).textTheme.headlineMedium,
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return Divider(thickness: 0.2);
+                                    },
+                                    itemCount: comments.length, // Set item count based on comments
                                   );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return Divider(thickness: 0.2);
-                                },
-                                itemCount: 10),
+                                } else {
+                                  // Handle loading state (optional)
+                                  return ListViewShimmerHZ();
+                                }
+                              },
+                            ),
                           )
                         ],
                       ),
