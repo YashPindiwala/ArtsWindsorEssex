@@ -7,6 +7,7 @@ import 'dart:math';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ArtworkModel {
+  int artwork_id = 0;
   String title = "";
   String description = "";
   String image = "";
@@ -24,6 +25,7 @@ class ArtworkModel {
   ArtworkModel.empty();
 
   ArtworkModel({
+    required this.artwork_id,
     required this.title,
     required this.description,
     required this.image,
@@ -51,6 +53,7 @@ class ArtworkModel {
           .toList();
     }
     return ArtworkModel(
+      artwork_id: json['artwork_id'],
       title: json['title'] ?? '',
       description: json['description'] ?? '',
       image: json['image'] ?? '',

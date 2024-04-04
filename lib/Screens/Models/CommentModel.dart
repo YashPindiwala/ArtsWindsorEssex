@@ -16,4 +16,15 @@ class CommentModel {
       'artwork_id': artwork_id,
     };
   }
+
+  factory CommentModel.fromJson(Map<String, dynamic> json) {
+    return CommentModel(
+      comment: json['comment'],
+      artwork_id: json['artwork_id'],
+      visible: json['visible'],
+    );
+  }
+  static List<CommentModel> listFromJson(List<dynamic> jsonList) {
+    return jsonList.map((json) => CommentModel.fromJson(json)).toList();
+  }
 }

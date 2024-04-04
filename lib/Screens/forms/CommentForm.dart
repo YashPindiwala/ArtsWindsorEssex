@@ -21,6 +21,9 @@ class _CommentFormState extends State<CommentForm> {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic>? args =
+    ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final int? artwork_id = args?['artwork_id'];
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -175,7 +178,7 @@ class _CommentFormState extends State<CommentForm> {
                                 child: FilledButton(
                                   onPressed: checked == true
                                       ? () async {
-                                        CommentModel newComment = CommentModel(comment: commentController.text.trim(), artwork_id: 12, visible: true);
+                                        CommentModel newComment = CommentModel(comment: commentController.text.trim(), artwork_id: artwork_id!, visible: true);
                                         print(newComment);
                                         bool result = await CommentRequest.postComment(newComment);
                                         if(result){
