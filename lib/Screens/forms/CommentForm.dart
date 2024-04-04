@@ -121,6 +121,9 @@ class _CommentFormState extends State<CommentForm> {
                                   }
                                   return null;
                                 },
+                                onChanged: (value){
+                                  setState(() {});
+                                },
                                 cursorColor: orangeColor,
                                 style: const TextStyle(fontSize: size14),
                                 decoration: InputDecoration(
@@ -176,7 +179,7 @@ class _CommentFormState extends State<CommentForm> {
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: FilledButton(
-                                  onPressed: checked == true
+                                  onPressed: checked == true && commentController.text.length > 0
                                       ? () async {
                                         CommentModel newComment = CommentModel(comment: commentController.text.trim(), artwork_id: artwork_id!, visible: true);
                                         print(newComment);
