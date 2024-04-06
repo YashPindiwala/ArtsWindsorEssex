@@ -19,10 +19,24 @@ import 'package:artswindsoressex/ChangeNotifiers/ArtHubProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/NavigationProvider.dart';
+import 'package:artswindsoressex/FirebaseSetup.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  FirebaseSetup firebaseSetup = new FirebaseSetup();
+  firebaseSetup.initialize();
+
+
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.manual,
     overlays: [SystemUiOverlay.top,SystemUiOverlay.bottom]
