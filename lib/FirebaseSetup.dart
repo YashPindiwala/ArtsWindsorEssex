@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 class FirebaseSetup{
   initialize() async {
     await FirebaseMessaging.instance.setAutoInitEnabled(true);
-    final fcmToken = await FirebaseMessaging.instance.getToken();
-    print("FCMToken $fcmToken");
 
   }
 }
