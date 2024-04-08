@@ -88,6 +88,7 @@ void main() async {
   final fcmToken = await FirebaseMessaging.instance.getToken();
   print("FCMToken $fcmToken");
   await FirebaseMessaging.instance.requestPermission();
+  // await FirebaseMessaging.instance.subscribeToTopic("event");
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   FirebaseMessaging.onMessage.listen(_firebaseMessagingBackgroundHandler);
 

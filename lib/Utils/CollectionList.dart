@@ -21,7 +21,7 @@ class _CollectionListState extends State<CollectionList> {
           ArtworkModel  artwork = widget.artworks[index];
           return InkWell(
             onTap: () {
-              Navigator.pushNamed(context, DetailScreen.id);
+              Navigator.pushNamed(context, DetailScreen.id,arguments: {'result' : widget.artworks[index].artwork_id.toString()});
             },
             child: CollectionCard(artName: artwork.title, image: artwork.image, artNameColor: artwork.titleColor, cardColor: artwork.cardColor,),
           );

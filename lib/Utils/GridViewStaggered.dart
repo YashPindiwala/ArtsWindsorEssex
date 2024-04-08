@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
 import 'package:artswindsoressex/Screens/Models/TagModel.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:artswindsoressex/Screens/DetailScreen.dart';
 
 class GridViewStaggered extends StatefulWidget {
   const GridViewStaggered({super.key,required this.artworks});
@@ -23,16 +24,19 @@ class _GridViewStaggeredState extends State<GridViewStaggered> {
       shrinkWrap: true,
       itemCount: widget.artworks.length,
       itemBuilder: (context, index) {
-        return Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: CachedNetworkImage(
-                imageUrl: widget.artworks[index].image,
-                fit: BoxFit.fill,
-                errorWidget: (context, url, error) => Image.asset(
-                      "assets/awe_logo.png",
-                    )
+        return InkWell(
+          onTap: () => Navigator.pushNamed(context, DetailScreen.id,arguments: {'result' : widget.artworks[index].artwork_id.toString()}),
+          child: Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: CachedNetworkImage(
+                  imageUrl: widget.artworks[index].image,
+                  fit: BoxFit.fill,
+                  errorWidget: (context, url, error) => Image.asset(
+                    "assets/awe_logo.png",
+                  )
+              ),
             ),
           ),
         );
