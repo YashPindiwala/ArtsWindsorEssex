@@ -31,6 +31,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
         appBar: AppBar(
           elevation: 0,
           shadowColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
           backgroundColor: backgroundColor,
           actions: [
             IconButton(
@@ -96,6 +97,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TextFormField(
+                              textInputAction: TextInputAction.next,
                               cursorColor: orangeColor,
                               style: Theme.of(context).textTheme.headlineMedium,
                               decoration: InputDecoration(
@@ -114,6 +116,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
                             ),
                             const SizedBox(height: 20),
                             TextFormField(
+                              textInputAction: TextInputAction.next,
                               cursorColor: orangeColor,
                               style: Theme.of(context).textTheme.headlineMedium,
                               decoration: InputDecoration(
@@ -132,6 +135,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
                             ),
                             const SizedBox(height: 20),
                             TextFormField(
+                              textInputAction: TextInputAction.done,
                               cursorColor: orangeColor,
                               style: Theme.of(context).textTheme.headlineMedium,
                               decoration: InputDecoration(

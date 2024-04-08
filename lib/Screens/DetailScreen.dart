@@ -11,6 +11,7 @@ import 'package:card_loading/card_loading.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:artswindsoressex/API/CommentRequest.dart';
 import 'package:artswindsoressex/Utils/ListViewShimmerHZ.dart';
+import 'package:artswindsoressex/Screens/forms/UserUploadForm.dart';
 
 class DetailScreen extends StatefulWidget {
   static const id = "DetailScreen";
@@ -114,7 +115,9 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                         Spacer(),
                         FilledButton(
-                          onPressed: artwork.upload_disabled ? () {} : null,
+                          onPressed: artwork.upload_disabled ? null :  () {
+                            Navigator.pushNamed(context, UserUploadForm.id);
+                          },
                           child: Text("Upload Art"),
                         ),
                       ],
