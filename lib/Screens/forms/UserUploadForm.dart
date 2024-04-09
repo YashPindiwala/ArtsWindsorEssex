@@ -4,7 +4,9 @@ import 'package:permission_handler/permission_handler.dart';
 import '../AboutApp.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:artswindsoressex/Screens/Models/UserUpload.dart';
+import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
 import 'package:artswindsoressex/API/ApiManager.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class UserUploadForm extends StatefulWidget {
   static const id = "UserUploadForm";
@@ -42,7 +44,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
   Widget build(BuildContext context) {
     final Map<String, dynamic>? args =
     ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-    final int? artwork_id = args?['artwork_id'];
+    final ArtworkModel artwork = args?['artwork'];
     return Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(
@@ -81,14 +83,13 @@ class _UserUploadFormState extends State<UserUploadForm> {
                 ),
               )),
               Container(
+                  padding: const EdgeInsets.only(left: 25, right: 25),
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(25),
                           topRight: Radius.circular(25)),
                       color: Colors.white),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 25, right: 25),
-                    child: Column(
+                  child:Column(
                       children: [
                         Center(
                           child: Column(
@@ -102,7 +103,19 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                 style:
                                     Theme.of(context).textTheme.headlineMedium,
                               ),
-                              Image.asset("assets/awe_logo.png", width: 100)
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CachedNetworkImage(
+                                          width: 75,
+                                          height: 75,
+                                          imageUrl: artwork.image,
+                                          fit: BoxFit.fill,
+                                          errorWidget: (context, url, error) => Image.asset("assets/awe_logo.png",)
+                                      )
+                                  ),
                             ],
                           ),
                         ),
@@ -242,9 +255,9 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                 const Spacer(),
                                 const Spacer(),
                                 OutlinedButton(
-                                    onPressed: () {
+                                    onPressed: image == null ? () {
                                       _pickImageFromGallery();
-                                    },
+                                    }: null,
                                     style: OutlinedButton.styleFrom(
                                         side: const BorderSide(
                                             color: orangeColor)),
@@ -256,9 +269,15 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                     onPressed: checked == true
                                         ? () async {
                                             // onPressed callback
+                                            if(image == null){
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) => _noImageDialog(),
+                                              );
+                                            }
                                             if(image!=null){
                                                 UserUpload userUpload = UserUpload(
-                                                  artworkId: artwork_id!, // Replace with your artworkId
+                                                  artworkId: artwork.artwork_id!, // Replace with your artworkId
                                                   title: artwork_name.text, // Replace with your title
                                                   description: artwork_desc.text, // Replace with your description
                                                   filePath: image!.path,
@@ -268,6 +287,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                                   ScaffoldMessenger.of(context).showSnackBar(
                                                     SnackBar(content: Text("${userUpload.title} uploaded"))
                                                   );
+                                                  Navigator.pop(context);
                                                 }
                                             }
                                           }
@@ -298,7 +318,6 @@ class _UserUploadFormState extends State<UserUploadForm> {
                           ],
                         )),
                       ],
-                    ),
                   )),
             ],
           ),
@@ -307,6 +326,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
 
   _pickImageFromGallery() async {
     image = await imagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {});
   }
 
   _askForPermission() async {
@@ -373,6 +393,21 @@ class _UserUploadFormState extends State<UserUploadForm> {
       default:
         break;
     }
+  }
+  Widget _noImageDialog() {
+    return AlertDialog(
+      title: Text('No Image Selected'),
+      content: Text('Please select an image to upload.'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            _pickImageFromGallery();
+            Navigator.of(context).pop(); // Close the dialog
+          },
+          child: Text('Pick Image'),
+        ),
+      ],
+    );
   }
 
 
