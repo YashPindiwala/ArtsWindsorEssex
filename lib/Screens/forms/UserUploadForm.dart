@@ -7,6 +7,9 @@ import 'package:artswindsoressex/Screens/Models/UserUpload.dart';
 import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
 import 'package:artswindsoressex/API/ApiManager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:artswindsoressex/Utils/PickImageDialog.dart';
+import 'package:provider/provider.dart';
+import 'package:artswindsoressex/ChangeNotifiers/UploadImageProvider.dart';
 
 class UserUploadForm extends StatefulWidget {
   static const id = "UserUploadForm";
@@ -29,7 +32,6 @@ class _UserUploadFormState extends State<UserUploadForm> {
   ];
   bool? checked = false;
   ImagePicker imagePicker = ImagePicker();
-  XFile? image;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController artwork_name = TextEditingController();
   TextEditingController artwork_desc = TextEditingController();
@@ -38,6 +40,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
   void initState() {
     super.initState();
     _askForPermission();
+    Provider.of<UploadImageProvider>(context, listen: false).clearImage();
   }
 
   @override
@@ -254,14 +257,20 @@ class _UserUploadFormState extends State<UserUploadForm> {
                               children: [
                                 const Spacer(),
                                 const Spacer(),
-                                OutlinedButton(
-                                    onPressed: image == null ? () {
-                                      _pickImageFromGallery();
-                                    }: null,
-                                    style: OutlinedButton.styleFrom(
-                                        side: const BorderSide(
-                                            color: orangeColor)),
-                                    child: const Text("Upload Image")),
+                                Consumer<UploadImageProvider>(
+                                  builder: (context, value, child) {
+                                    return OutlinedButton(
+                                        onPressed: () {
+                                          // _pickImageFromGallery();
+                                          showDialog(context: context, builder: (context) => PickImageDialog(imagePicker: imagePicker,),);
+                                        },
+                                        style: OutlinedButton.styleFrom(
+                                            side: const BorderSide(
+                                                color: orangeColor)),
+                                        child: value.image == null ? Text("Upload Image") : Text("Change Image"),
+                                    );
+                                  },
+                                ),
                                 const Spacer(),
                                 Align(
                                   alignment: Alignment.centerRight,
@@ -269,18 +278,18 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                     onPressed: checked == true
                                         ? () async {
                                             // onPressed callback
-                                            if(image == null){
+                                            if(Provider.of<UploadImageProvider>(context,listen: false).image == null){
                                               showDialog(
                                                   context: context,
                                                   builder: (context) => _noImageDialog(),
                                               );
                                             }
-                                            if(image!=null){
+                                            if(Provider.of<UploadImageProvider>(context,listen: false).image!=null){
                                                 UserUpload userUpload = UserUpload(
                                                   artworkId: artwork.artwork_id!, // Replace with your artworkId
                                                   title: artwork_name.text, // Replace with your title
                                                   description: artwork_desc.text, // Replace with your description
-                                                  filePath: image!.path,
+                                                  filePath: Provider.of<UploadImageProvider>(context,listen: false).image!.path,
                                                 );
                                                 bool res = await ApiManager.uploadImage(userUpload);
                                                 if(res){
@@ -324,9 +333,12 @@ class _UserUploadFormState extends State<UserUploadForm> {
         ));
   }
 
-  _pickImageFromGallery() async {
-    image = await imagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {});
+  Future<void> _pickImageFromGallery() async {
+    final XFile? pickedImage =
+    await imagePicker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      Provider.of<UploadImageProvider>(context,listen: false).setImage(pickedImage);
+    }
   }
 
   _askForPermission() async {
@@ -409,6 +421,4 @@ class _UserUploadFormState extends State<UserUploadForm> {
       ],
     );
   }
-
-
 }

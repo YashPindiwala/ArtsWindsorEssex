@@ -19,7 +19,7 @@ import 'package:artswindsoressex/ChangeNotifiers/ArtHubProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/NavigationProvider.dart';
-import 'package:artswindsoressex/FirebaseSetup.dart';
+import 'package:artswindsoressex/ChangeNotifiers/UploadImageProvider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -107,6 +107,7 @@ void main() async {
           ChangeNotifierProvider<TagProvider>(create: (context) => TagProvider()),
           ChangeNotifierProvider<ArtworkProvider>(create: (context) => ArtworkProvider()),
           ChangeNotifierProvider<NavigationProvider>(create: (context) => NavigationProvider()),
+          ChangeNotifierProvider<UploadImageProvider>(create: (context) => UploadImageProvider()),
         ],
         child: MyApp(),
       )
