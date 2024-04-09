@@ -49,7 +49,7 @@ class ArtworkModel {
     List<TagModel> tagsList = [];
     if (json['tags'] != null) {
       tagsList = (json['tags'] as List)
-          .map((tag) => TagModel(tag: tag['tag'] ?? ''))
+          .map((tag) => TagModel(tag: tag['tag'] ?? '',id: tag['id']))
           .toList();
     }
     return ArtworkModel(
