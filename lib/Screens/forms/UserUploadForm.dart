@@ -23,14 +23,6 @@ class UserUploadForm extends StatefulWidget {
 }
 
 class _UserUploadFormState extends State<UserUploadForm> {
-  List<String> list = [
-    "Cubism",
-    "Surrealism",
-    "Pop Art",
-    "Romanticism",
-    "Impressionism",
-    "Art Deco"
-  ];
   bool? checked = false;
   ImagePicker imagePicker = ImagePicker();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -42,6 +34,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
     super.initState();
     _askForPermission();
     Provider.of<UploadImageProvider>(context, listen: false).clearImage();
+    Provider.of<TagProvider>(context, listen: false).clearSelectedTags();
   }
 
   @override
