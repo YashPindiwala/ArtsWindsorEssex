@@ -8,6 +8,7 @@ enum Endpoint {
   GET_TAGS,
   POST_COMMENT,
   GET_COMMENT,
+  POST_TRANSACTION,
 }
 
 String toString(Endpoint endpoint) {
@@ -30,6 +31,8 @@ String toString(Endpoint endpoint) {
       return "comments";
     case Endpoint.GET_COMMENT:
       return "comments/";
+    case Endpoint.POST_TRANSACTION:
+      return "transaction";
     default:
       return "";
   }

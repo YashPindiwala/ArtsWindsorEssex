@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:artswindsoressex/constants.dart';
 import 'package:artswindsoressex/Screens/DetailScreen.dart';
+import 'package:artswindsoressex/API/TransactionRequest.dart';
 
 class QrScannerScreen extends StatefulWidget {
   static const id = "QRCodeScreen";
@@ -62,6 +63,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.take(1).listen((scanData) {
+        TransactionRequest.postTransaction(scanData.code!);
         Navigator.pushNamed(context, DetailScreen.id,arguments: {'result' : scanData!.code});
     });
   }
