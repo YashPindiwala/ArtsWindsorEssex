@@ -85,10 +85,8 @@ void showFlutterNotification(RemoteMessage message) {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  print("FCMToken $fcmToken");
   await FirebaseMessaging.instance.requestPermission();
-  // await FirebaseMessaging.instance.subscribeToTopic("event");
+  await FirebaseMessaging.instance.subscribeToTopic("event");
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   FirebaseMessaging.onMessage.listen(_firebaseMessagingBackgroundHandler);
 
