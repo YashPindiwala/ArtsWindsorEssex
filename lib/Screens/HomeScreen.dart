@@ -97,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _scanDialog({ArtworkModel? artworkModel}){
+    _positionStreamSubscription.cancel();
     return AlertDialog(
       title: Text(
         "There is an artwork nearby!",
@@ -109,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
       actions: [
         TextButton(
             onPressed: () {
+              _positionStreamSubscription.resume();
               Navigator.pop(context);
             },
             child: Text("Cancel")
@@ -116,6 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
         FilledButton(
             onPressed: () {
               Provider.of<NavigationProvider>(context, listen: false).navigate(0);
+              _positionStreamSubscription.cancel();
               Navigator.pop(context);
             },
             child: Text("Interact")
