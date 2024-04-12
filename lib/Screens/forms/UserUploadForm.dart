@@ -325,7 +325,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                                       .path,
                                                 );
                                                 bool res = await ApiManager
-                                                    .uploadImage(userUpload);
+                                                    .uploadImage(context,userUpload);
                                                 if (res) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(

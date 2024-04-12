@@ -2,6 +2,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:artswindsoressex/Screens/Models/UserUpload.dart';
+import 'dart:io';
+import 'package:flutter/material.dart';
 
 class ApiManager{
   static const String baseUrl = 'https://ypindiwala.scweb.ca/AWEWebApp/api/';
@@ -48,9 +50,32 @@ class ApiManager{
     }
   }
 
-  static Future<bool> uploadImage(UserUpload userUpload) async {
+  static Future<bool> uploadImage(BuildContext context, UserUpload userUpload) async {
     await dotenv.load();
     try {
+      var fileSize = await File(userUpload.filePath).length();
+      if (fileSize > 2 * (1024 * 1024)) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('File size exceeds the limit (2MB).'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+        return false;
+      }
+
+
       var uri = Uri.parse(baseUrl + "uploads");
       var request = http.MultipartRequest('POST', uri);
       request.headers.addAll({
