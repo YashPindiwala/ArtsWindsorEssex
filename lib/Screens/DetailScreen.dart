@@ -115,7 +115,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                         Spacer(),
                         FilledButton(
-                          onPressed: artwork.upload_disabled ? null :  () {
+                          onPressed: artwork.is_digital || artwork.upload_disabled ? null :  () {
                             Navigator.pushNamed(context, UserUploadForm.id, arguments: {"artwork" : artwork});
                           },
                           child: Text("Upload Art"),

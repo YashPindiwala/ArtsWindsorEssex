@@ -18,6 +18,7 @@ class ArtworkModel {
   Color titleColor = orangeColor;
   bool comments_disabled = false;
   bool upload_disabled = false;
+  bool is_digital = false;
   static int colorIndex = 0;
   static final BitmapDescriptor orangeMarker = BitmapDescriptor.defaultMarkerWithHue(30);
   static final BitmapDescriptor greyMarker = BitmapDescriptor.defaultMarkerWithHue(150);
@@ -34,6 +35,7 @@ class ArtworkModel {
     required this.tags,
     required this.comments_disabled,
     required this.upload_disabled,
+    required this.is_digital,
     required this.cardColor,
     required this.titleColor,
   });
@@ -62,6 +64,7 @@ class ArtworkModel {
       tags: tagsList,
       comments_disabled: json["comments_disabled"],
       upload_disabled: json["upload_disabled"],
+      is_digital: json["is_digital"],
       cardColor: card,
       titleColor: title,
     );
