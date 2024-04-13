@@ -123,8 +123,8 @@ class MyApp extends StatelessWidget {
           ),
           // scaffoldBackgroundColor: backgroundColor,
           textTheme: const TextTheme(
-            headlineLarge: TextStyle(fontSize: size24, color: textColor),
-            headlineMedium: TextStyle(fontSize: size14, color: textColor),
+            headlineLarge: TextStyle(fontSize: size24, color: textColor, fontFamily: "Epilogue"),
+            headlineMedium: TextStyle(fontSize: size14, color: textColor, fontFamily: "Epilogue"),
           )
       ),
       initialRoute: SplashScreen.id,
