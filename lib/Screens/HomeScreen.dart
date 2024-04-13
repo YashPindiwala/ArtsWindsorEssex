@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 
   static const _initialCameraPosition = CameraPosition(
     target: LatLng(42.24833109246298, -83.01939482309436),
-    zoom: 16.5, //Controls how far the map view is zoomed
+    zoom: 15, //Controls how far the map view is zoomed
   );
 
   const HomeScreen({super.key});
@@ -59,9 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _positionStreamSubscription = Geolocator.getPositionStream(locationSettings: locationSettings).listen((Position position) {
       setState(() {
         currentPosition = LatLng(position.latitude, position.longitude);
-        _googleMapController.animateCamera(
-          CameraUpdate.newCameraPosition(CameraPosition(target: currentPosition, zoom: 18.5)),
-        );
         List<ArtworkModel> list = artworks;
         List<LocationDetails> locations = [];
         for (var artwork in list) {
@@ -149,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     zoomControlsEnabled: false,
                     initialCameraPosition: CameraPosition(
                       target: currentPosition,
-                      zoom: 17.5,
+                      zoom: 15,
                     ),
                     onMapCreated: (controller) =>
                         _googleMapController = controller,
@@ -202,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             // Animate the map to the initial camera position
             _googleMapController.animateCamera(
-              CameraUpdate.newCameraPosition(CameraPosition(target: currentPosition,zoom: 17.5)),
+              CameraUpdate.newCameraPosition(CameraPosition(target: currentPosition,zoom: 16)),
             );
           },
           backgroundColor:

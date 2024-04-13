@@ -30,22 +30,23 @@ class _SplashScreenState extends State<SplashScreen> {
     Provider.of<EventProvider>(context, listen: false).fetchPastEvents();
     Provider.of<ArtHubProvider>(context, listen: false).fetchArtHub();
     Provider.of<TagProvider>(context, listen: false).fetchTags();
-    Future.delayed(Duration(milliseconds: 500),() => setState(() {
-      position = 0;
-      logo = 1.0;
-    }));
     Future.delayed(Duration(milliseconds: 2500),() => Navigator.popAndPushNamed(context, Navigation.id));
   }
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+    Future.delayed(Duration(milliseconds: 500),() => setState(() {
+      position = screenSize.height * 0.00;
+      logo = 1.0;
+    }));
     return Scaffold(
       body: Stack(
         children: [
           AnimatedPositioned(
-              left: 50,
+              left: screenSize.width * 0.1,
               top: position,
-              child: SvgPicture.asset("assets/top_graphic.svg"),
+              child: SvgPicture.asset("assets/top_graphic.svg", height: screenSize.height * 0.4,),
               duration: Duration(milliseconds: 1500)
           ),
           Center(
@@ -56,16 +57,16 @@ class _SplashScreenState extends State<SplashScreen> {
                 AnimatedOpacity(
                   duration: Duration(milliseconds: 1500),
                   opacity: logo,
-                  child: Image.asset('assets/awe_logo.png'),
+                  child: Image.asset('assets/awe_logo.png', height: screenSize.height * 0.25),
                 )
                 // Text(change)
               ],
             )
           ),
           AnimatedPositioned(
-              right: 50,
+              right: screenSize.width * 0.1,
               bottom: position,
-              child: SvgPicture.asset("assets/bottom_graphic.svg"),
+              child: SvgPicture.asset("assets/bottom_graphic.svg", height: screenSize.height * 0.4),
               duration: Duration(milliseconds: 1500)
           ),
         ],
@@ -73,4 +74,3 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-
