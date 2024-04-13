@@ -85,6 +85,7 @@ class ApiManager{
       request.fields['artwork_id'] = userUpload.artworkId.toString();
       request.fields['title'] = userUpload.title;
       request.fields['description'] = userUpload.description;
+      request.fields['tags'] = userUpload.tags.map((tag) => tag.id.toString()).join(',');
 
       var file = await http.MultipartFile.fromPath('image', userUpload.filePath);
       request.files.add(file);

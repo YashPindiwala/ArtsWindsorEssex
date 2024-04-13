@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/UploadImageProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
 import 'package:artswindsoressex/Utils/ListViewShimmerHZ.dart';
+import 'package:artswindsoressex/Screens/Models/TagModel.dart';
 
 class UserUploadForm extends StatefulWidget {
   static const id = "UserUploadForm";
@@ -43,6 +44,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     final ArtworkModel artwork = args?['artwork'];
     Provider.of<TagProvider>(context, listen: false).selectMultipleTag(artwork.tags);
+    print("tags selected -________----- " + Provider.of<TagProvider>(context, listen: false).selectedTags.toString());
     return Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(
@@ -310,21 +312,12 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                                   null) {
                                                 UserUpload userUpload =
                                                     UserUpload(
-                                                  artworkId:
-                                                      artwork.artwork_id!,
-                                                  // Replace with your artworkId
-                                                  title: artwork_name.text,
-                                                  // Replace with your title
-                                                  description:
-                                                      artwork_desc.text,
-                                                  // Replace with your description
-                                                  filePath: Provider.of<
-                                                              UploadImageProvider>(
-                                                          context,
-                                                          listen: false)
-                                                      .image!
-                                                      .path,
-                                                );
+                                                      artworkId: artwork.artwork_id!,
+                                                      title: artwork_name.text,
+                                                      description: artwork_desc.text,
+                                                      filePath: Provider.of<UploadImageProvider>(context, listen: false).image!.path,
+                                                      tags: Provider.of<TagProvider>(context, listen: false).selectedTags,
+                                                    );
                                                 bool res = await ApiManager
                                                     .uploadImage(context,userUpload);
                                                 if (res) {
