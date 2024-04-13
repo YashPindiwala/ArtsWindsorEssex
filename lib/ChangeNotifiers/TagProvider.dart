@@ -52,7 +52,7 @@ class TagProvider extends ChangeNotifier {
 
   void clearSelectedTags(){
     _selectedTagsBool = List.generate(_tags.length, (index) => false);
-    _selectedTags = [];
+    _selectedTags.clear();
     notifyListeners();
   }
 
