@@ -60,7 +60,7 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
                     .headlineLarge,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 10,),
               Consumer<TagProvider>(
                   builder: (context, tagProvider, child) {
                     List<TagModel> tags = tagProvider.tags;

@@ -20,6 +20,7 @@ class _CollectionListState extends State<CollectionList> {
         itemBuilder: (context, index) {
           ArtworkModel  artwork = widget.artworks[index];
           return InkWell(
+            borderRadius: BorderRadius.circular(25),
             onTap: () {
               Navigator.pushNamed(context, DetailScreen.id,arguments: {'result' : widget.artworks[index].artwork_id.toString()});
             },

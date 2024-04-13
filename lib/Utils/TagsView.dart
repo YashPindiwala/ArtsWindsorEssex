@@ -38,7 +38,10 @@ class _TagsViewState extends State<TagsView> {
               int index = widget.tags.indexOf(tag);
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text(tag.tag,),
+                child: Text(
+                  tag.tag,
+                  style: _isSelected[index] ? Theme.of(context).textTheme.headlineMedium!.copyWith(color: orangeColor) : Theme.of(context).textTheme.headlineMedium!.copyWith(color: textColor),
+                ),
               );
             }).toList(),
             isSelected: _isSelected,

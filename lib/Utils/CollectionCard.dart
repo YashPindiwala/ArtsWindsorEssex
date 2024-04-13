@@ -45,9 +45,7 @@ class _CollectionCardState extends State<CollectionCard> {
               color: widget.cardColor,
               child: Text(
                 artName,
-                style: TextStyle(
-                  color: widget.artNameColor,
-                ),
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: widget.artNameColor),
               ),
             ),
           ),

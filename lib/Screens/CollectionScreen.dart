@@ -26,7 +26,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
     return Scaffold(
         backgroundColor: backgroundColor,
         body: Container(
-          padding: EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+          padding: EdgeInsets.only(top: 25, left: 25, right: 25),
           child: Column(
             children: [
               Row(
@@ -57,7 +57,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                 },
               ),
               SizedBox(
-                height: 10,
+                height: 20,
               ),
               Expanded(
                 child: Consumer<ArtworkProvider>(
