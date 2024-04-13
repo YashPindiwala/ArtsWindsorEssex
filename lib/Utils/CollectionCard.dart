@@ -38,18 +38,19 @@ class _CollectionCardState extends State<CollectionCard> {
                 ),
               )
           ),
-          Container(
-            padding: EdgeInsets.all(15),
+          SizedBox(
             width: double.infinity,
-            height: 60,
-            color: widget.cardColor,
-            child: Text(
-              artName,
-              style: TextStyle(
-                color: widget.artNameColor
+            child: Container(
+              padding: EdgeInsets.all(15),
+              color: widget.cardColor,
+              child: Text(
+                artName,
+                style: TextStyle(
+                  color: widget.artNameColor,
+                ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
