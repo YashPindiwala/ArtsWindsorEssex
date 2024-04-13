@@ -23,13 +23,6 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  String _artist = "John Kissick";
-  String _title = "JI Feel Better (than James Brown)";
-  String _description =
-      "Is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.";
-  String _imagePath = "assets/exampledetail.jpg";
-  List<String> _tags = ["Abstract", "Pop"];
-  bool _isCommentVisible = true;
   String _heroTag = "collection";
 
   @override

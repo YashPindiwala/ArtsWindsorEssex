@@ -42,6 +42,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
     final Map<String, dynamic>? args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     final ArtworkModel artwork = args?['artwork'];
+    Provider.of<TagProvider>(context, listen: false).selectMultipleTag(artwork.tags);
     return Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(

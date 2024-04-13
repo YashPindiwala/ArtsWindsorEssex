@@ -56,4 +56,24 @@ class TagProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void selectMultipleTag(List<TagModel> tags) {
+    tags.forEach((tag) {
+      int index = _tags.indexWhere((t) => t.id == tag.id);
+      if (index != -1) {
+        _selectedTagsBool[index] = true;
+      }
+    });
+
+    // Update _selectedTags list
+    _selectedTags = _tags
+        .asMap()
+        .entries
+        .where((entry) => _selectedTagsBool[entry.key])
+        .map((entry) => entry.value)
+        .toList();
+
+    notifyListeners();
+  }
+
+
 }
