@@ -3,6 +3,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:artswindsoressex/constants.dart';
 import 'package:artswindsoressex/Screens/DetailScreen.dart';
 import 'package:artswindsoressex/API/TransactionRequest.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class QrScannerScreen extends StatefulWidget {
   static const id = "QRCodeScreen";
@@ -14,6 +15,12 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
   Barcode? result;
+
+  @override
+  void initState() {
+    super.initState();
+    _requestCameraPermission();
+  }
 
   @override
   void dispose() {
@@ -67,4 +74,71 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
         Navigator.pushNamed(context, DetailScreen.id,arguments: {'result' : scanData!.code});
     });
   }
+
+  _requestCameraPermission() async {
+    PermissionStatus status = await Permission.camera.request();
+    switch (status) {
+      case PermissionStatus.denied:
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Permission Denied'),
+              content: Text('Please enable camera permission in app settings.'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+        break;
+      case PermissionStatus.permanentlyDenied:
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Permission Denied'),
+              content: Text('Please enable camera permission in app settings.'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Open Settings'),
+                  onPressed: () {
+                    openAppSettings();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+        break;
+      case PermissionStatus.restricted:
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Permission Restricted'),
+              content: Text('Camera permission is restricted.'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+        break;
+      default:
+        break;
+    }
+  }
+
 }
