@@ -23,23 +23,31 @@ class _SplashScreenState extends State<SplashScreen> {
   double logo = 0.0;
   String change = "Change happens here.";
 
+  @override
   void initState() {
     super.initState();
-    Provider.of<ArtworkProvider>(context, listen: false).fetchArtwork();
-    Provider.of<EventProvider>(context, listen: false).fetchCurrEvents();
-    Provider.of<EventProvider>(context, listen: false).fetchPastEvents();
-    Provider.of<ArtHubProvider>(context, listen: false).fetchArtHub();
-    Provider.of<TagProvider>(context, listen: false).fetchTags();
-    Future.delayed(Duration(milliseconds: 2500),() => Navigator.popAndPushNamed(context, Navigation.id));
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      final Size screenSize = MediaQuery.of(context).size;
+      Future.delayed(Duration(milliseconds: 500),() {
+        if (mounted) {
+          setState(() {
+            position = screenSize.height * 0.00;
+            logo = 1.0;
+          });
+        }
+      });
+      Provider.of<ArtworkProvider>(context, listen: false).fetchArtwork();
+      Provider.of<EventProvider>(context, listen: false).fetchCurrEvents();
+      Provider.of<EventProvider>(context, listen: false).fetchPastEvents();
+      Provider.of<ArtHubProvider>(context, listen: false).fetchArtHub();
+      Provider.of<TagProvider>(context, listen: false).fetchTags();
+      Future.delayed(Duration(milliseconds: 2500),() => Navigator.popAndPushNamed(context, Navigation.id));
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    Future.delayed(Duration(milliseconds: 500),() => setState(() {
-      position = screenSize.height * 0.00;
-      logo = 1.0;
-    }));
     return Scaffold(
       body: Stack(
         children: [
