@@ -8,6 +8,7 @@ import 'package:artswindsoressex/Screens/QRCodeScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/NavigationProvider.dart';
 
+
 class Navigation extends StatefulWidget {
   static const id = "Navigation";
 
@@ -73,7 +74,7 @@ class _NavigationState extends State<Navigation> {
                         label: "Map",
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.map),
+                        icon: Icon(Icons.dashboard),
                         label: "Art_Hub",
                       ),
                       BottomNavigationBarItem(
