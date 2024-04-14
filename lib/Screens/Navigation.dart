@@ -1,18 +1,17 @@
-import 'package:artswindsoressex/Screens/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
 import 'package:artswindsoressex/Screens/CollectionScreen.dart';
 import 'package:artswindsoressex/Screens/ArtHubScreen.dart';
 import 'package:artswindsoressex/Screens/CurrentEvents.dart';
 import 'package:artswindsoressex/Screens/QRCodeScreen.dart';
+import 'package:artswindsoressex/Screens/HomeScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/NavigationProvider.dart';
-
 
 class Navigation extends StatefulWidget {
   static const id = "Navigation";
 
-  const Navigation({super.key});
+  const Navigation({Key? key}) : super(key: key);
 
   @override
   State<Navigation> createState() => _NavigationState();
@@ -39,14 +38,16 @@ class _NavigationState extends State<Navigation> {
           ),
           // Floating navigation bar
           Positioned(
-            left: 25,
-            right: 25,
-            bottom: 25,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Theme(
-                  data: Theme.of(context)
-                      .copyWith(splashColor: Colors.transparent),
+            left: 10,
+            right: 10,
+            bottom: 0,
+            child: Theme(
+              data: Theme.of(context).copyWith(splashColor: Colors.transparent),
+              child: BottomAppBar(
+                color: Colors.transparent,
+                surfaceTintColor:    Colors.transparent,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
                   child: BottomNavigationBar(
                     enableFeedback: false,
                     currentIndex:
@@ -93,7 +94,9 @@ class _NavigationState extends State<Navigation> {
                         );
                     },
                   ),
-                )),
+                ),
+              ),
+            ),
           ),
         ],
       ),

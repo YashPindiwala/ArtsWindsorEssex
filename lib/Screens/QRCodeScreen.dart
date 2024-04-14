@@ -71,7 +71,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
     this.controller = controller;
     controller.scannedDataStream.take(1).listen((scanData) {
         TransactionRequest.postTransaction(scanData.code!);
-        Navigator.pushNamed(context, DetailScreen.id,arguments: {'result' : scanData!.code});
+        Navigator.popAndPushNamed(context, DetailScreen.id,arguments: {'result' : scanData!.code});
     });
   }
 

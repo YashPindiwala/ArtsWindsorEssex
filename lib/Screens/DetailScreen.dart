@@ -12,6 +12,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:artswindsoressex/API/CommentRequest.dart';
 import 'package:artswindsoressex/Utils/ListViewShimmerHZ.dart';
 import 'package:artswindsoressex/Screens/forms/UserUploadForm.dart';
+import 'package:artswindsoressex/Screens/Navigation.dart';
+import 'package:provider/provider.dart';
+import 'package:artswindsoressex/ChangeNotifiers/NavigationProvider.dart';
 
 class DetailScreen extends StatefulWidget {
   static const id = "DetailScreen";
@@ -42,6 +45,17 @@ class _DetailScreenState extends State<DetailScreen> {
         backgroundColor: backgroundColor,
         shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: (){
+            if(Provider.of<NavigationProvider>(context,listen: false).currentIndex == 0){
+              Provider.of<NavigationProvider>(context,listen: false).navigate(2);
+              Navigator.pushReplacementNamed(context, Navigation.id);
+            }else{
+              Navigator.pop(context);
+            }
+          },
+        ),
         actions: [
           // IconButton(
           //   onPressed: () {
