@@ -88,7 +88,6 @@ void main() async {
   await FirebaseMessaging.instance.requestPermission();
   await FirebaseMessaging.instance.subscribeToTopic("event");
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  FirebaseMessaging.onMessage.listen(_firebaseMessagingBackgroundHandler);
 
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.manual,
