@@ -7,7 +7,7 @@ import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
 import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
 import 'package:artswindsoressex/Screens/Models/TagModel.dart';
 import 'package:artswindsoressex/Screens/Models/CommentModel.dart';
-import 'package:card_loading/card_loading.dart';
+import 'package:artswindsoressex/Utils/DetailLoadingShimer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:artswindsoressex/API/CommentRequest.dart';
 import 'package:artswindsoressex/Utils/ListViewShimmerHZ.dart';
@@ -31,14 +31,19 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      final Map<String, dynamic>? args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+      final String? result = args?['result'];
+      if (result != null) {
+        Provider.of<ArtworkProvider>(context, listen: false).fetchSingleArtwork(result);
+      }
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic>? args =
-    ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-    final String? result = args?['result'];
-    Provider.of<ArtworkProvider>(context, listen: false).fetchSingleArtwork(result!);
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -56,14 +61,6 @@ class _DetailScreenState extends State<DetailScreen> {
             }
           },
         ),
-        actions: [
-          // IconButton(
-          //   onPressed: () {
-          //     Navigator.pushNamed(context, AboutApp.id);
-          //   },
-          //   icon: const Icon(Icons.info_outline_rounded),
-          // ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -71,9 +68,7 @@ class _DetailScreenState extends State<DetailScreen> {
           child: Consumer<ArtworkProvider>(
             builder: (context, value, child) {
               if(!value.loaded){
-                return CardLoading(
-                  height: MediaQuery.of(context).size.height
-                );
+                return DetailLoadingShimmer();
               } else{
                 ArtworkModel artwork = value.artwork;
                 List<TagModel> tag = artwork.tags;

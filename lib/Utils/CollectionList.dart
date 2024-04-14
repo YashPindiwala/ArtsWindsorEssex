@@ -16,7 +16,7 @@ class _CollectionListState extends State<CollectionList> {
   Widget build(BuildContext context) {
     return ListView.separated(
         shrinkWrap: true,
-        padding: EdgeInsets.only(bottom: 100),
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.15),
         itemBuilder: (context, index) {
           ArtworkModel  artwork = widget.artworks[index];
           return InkWell(

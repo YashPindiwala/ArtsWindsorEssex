@@ -17,7 +17,7 @@ class _GridViewStaggeredState extends State<GridViewStaggered> {
   @override
   Widget build(BuildContext context) {
     return MasonryGridView.count(
-      padding: EdgeInsets.only(bottom: 100),
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.15),
       crossAxisCount: 2,
       crossAxisSpacing: 10,
       mainAxisSpacing: 12,
