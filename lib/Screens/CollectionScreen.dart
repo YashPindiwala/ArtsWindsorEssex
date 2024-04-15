@@ -9,6 +9,7 @@ import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
 import 'package:artswindsoressex/Screens/Models/TagModel.dart';
 import 'package:artswindsoressex/Utils/ListViewShimmerHZ.dart';
 import 'package:artswindsoressex/Utils/CardLoadingShimmer.dart';
+import 'package:artswindsoressex/ChangeNotifiers/ArtworkDB.dart';
 
 class CollectionScreen extends StatefulWidget {
   static const id = "CollectionScreen";
@@ -20,6 +21,12 @@ class CollectionScreen extends StatefulWidget {
 
 class _CollectionScreenState extends State<CollectionScreen> {
   String _heading = "Look Again! Outside St Clair College";
+
+  @override
+  void initState(){
+    super.initState();
+    Provider.of<ArtworkDB>(context,listen: false).fetchArtDB();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +67,12 @@ class _CollectionScreenState extends State<CollectionScreen> {
                 height: 20,
               ),
               Expanded(
-                child: Consumer<ArtworkProvider>(
+                child: Consumer<ArtworkDB>(
                   builder: (context, value, child) {
                     if(!value.loaded){
                       return CardLoadingShimmer();
                     }else{
-                      return CollectionList(artworks: value.artworks,);
+                      return CollectionList(artworks: value.artDB,);
                     }
                   },
                 ),
