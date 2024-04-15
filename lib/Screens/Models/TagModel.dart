@@ -21,4 +21,11 @@ class TagModel {
   static List<TagModel> listFromJson(List<dynamic> jsonList) {
     return jsonList.map((json) => TagModel.fromJson(json)).toList();
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'tag': tag,
+      'id': id,
+    };
+  }
 }

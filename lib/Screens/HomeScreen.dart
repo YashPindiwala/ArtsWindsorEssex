@@ -7,13 +7,17 @@ import 'AboutApp.dart';
 import 'package:card_loading/card_loading.dart';
 import 'package:artswindsoressex/API/ArtworkRequest.dart';
 import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
+import 'package:artswindsoressex/Screens/Models/TagModel.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 import 'package:artswindsoressex/ChangeNotifiers/NavigationProvider.dart';
+import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
 import 'package:provider/provider.dart';
+import 'package:artswindsoressex/Database/DatabaseHelper.dart';
+import 'package:artswindsoressex/Database/TableEnum.dart';
 
 class HomeScreen extends StatefulWidget {
   static const id = "HomeScreen";
@@ -33,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
   late PermissionStatus locationPermission;
   String locationName = "St. Clair College";
   late GoogleMapController _googleMapController;
-  bool showMap = false;
   late LatLng currentPosition = LatLng(42.24833109246298, -83.01939482309436);
   late StreamSubscription<Position> _positionStreamSubscription;
   final LocationSettings locationSettings = LocationSettings(
@@ -47,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     askForPermission();
+    _checkAndSetupTagsForDatabase();
   }
 
   @override
@@ -54,6 +58,20 @@ class _HomeScreenState extends State<HomeScreen> {
     _googleMapController.dispose();
     _positionStreamSubscription.cancel();
     super.dispose();
+  }
+
+
+  Future<void> _checkAndSetupTagsForDatabase() async {
+    final tags = await DatabaseHelper().getAllData(TableName.Tag);
+    if (tags.isEmpty) {
+      await _setupTagsForDatabase();
+    }
+  }
+
+  _setupTagsForDatabase() async {
+    List<TagModel> tagModels = Provider.of<TagProvider>(context,listen: false).tags;
+    List<Map<String, dynamic>> tagMaps = tagModels.map((tag) => tag.toMap()).toList();
+    await DatabaseHelper().insertAllData(TableName.Tag, tagMaps);
   }
 
   _streamLocation(List<ArtworkModel> artworks){

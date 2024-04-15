@@ -8,7 +8,6 @@ import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:artswindsoressex/Database/DatabaseHelper.dart';
 
-
 class SplashScreen extends StatefulWidget {
   static const id = 'SplashScreen';
   const SplashScreen({super.key});
