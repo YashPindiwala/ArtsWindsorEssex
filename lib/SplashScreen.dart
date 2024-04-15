@@ -6,7 +6,7 @@ import 'package:artswindsoressex/ChangeNotifiers/ArtHubProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
 import 'package:provider/provider.dart';
-
+import 'package:artswindsoressex/Database/DatabaseHelper.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -36,6 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
           });
         }
       });
+      DatabaseHelper().database;
       Provider.of<ArtworkProvider>(context, listen: false).fetchArtwork();
       Provider.of<EventProvider>(context, listen: false).fetchCurrEvents();
       Provider.of<EventProvider>(context, listen: false).fetchPastEvents();

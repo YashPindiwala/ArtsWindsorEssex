@@ -55,6 +55,7 @@ dependencies:
   flutter_local_notifications: ^17.0.0
   image_picker: ^1.0.7
   dotted_border: ^2.1.0
+  sqflite: ^2.3.3
 
 
 dev_dependencies:
