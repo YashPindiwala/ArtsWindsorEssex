@@ -50,8 +50,7 @@ class _DetailScreenState extends State<DetailScreen> {
         backgroundColor: backgroundColor,
         shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+        leading: BackButton(
           onPressed: (){
             if(Provider.of<NavigationProvider>(context,listen: false).currentIndex == 0){
               Provider.of<NavigationProvider>(context,listen: false).navigate(2);
