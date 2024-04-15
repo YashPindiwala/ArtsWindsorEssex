@@ -9,6 +9,8 @@ class ArtworkProvider extends ChangeNotifier{
   ArtworkModel get artwork => _artwork;
   bool _loaded = false;
   bool get loaded => _loaded;
+  bool _error = false;
+  bool get error => _error;
 
 
   Future<dynamic> fetchArtwork() async{
@@ -19,10 +21,17 @@ class ArtworkProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<dynamic> fetchSingleArtwork(String id) async{
+  Future<void> fetchSingleArtwork(String id) async {
     _loaded = false;
+    _error = false; // Reset error state
     notifyListeners();
-    _artwork = await ArtworkRequest.getArtwork(id);
+    try {
+      _artwork = await ArtworkRequest.getArtwork(id);
+    } catch (e) {
+      // Handle error
+      _error = true;
+      print('Error fetching single artwork: $e');
+    }
     _loaded = true;
     notifyListeners();
   }

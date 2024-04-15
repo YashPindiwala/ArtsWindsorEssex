@@ -34,10 +34,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       final Map<String, dynamic>? args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-      final String? result = args?['result'];
-      if (result != null) {
-        Provider.of<ArtworkProvider>(context, listen: false).fetchSingleArtwork(result);
-      }
     });
   }
 
@@ -47,6 +43,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: backgroundColor,
         shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,

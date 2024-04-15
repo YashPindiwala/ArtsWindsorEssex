@@ -4,6 +4,8 @@ import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
 import 'package:artswindsoressex/Screens/Models/TagModel.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:artswindsoressex/Screens/DetailScreen.dart';
+import 'package:provider/provider.dart';
+import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
 
 class GridViewStaggered extends StatefulWidget {
   const GridViewStaggered({super.key,required this.artworks});
@@ -25,7 +27,10 @@ class _GridViewStaggeredState extends State<GridViewStaggered> {
       itemCount: widget.artworks.length,
       itemBuilder: (context, index) {
         return InkWell(
-          onTap: () => Navigator.pushNamed(context, DetailScreen.id,arguments: {'result' : widget.artworks[index].artwork_id.toString()}),
+          onTap: () {
+            Provider.of<ArtworkProvider>(context, listen: false).fetchSingleArtwork(widget.artworks[index].artwork_id.toString());
+            Navigator.pushNamed(context, DetailScreen.id);
+          },
           child: Container(
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
             child: ClipRRect(

@@ -4,6 +4,8 @@ import 'package:artswindsoressex/constants.dart';
 import 'package:artswindsoressex/Screens/DetailScreen.dart';
 import 'package:artswindsoressex/API/TransactionRequest.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
+import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
 
 class QrScannerScreen extends StatefulWidget {
   static const id = "QRCodeScreen";
@@ -70,8 +72,11 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.take(1).listen((scanData) {
+      Provider.of<ArtworkProvider>(context,listen: false).fetchSingleArtwork(scanData.code!);
+      if(!Provider.of<ArtworkProvider>(context,listen: false).error){
         TransactionRequest.postTransaction(scanData.code!);
-        Navigator.popAndPushNamed(context, DetailScreen.id,arguments: {'result' : scanData!.code});
+        Navigator.popAndPushNamed(context, DetailScreen.id);
+      }
     });
   }
 
