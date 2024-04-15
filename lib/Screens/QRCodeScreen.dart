@@ -6,6 +6,9 @@ import 'package:artswindsoressex/API/TransactionRequest.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
+import 'package:artswindsoressex/Database/DatabaseHelper.dart';
+import 'package:artswindsoressex/Database/TableEnum.dart';
+import 'package:artswindsoressex/Database/ArtworkScanned.dart';
 
 class QrScannerScreen extends StatefulWidget {
   static const id = "QRCodeScreen";
@@ -71,9 +74,14 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
 
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
-    controller.scannedDataStream.take(1).listen((scanData) {
-      Provider.of<ArtworkProvider>(context,listen: false).fetchSingleArtwork(scanData.code!);
+    controller.scannedDataStream.take(1).listen((scanData) async {
+      await Provider.of<ArtworkProvider>(context,listen: false).fetchSingleArtwork(scanData.code!);
       if(!Provider.of<ArtworkProvider>(context,listen: false).error){
+        var artwork = Provider.of<ArtworkProvider>(context, listen: false).artwork;
+        if(!(await DatabaseHelper().isArtworkIdExists(artwork.artwork_id))){
+          ArtworkScanned artworkScanned = ArtworkScanned(artworkId: artwork.artwork_id, title: artwork.title, description: artwork.description, location: artwork.location.latitude + ", " + artwork.location.longitude, imageUrl: artwork.image, unlocked: true);
+          DatabaseHelper().insertData(TableName.ArtworkScanned, artworkScanned.toMap());
+        }
         TransactionRequest.postTransaction(scanData.code!);
         Navigator.popAndPushNamed(context, DetailScreen.id);
       }

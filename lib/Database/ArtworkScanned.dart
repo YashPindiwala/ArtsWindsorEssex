@@ -1,5 +1,5 @@
 class ArtworkScanned {
-  final int id;
+  final int? id; // Making id optional
   final int artworkId;
   final String title;
   final String description;
@@ -8,7 +8,7 @@ class ArtworkScanned {
   final bool unlocked;
 
   ArtworkScanned({
-    required this.id,
+    this.id, // Making id optional
     required this.artworkId,
     required this.title,
     required this.description,
@@ -31,7 +31,7 @@ class ArtworkScanned {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      if (id != null) 'id': id, // Include id in the map only if it's not null
       'artwork_id': artworkId,
       'title': title,
       'description': description,

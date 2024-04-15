@@ -90,4 +90,15 @@ class DatabaseHelper {
     final db = await database;
     await db.delete(toString(tableName), where: 'id = ?', whereArgs: [id]);
   }
+
+  Future<bool> isArtworkIdExists(int artworkId) async {
+    final db = await database;
+    var result = await db.query(
+      toString(TableName.ArtworkScanned),
+      where: 'artwork_id = ?',
+      whereArgs: [artworkId],
+      limit: 1,
+    );
+    return result.isNotEmpty;
+  }
 }
