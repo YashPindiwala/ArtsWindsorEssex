@@ -159,7 +159,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             height: 10,
                           ),
                           SizedBox(
-                            // height: 300,
+                            height: MediaQuery.of(context).size.height * 0.3,
                             child: FutureBuilder<List<CommentModel>>(
                               future: CommentRequest.getRelatedComments(artwork.artwork_id.toString()),
                               builder: (context, snapshot) {
@@ -167,6 +167,12 @@ class _DetailScreenState extends State<DetailScreen> {
                                   return Text('Error: ${snapshot.error}');
                                 } else if (snapshot.hasData) {
                                   List<CommentModel> comments = snapshot.data!;
+                                  if(comments.isEmpty){
+                                    return Text(
+                                        "No comments yet!.",
+                                        style: Theme.of(context).textTheme.headlineMedium,
+                                    );
+                                  }
                                   comments = comments.where((element) => element.visible == true).toList();
                                   return ListView.separated(
                                     shrinkWrap: true,
