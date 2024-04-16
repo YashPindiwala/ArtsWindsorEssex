@@ -79,7 +79,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
       if(!Provider.of<ArtworkProvider>(context,listen: false).error){
         var artwork = Provider.of<ArtworkProvider>(context, listen: false).artwork;
         if(!(await DatabaseHelper().isArtworkIdExists(artwork.artwork_id))){
-          ArtworkScanned artworkScanned = ArtworkScanned(artworkId: artwork.artwork_id, title: artwork.title, description: artwork.description, location: artwork.location.latitude + ", " + artwork.location.longitude, imageUrl: artwork.image, unlocked: true);
+          ArtworkScanned artworkScanned = ArtworkScanned.db(artworkId: artwork.artwork_id, title: artwork.title, description: artwork.description, location: artwork.location.latitude + ", " + artwork.location.longitude, imageUrl: artwork.image, unlocked: true,);
           DatabaseHelper().insertData(TableName.ArtworkScanned, artworkScanned.toMap());
         }
         TransactionRequest.postTransaction(scanData.code!);

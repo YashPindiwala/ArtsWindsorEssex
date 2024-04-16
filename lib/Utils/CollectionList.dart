@@ -28,7 +28,7 @@ class _CollectionListState extends State<CollectionList> {
               Provider.of<ArtworkProvider>(context, listen: false).fetchSingleArtwork(widget.artworks[index].artworkId.toString());
               Navigator.pushNamed(context, DetailScreen.id);
             },
-            child: CollectionCard(artName: artwork.title, image: artwork.imageUrl, artNameColor: orangeColor, cardColor: pinkColor,),
+            child: CollectionCard(artName: artwork.title, image: artwork.imageUrl, artNameColor: artwork.titleColor, cardColor: artwork.cardColor,),
           );
         },
         separatorBuilder: (context, index) {
