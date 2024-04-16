@@ -13,6 +13,7 @@ import 'package:artswindsoressex/ChangeNotifiers/UploadImageProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
 import 'package:artswindsoressex/Utils/ListViewShimmerHZ.dart';
 import 'package:artswindsoressex/Screens/Models/TagModel.dart';
+import 'package:artswindsoressex/Screens/UploadSubmitted.dart';
 
 class UserUploadForm extends StatefulWidget {
   static const id = "UserUploadForm";
@@ -321,11 +322,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                                 bool res = await ApiManager
                                                     .uploadImage(context,userUpload);
                                                 if (res) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
-                                                          content: Text(
-                                                              "${userUpload.title} uploaded")));
-                                                  Navigator.pop(context);
+                                                  Navigator.popAndPushNamed(context, UploadSubmitted.id);
                                                 }
                                               }
                                             }
