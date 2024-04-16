@@ -1,6 +1,7 @@
 import 'LocationModel.dart';
 import 'ArtistModel.dart';
 import 'TagModel.dart';
+import 'UploadModel.dart';
 import 'dart:ui';
 import '../../constants.dart';
 import 'dart:math';
@@ -14,6 +15,7 @@ class ArtworkModel {
   LocationDetails location = LocationDetails.empty();
   ArtistModel artist = ArtistModel.empty();
   List<TagModel> tags = [];
+  List<UploadModel> uploads = [];
   Color cardColor = orangeColor;
   Color titleColor = orangeColor;
   bool comments_disabled = false;
@@ -33,6 +35,7 @@ class ArtworkModel {
     required this.location,
     required this.artist,
     required this.tags,
+    required this.uploads,
     required this.comments_disabled,
     required this.upload_disabled,
     required this.is_digital,
@@ -54,6 +57,12 @@ class ArtworkModel {
           .map((tag) => TagModel(tag: tag['tag'] ?? '',id: tag['id']))
           .toList();
     }
+    List<UploadModel> uploadList = [];
+    if (json['uploads'] != null) {
+      uploadList = (json['uploads'] as List)
+          .map((upload) => UploadModel(image: upload['image']))
+          .toList();
+    }
     return ArtworkModel(
       artwork_id: json['artwork_id'],
       title: json['title'] ?? '',
@@ -62,6 +71,7 @@ class ArtworkModel {
       location: new LocationDetails(title: json["title"] ?? "", latitude: location["lat"] ?? "", longitude: location["long"] ?? ""),
       artist: new ArtistModel(firstName: json['artist']['first_name'] ?? "", lastName: json['artist']['last_name'] ?? ""),
       tags: tagsList,
+      uploads: uploadList,
       comments_disabled: json["comments_disabled"],
       upload_disabled: json["upload_disabled"],
       is_digital: json["is_digital"],

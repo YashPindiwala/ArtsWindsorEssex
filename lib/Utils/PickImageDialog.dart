@@ -99,13 +99,15 @@ class _PickImageDialogState extends State<PickImageDialog> {
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              uploadImageProvider.image != null &&
-                                      uploadImageProvider.image!.path.isNotEmpty
-                                  ? path
-                                      .basename(uploadImageProvider.image!.path)
-                                  : "No image selected",
-                              style: Theme.of(context).textTheme.headlineMedium,
+                            Expanded(
+                              child: Text(
+                                uploadImageProvider.image != null &&
+                                    uploadImageProvider.image!.path.isNotEmpty
+                                    ? path.basename(uploadImageProvider.image!.path)
+                                    : "No image selected",
+                                style: Theme.of(context).textTheme.headlineMedium,
+                                softWrap: true,
+                              ),
                             ),
                             IconButton(
                               padding: EdgeInsets.zero,

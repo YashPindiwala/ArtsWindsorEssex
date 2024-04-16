@@ -15,6 +15,7 @@ import 'package:artswindsoressex/Screens/forms/UserUploadForm.dart';
 import 'package:artswindsoressex/Screens/Navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/NavigationProvider.dart';
+import 'package:artswindsoressex/Utils/UserUploadList.dart';
 
 class DetailScreen extends StatefulWidget {
   static const id = "DetailScreen";
@@ -31,12 +32,7 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      final Map<String, dynamic>? args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-    });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -48,11 +44,14 @@ class _DetailScreenState extends State<DetailScreen> {
         shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         leading: BackButton(
-          onPressed: (){
-            if(Provider.of<NavigationProvider>(context,listen: false).currentIndex == 0){
-              Provider.of<NavigationProvider>(context,listen: false).navigate(2);
+          onPressed: () {
+            if (Provider.of<NavigationProvider>(context, listen: false)
+                    .currentIndex ==
+                0) {
+              Provider.of<NavigationProvider>(context, listen: false)
+                  .navigate(2);
               Navigator.pushReplacementNamed(context, Navigation.id);
-            }else{
+            } else {
               Navigator.pop(context);
             }
           },
@@ -63,9 +62,9 @@ class _DetailScreenState extends State<DetailScreen> {
           padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
           child: Consumer<ArtworkProvider>(
             builder: (context, value, child) {
-              if(!value.loaded){
+              if (!value.loaded) {
                 return DetailLoadingShimmer();
-              } else{
+              } else {
                 ArtworkModel artwork = value.artwork;
                 List<TagModel> tag = artwork.tags;
                 return Column(
@@ -87,16 +86,17 @@ class _DetailScreenState extends State<DetailScreen> {
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(25),
                           child: AspectRatio(
-                            aspectRatio: 2 / 2,
-                            child: CachedNetworkImage(
-                                imageUrl: artwork.image,
-                                fit: BoxFit.fill,
-                                errorWidget: (context, url, error) => Image.asset("assets/awe_logo.png",)
-                            )
-                          )),
+                              aspectRatio: 2 / 2,
+                              child: CachedNetworkImage(
+                                  imageUrl: artwork.image,
+                                  fit: BoxFit.fill,
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset(
+                                        "assets/awe_logo.png",
+                                      )))),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     Row(
                       children: [
@@ -113,12 +113,20 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                         Spacer(),
                         FilledButton(
-                          onPressed: artwork.is_digital || artwork.upload_disabled ? null :  () {
-                            Navigator.pushNamed(context, UserUploadForm.id, arguments: {"artwork" : artwork});
-                          },
+                          onPressed:
+                              artwork.is_digital || artwork.upload_disabled
+                                  ? null
+                                  : () {
+                                      Navigator.pushNamed(
+                                          context, UserUploadForm.id,
+                                          arguments: {"artwork": artwork});
+                                    },
                           child: Text("Upload Art"),
                         ),
                       ],
+                    ),
+                    SizedBox(
+                      height: 20,
                     ),
                     Text(
                       "Description",
@@ -131,13 +139,36 @@ class _DetailScreenState extends State<DetailScreen> {
                       "${artwork.description}",
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
+                    Visibility(
+                        visible: artwork.uploads.isNotEmpty,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "Related Art",
+                              style: Theme.of(context).textTheme.headlineLarge,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            UserUploadList(uploads: artwork.uploads,),
+                          ],
+                        )),
                     SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     FilledButton(
-                      onPressed: artwork.comments_disabled ? () {
-                        Navigator.pushNamed(context, CommentForm.id, arguments: {"artwork_id" : artwork.artwork_id});
-                      }: null,
+                      onPressed: artwork.comments_disabled
+                          ? () {
+                              Navigator.pushNamed(context, CommentForm.id,
+                                  arguments: {
+                                    "artwork_id": artwork.artwork_id
+                                  });
+                            }
+                          : null,
                       child: Text("Add Comment"),
                     ),
                     SizedBox(
@@ -155,46 +186,56 @@ class _DetailScreenState extends State<DetailScreen> {
                           SizedBox(
                             height: 10,
                           ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.3,
-                            child: FutureBuilder<List<CommentModel>>(
-                              future: CommentRequest.getRelatedComments(artwork.artwork_id.toString()),
+                          FutureBuilder<List<CommentModel>>(
+                              future: CommentRequest.getRelatedComments(
+                                  artwork.artwork_id.toString()),
                               builder: (context, snapshot) {
                                 if (snapshot.hasError) {
                                   return Text('Error: ${snapshot.error}');
                                 } else if (snapshot.hasData) {
                                   List<CommentModel> comments = snapshot.data!;
-                                  if(comments.isEmpty){
+                                  if (comments.isEmpty) {
                                     return Text(
-                                        "No comments yet!.",
-                                        style: Theme.of(context).textTheme.headlineMedium,
+                                      "No comments yet!.",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium,
                                     );
                                   }
-                                  comments = comments.where((element) => element.visible == true).toList();
-                                  return ListView.separated(
-                                    shrinkWrap: true,
-                                    physics: BouncingScrollPhysics(),
-                                    padding: EdgeInsets.zero,
-                                    scrollDirection: Axis.vertical,
-                                    itemBuilder: (context, index) {
-                                      CommentModel comment = comments[index];
-                                      return Text(
-                                        comment.comment, // Use actual comment text
-                                        style: Theme.of(context).textTheme.headlineMedium,
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) {
-                                      return Divider(thickness: 0.2);
-                                    },
-                                    itemCount: comments.length, // Set item count based on comments
+                                  comments = comments
+                                      .where(
+                                          (element) => element.visible == true)
+                                      .toList();
+                                  return SizedBox(
+                                    height: MediaQuery.of(context).size.height * 0.2,
+                                    child: ListView.separated(
+                                      shrinkWrap: true,
+                                      physics: BouncingScrollPhysics(),
+                                      padding: EdgeInsets.zero,
+                                      scrollDirection: Axis.vertical,
+                                      itemBuilder: (context, index) {
+                                        CommentModel comment = comments[index];
+                                        return Text(
+                                          comment.comment,
+                                          // Use actual comment text
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineMedium,
+                                        );
+                                      },
+                                      separatorBuilder: (context, index) {
+                                        return Divider(thickness: 0.2);
+                                      },
+                                      itemCount: comments
+                                          .length, // Set item count based on comments
+                                    ),
                                   );
                                 } else {
                                   // Handle loading state (optional)
                                   return ListViewShimmerHZ();
                                 }
                               },
-                            ),
-                          )
+                          ),
                         ],
                       ),
                     ),
