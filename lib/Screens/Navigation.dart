@@ -8,7 +8,9 @@ import 'package:artswindsoressex/Screens/HomeScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/NavigationProvider.dart';
 
+/// Widget for the main navigation screen.
 class Navigation extends StatefulWidget {
+  /// Identifier for navigation.
   static const id = "Navigation";
 
   const Navigation({Key? key}) : super(key: key);
@@ -45,7 +47,7 @@ class _NavigationState extends State<Navigation> {
               data: Theme.of(context).copyWith(splashColor: Colors.transparent),
               child: BottomAppBar(
                 color: Colors.transparent,
-                surfaceTintColor:    Colors.transparent,
+                surfaceTintColor: Colors.transparent,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
                   child: BottomNavigationBar(
@@ -103,6 +105,7 @@ class _NavigationState extends State<Navigation> {
     );
   }
 
+  /// Dialog shown when attempting to access the QR scanner without permission.
   Widget _disabledDialog() {
     return AlertDialog(
       title: Text(

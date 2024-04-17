@@ -1,3 +1,4 @@
+// Import necessary packages and files
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -15,6 +16,7 @@ import 'package:artswindsoressex/Utils/ListViewShimmerHZ.dart';
 import 'package:artswindsoressex/Screens/Models/TagModel.dart';
 import 'package:artswindsoressex/Screens/UploadSubmitted.dart';
 
+// Define the StatefulWidget for the user upload form
 class UserUploadForm extends StatefulWidget {
   static const id = "UserUploadForm";
 
@@ -24,13 +26,16 @@ class UserUploadForm extends StatefulWidget {
   State<UserUploadForm> createState() => _UserUploadFormState();
 }
 
+// Define the State class for the user upload form
 class _UserUploadFormState extends State<UserUploadForm> {
+  // Define variables and controllers
   bool? checked = false;
   ImagePicker imagePicker = ImagePicker();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController artwork_name = TextEditingController();
   TextEditingController artwork_desc = TextEditingController();
 
+  // Initialize the state
   @override
   void initState() {
     super.initState();
@@ -39,13 +44,16 @@ class _UserUploadFormState extends State<UserUploadForm> {
     Provider.of<TagProvider>(context, listen: false).clearSelectedTags();
   }
 
+  // Build the widget tree
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic>? args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     final ArtworkModel artwork = args?['artwork'];
-    Provider.of<TagProvider>(context, listen: false).selectMultipleTag(artwork.tags);
-    print("tags selected -________----- " + Provider.of<TagProvider>(context, listen: false).selectedTags.toString());
+    Provider.of<TagProvider>(context, listen: false)
+        .selectMultipleTag(artwork.tags);
+
+    // Return the scaffold widget
     return Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(
@@ -66,6 +74,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Widget for artwork information
               Center(
                   child: Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50),
@@ -125,6 +134,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // Text form field for artwork name
                               const SizedBox(height: 20),
                               TextFormField(
                                   controller: artwork_name,
@@ -156,6 +166,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                     return null;
                                   }),
                               const SizedBox(height: 20),
+                              // Text form field for artwork description
                               TextFormField(
                                   controller: artwork_desc,
                                   textInputAction: TextInputAction.done,
@@ -205,12 +216,17 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                               tags.tags[index].tag,
                                             ),
                                             labelStyle: TextStyle(
-                                              color: tags.selectedTagsBool[index] ? Colors.white : textColor,
+                                              color:
+                                                  tags.selectedTagsBool[index]
+                                                      ? Colors.white
+                                                      : textColor,
                                             ),
                                             selectedColor: orangeColor,
                                             backgroundColor: Colors.white,
-                                            side: const BorderSide(color: orangeColor),
-                                            selected: tags.selectedTagsBool[index],
+                                            side: const BorderSide(
+                                                color: orangeColor),
+                                            selected:
+                                                tags.selectedTagsBool[index],
                                             onSelected: (value) {
                                               tags.updateTagsList(index, value);
                                             },
@@ -270,7 +286,6 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                     builder: (context, value, child) {
                                       return OutlinedButton(
                                         onPressed: () {
-                                          // _pickImageFromGallery();
                                           showDialog(
                                             context: context,
                                             builder: (context) =>
@@ -313,16 +328,30 @@ class _UserUploadFormState extends State<UserUploadForm> {
                                                   null) {
                                                 UserUpload userUpload =
                                                     UserUpload(
-                                                      artworkId: artwork.artwork_id!,
-                                                      title: artwork_name.text,
-                                                      description: artwork_desc.text,
-                                                      filePath: Provider.of<UploadImageProvider>(context, listen: false).image!.path,
-                                                      tags: Provider.of<TagProvider>(context, listen: false).selectedTags,
-                                                    );
+                                                  artworkId:
+                                                      artwork.artwork_id!,
+                                                  title: artwork_name.text,
+                                                  description:
+                                                      artwork_desc.text,
+                                                  filePath: Provider.of<
+                                                              UploadImageProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .image!
+                                                      .path,
+                                                  tags:
+                                                      Provider.of<TagProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .selectedTags,
+                                                );
                                                 bool res = await ApiManager
-                                                    .uploadImage(context,userUpload);
+                                                    .uploadImage(
+                                                        context, userUpload);
                                                 if (res) {
-                                                  Navigator.popAndPushNamed(context, UploadSubmitted.id);
+                                                  Navigator.popAndPushNamed(
+                                                      context,
+                                                      UploadSubmitted.id);
                                                 }
                                               }
                                             }
@@ -359,6 +388,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
         ));
   }
 
+  // Function to pick image from gallery
   Future<void> _pickImageFromGallery() async {
     final XFile? pickedImage =
         await imagePicker.pickImage(source: ImageSource.gallery);
@@ -368,6 +398,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
     }
   }
 
+  // Function to ask for permission to access photos
   _askForPermission() async {
     PermissionStatus status = await Permission.photos.request();
     switch (status) {
@@ -434,6 +465,7 @@ class _UserUploadFormState extends State<UserUploadForm> {
     }
   }
 
+  // Widget for displaying a dialog when no image is selected
   Widget _noImageDialog() {
     return AlertDialog(
       title: Text('No Image Selected'),

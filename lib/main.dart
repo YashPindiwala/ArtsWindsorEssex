@@ -1,36 +1,37 @@
-import 'package:artswindsoressex/Screens/AboutApp.dart';
-import 'package:artswindsoressex/Screens/CurrentEvents.dart';
-import 'package:artswindsoressex/Screens/HomeScreen.dart';
-import 'package:artswindsoressex/Screens/UploadSubmitted.dart';
-import 'package:flutter/material.dart';
-import 'package:artswindsoressex/SplashScreen.dart';
-import 'package:artswindsoressex/Screens/forms/UserUploadForm.dart';
-import 'package:artswindsoressex/Screens/forms/CommentForm.dart';
-import 'package:artswindsoressex/Screens/DetailScreen.dart';
-import 'package:artswindsoressex/Screens/CollectionScreen.dart';
-import 'package:artswindsoressex/Screens/Navigation.dart';
-import 'constants.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/services/system_chrome.dart';
-import 'package:artswindsoressex/Screens/QRCodeScreen.dart';
-import 'package:provider/provider.dart';
-import 'package:artswindsoressex/ChangeNotifiers/EventProvider.dart';
-import 'package:artswindsoressex/ChangeNotifiers/ArtHubProvider.dart';
-import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
-import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
-import 'package:artswindsoressex/ChangeNotifiers/NavigationProvider.dart';
-import 'package:artswindsoressex/ChangeNotifiers/UploadImageProvider.dart';
-import 'package:artswindsoressex/ChangeNotifiers/ArtworkDB.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
+import 'package:flutter/material.dart'; // Importing material package
+import 'package:flutter/services.dart'; // Importing services package for SystemChrome
+import 'package:flutter/src/services/system_chrome.dart'; // Importing SystemChrome from services package
+import 'package:firebase_core/firebase_core.dart'; // Importing Firebase Core package
+import 'firebase_options.dart'; // Importing Firebase options file
+import 'package:firebase_messaging/firebase_messaging.dart'; // Importing Firebase Messaging package
+import 'package:flutter_local_notifications/flutter_local_notifications.dart'; // Importing Flutter Local Notifications package
+import 'package:provider/provider.dart'; // Importing provider package
+import 'package:artswindsoressex/ChangeNotifiers/EventProvider.dart'; // Importing EventProvider
+import 'package:artswindsoressex/ChangeNotifiers/ArtHubProvider.dart'; // Importing ArtHubProvider
+import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart'; // Importing TagProvider
+import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart'; // Importing ArtworkProvider
+import 'package:artswindsoressex/ChangeNotifiers/NavigationProvider.dart'; // Importing NavigationProvider
+import 'package:artswindsoressex/ChangeNotifiers/UploadImageProvider.dart'; // Importing UploadImageProvider
+import 'package:artswindsoressex/ChangeNotifiers/ArtworkDB.dart'; // Importing ArtworkDB
+import 'constants.dart'; // Importing custom constants
+import 'package:artswindsoressex/SplashScreen.dart'; // Importing SplashScreen
+import 'package:artswindsoressex/Screens/forms/UserUploadForm.dart'; // Importing UserUploadForm
+import 'package:artswindsoressex/Screens/forms/CommentForm.dart'; // Importing CommentForm
+import 'package:artswindsoressex/Screens/UploadSubmitted.dart'; // Importing UploadSubmitted
+import 'package:artswindsoressex/Screens/AboutApp.dart'; // Importing AboutApp
+import 'package:artswindsoressex/Screens/CurrentEvents.dart'; // Importing CurrentEvents
+import 'package:artswindsoressex/Screens/DetailScreen.dart'; // Importing DetailScreen
+import 'package:artswindsoressex/Screens/CollectionScreen.dart'; // Importing CollectionScreen
+import 'package:artswindsoressex/Screens/HomeScreen.dart'; // Importing HomeScreen
+import 'package:artswindsoressex/Screens/Navigation.dart'; // Importing Navigation
+import 'package:artswindsoressex/Screens/QRCodeScreen.dart'; // Importing QRCodeScreen
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await setupFlutterNotifications();
-  showFlutterNotification(message);
+  await Firebase.initializeApp(
+      options:
+          DefaultFirebaseOptions.currentPlatform); // Initializing Firebase app
+  await setupFlutterNotifications(); // Setting up Flutter notifications
+  showFlutterNotification(message); // Showing Flutter notification
   print('Handling a background message ${message.messageId}');
 }
 
@@ -45,14 +46,16 @@ Future<void> setupFlutterNotifications() async {
   channel = const AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title
-    description: 'This channel is used for important notifications.', // description
+    description:
+        'This channel is used for important notifications.', // description
     importance: Importance.high,
   );
 
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
@@ -85,32 +88,42 @@ void showFlutterNotification(RemoteMessage message) {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseMessaging.instance.requestPermission();
-  await FirebaseMessaging.instance.subscribeToTopic("event");
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await Firebase.initializeApp(
+      options:
+          DefaultFirebaseOptions.currentPlatform); // Initializing Firebase app
+  await FirebaseMessaging.instance
+      .requestPermission(); // Requesting permission for Firebase messaging
+  await FirebaseMessaging.instance
+      .subscribeToTopic("event"); // Subscribing to "event" topic
+  FirebaseMessaging.onBackgroundMessage(
+      _firebaseMessagingBackgroundHandler); // Handling background message
 
-  SystemChrome.setEnabledSystemUIMode(
-    SystemUiMode.manual,
-    overlays: [SystemUiOverlay.top,SystemUiOverlay.bottom]
-  );
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<EventProvider>(create: (context) => EventProvider()),
-          ChangeNotifierProvider<ArtHubProvider>(create: (context) => ArtHubProvider()),
-          ChangeNotifierProvider<TagProvider>(create: (context) => TagProvider()),
-          ChangeNotifierProvider<ArtworkProvider>(create: (context) => ArtworkProvider()),
-          ChangeNotifierProvider<NavigationProvider>(create: (context) => NavigationProvider()),
-          ChangeNotifierProvider<UploadImageProvider>(create: (context) => UploadImageProvider()),
-          ChangeNotifierProvider<ArtworkDB>(create: (context) => ArtworkDB()),
-        ],
-        child: MyApp(),
-      )
-  );
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<EventProvider>(
+          create: (context) => EventProvider()), // Providing EventProvider
+      ChangeNotifierProvider<ArtHubProvider>(
+          create: (context) => ArtHubProvider()), // Providing ArtHubProvider
+      ChangeNotifierProvider<TagProvider>(
+          create: (context) => TagProvider()), // Providing TagProvider
+      ChangeNotifierProvider<ArtworkProvider>(
+          create: (context) => ArtworkProvider()), // Providing ArtworkProvider
+      ChangeNotifierProvider<NavigationProvider>(
+          create: (context) =>
+              NavigationProvider()), // Providing NavigationProvider
+      ChangeNotifierProvider<UploadImageProvider>(
+          create: (context) =>
+              UploadImageProvider()), // Providing UploadImageProvider
+      ChangeNotifierProvider<ArtworkDB>(
+          create: (context) => ArtworkDB()), // Providing ArtworkDB
+    ],
+    child: MyApp(), // Running the MyApp widget under the provider
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -124,10 +137,11 @@ class MyApp extends StatelessWidget {
           ),
           // scaffoldBackgroundColor: backgroundColor,
           textTheme: const TextTheme(
-            headlineLarge: TextStyle(fontSize: size24, color: textColor, fontFamily: "Epilogue"),
-            headlineMedium: TextStyle(fontSize: size14, color: textColor, fontFamily: "Epilogue"),
-          )
-      ),
+            headlineLarge: TextStyle(
+                fontSize: size24, color: textColor, fontFamily: "Epilogue"),
+            headlineMedium: TextStyle(
+                fontSize: size14, color: textColor, fontFamily: "Epilogue"),
+          )),
       initialRoute: SplashScreen.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
