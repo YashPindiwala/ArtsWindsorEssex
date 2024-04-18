@@ -55,6 +55,7 @@ class _TagsViewState extends State<TagsView> {
                 var tag = widget.tags[index];
                 if(widget.isCollection){
                   Provider.of<ArtworkDB>(context, listen: false).selectTag(tag);
+                  Provider.of<ArtworkDB>(context, listen: false).fetchArtworkFromTagDB(Provider.of<ArtworkDB>(context, listen: false).selectedTag!.id);
                 }else{
                   Provider.of<TagProvider>(context,listen: false).selectTag(tag);
                 }

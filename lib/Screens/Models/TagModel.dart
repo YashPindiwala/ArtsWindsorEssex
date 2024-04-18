@@ -35,4 +35,8 @@ class TagModel {
       tag: map['tag']
     );
   }
+  @override
+  toString(){
+    return this.tag;
+  }
 }

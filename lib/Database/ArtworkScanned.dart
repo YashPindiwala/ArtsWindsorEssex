@@ -2,17 +2,30 @@ import 'package:artswindsoressex/constants.dart';
 import 'package:flutter/material.dart';
 
 class ArtworkScanned {
-  final int? id; // Making id optional
-  final int artworkId;
-  final String title;
-  final String description;
-  final String location;
-  final String imageUrl;
-  final bool unlocked;
+   int? id; // Making id optional
+   int artworkId;
+   String title;
+   String description;
+   String location;
+   String imageUrl;
+   bool unlocked;
   Color cardColor = orangeColor;
   Color titleColor = orangeColor;
   static int colorIndex = 0;
 
+   ArtworkScanned.empty()
+       : id = null,
+         artworkId = 0,
+         title = 'Unknown',
+         description = '',
+         location = '',
+         imageUrl = '',
+         unlocked = false {
+     if (colorIndex >= listOfColors.length) colorIndex = 0;
+     cardColor = listOfColors[colorIndex]['card']!;
+     titleColor = listOfColors[colorIndex]['title']!;
+     colorIndex++;
+   }
 
   ArtworkScanned.db({
     this.id, // Making id optional

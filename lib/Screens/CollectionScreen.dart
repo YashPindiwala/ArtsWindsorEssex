@@ -23,11 +23,14 @@ class _CollectionScreenState extends State<CollectionScreen> {
   String _heading = "Look Again! Outside St Clair College";
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    Provider.of<ArtworkDB>(context,listen: false).fetchArtDB();
-    Provider.of<ArtworkDB>(context,listen: false).fetchTagDB();
+    Future.delayed(Duration.zero, () {
+      Provider.of<ArtworkDB>(context, listen: false).fetchTagDB();
+      Provider.of<ArtworkDB>(context, listen: false).fetchArtDB();
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +72,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
               Expanded(
                 child: Consumer<ArtworkDB>(
                   builder: (context, value, child) {
+                    TagModel? selectedTag = value.selectedTag;
                     if(!value.loaded){
                       return CardLoadingShimmer();
                     }else{

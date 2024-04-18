@@ -75,10 +75,36 @@ class DatabaseHelper {
     await batch.commit(noResult: true);
   }
 
-  Future<List<Map<String, dynamic>>> getAllData(TableName tableName) async {
+  Future<List<Map<String, dynamic>>> getAllData(TableName tableName, {int? id}) async {
     final db = await database;
+
+    if (id != null) {
+      switch (tableName) {
+        case TableName.ArtworkScanned:
+          return await db.query(
+            toString(tableName),
+            where: 'artwork_id = ?',
+            whereArgs: [id],
+          );
+        case TableName.Tag:
+          return await db.query(
+            toString(tableName),
+            where: 'id = ?',
+            whereArgs: [id],
+          );
+        case TableName.ArtworkTag:
+          return await db.query(
+            toString(tableName),
+            where: 'tag_id = ?',
+            whereArgs: [id],
+          );
+        default:
+          break;
+      }
+    }
     return await db.query(toString(tableName));
   }
+
 
   Future<void> updateData(TableName tableName, Map<String, dynamic> data) async {
     final db = await database;
