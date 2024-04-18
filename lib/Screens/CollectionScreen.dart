@@ -26,6 +26,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
   void initState(){
     super.initState();
     Provider.of<ArtworkDB>(context,listen: false).fetchArtDB();
+    Provider.of<ArtworkDB>(context,listen: false).fetchTagDB();
   }
 
   @override
@@ -53,13 +54,12 @@ class _CollectionScreenState extends State<CollectionScreen> {
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               SizedBox(height: 10),
-              Consumer<TagProvider>(
-                builder: (context, tagProvider, child) {
-                  List<TagModel> tags = tagProvider.tags;
-                  if (!tagProvider.loaded) {
+              Consumer<ArtworkDB>(
+                builder: (context, value, child) {
+                  if (!value.loaded) {
                     return ListViewShimmerHZ();
                   } else {
-                    return TagsView(tags: tags, deselectAll: false,);
+                    return TagsView(tags: value.tagDB, deselectAll: false, isCollection: true );
                   }
                 },
               ),
@@ -72,6 +72,14 @@ class _CollectionScreenState extends State<CollectionScreen> {
                     if(!value.loaded){
                       return CardLoadingShimmer();
                     }else{
+                      if(value.artDB.isEmpty){
+                        return Center(
+                          child: Text(
+                            "No artwork unlocked yet.",
+                            style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: 18),
+                          ),
+                        );
+                      }
                       return CollectionList(artworks: value.artDB,);
                     }
                   },

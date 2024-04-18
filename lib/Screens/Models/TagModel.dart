@@ -28,4 +28,11 @@ class TagModel {
       'id': id,
     };
   }
+
+  factory TagModel.fromMap(Map<String, dynamic> map) {
+    return TagModel(
+      id: map['id'],
+      tag: map['tag']
+    );
+  }
 }

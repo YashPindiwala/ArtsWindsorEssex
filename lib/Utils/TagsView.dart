@@ -3,11 +3,13 @@ import 'package:artswindsoressex/Screens/Models/TagModel.dart';
 import 'package:artswindsoressex/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
+import 'package:artswindsoressex/ChangeNotifiers/ArtworkDB.dart';
 
 class TagsView extends StatefulWidget {
-  const TagsView({super.key,required this.tags, required this.deselectAll});
+  const TagsView({super.key,required this.tags, required this.deselectAll,required this.isCollection});
   final List<TagModel> tags;
   final bool deselectAll;
+  final bool isCollection;
 
   @override
   State<TagsView> createState() => _TagsViewState();
@@ -51,7 +53,11 @@ class _TagsViewState extends State<TagsView> {
                 }
                 _isSelected[index] = true; // Select the pressed button
                 var tag = widget.tags[index];
-                Provider.of<TagProvider>(context,listen: false).selectTag(tag);
+                if(widget.isCollection){
+                  Provider.of<ArtworkDB>(context, listen: false).selectTag(tag);
+                }else{
+                  Provider.of<TagProvider>(context,listen: false).selectTag(tag);
+                }
             },
             selectedColor: orangeColor,
             fillColor: Colors.transparent,

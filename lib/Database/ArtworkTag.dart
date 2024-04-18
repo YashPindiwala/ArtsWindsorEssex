@@ -1,10 +1,10 @@
 class ArtworkTag {
-  final int id;
+  final int? id;
   final int artworkId;
   final int tagId;
 
   ArtworkTag({
-    required this.id,
+    this.id,
     required this.artworkId,
     required this.tagId,
   });

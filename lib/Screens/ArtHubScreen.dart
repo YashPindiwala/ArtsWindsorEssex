@@ -68,7 +68,7 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
                     if(!tagProvider.loaded){
                       return ListViewShimmerHZ();
                     }else {
-                      return TagsView(tags: tags, deselectAll: noSelection,);
+                      return TagsView(tags: tags, deselectAll: noSelection, isCollection: false,);
                     }
                   },
               ),

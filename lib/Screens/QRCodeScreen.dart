@@ -9,6 +9,9 @@ import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
 import 'package:artswindsoressex/Database/DatabaseHelper.dart';
 import 'package:artswindsoressex/Database/TableEnum.dart';
 import 'package:artswindsoressex/Database/ArtworkScanned.dart';
+import 'package:artswindsoressex/Database/ArtworkTag.dart';
+import 'package:artswindsoressex/Screens/Models/TagModel.dart';
+
 
 class QrScannerScreen extends StatefulWidget {
   static const id = "QRCodeScreen";
@@ -81,6 +84,11 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
         if(!(await DatabaseHelper().isArtworkIdExists(artwork.artwork_id))){
           ArtworkScanned artworkScanned = ArtworkScanned.db(artworkId: artwork.artwork_id, title: artwork.title, description: artwork.description, location: artwork.location.latitude + ", " + artwork.location.longitude, imageUrl: artwork.image, unlocked: true,);
           DatabaseHelper().insertData(TableName.ArtworkScanned, artworkScanned.toMap());
+
+          List<TagModel> tagModels = artwork.tags;
+          List<Map<String,dynamic>> artworkTags = tagModels.map((tag) => ArtworkTag(artworkId: artworkScanned.artworkId, tagId: tag.id).toMap()).toList();
+
+          DatabaseHelper().insertAllData(TableName.ArtworkTag, artworkTags);
         }
         TransactionRequest.postTransaction(scanData.code!);
         Navigator.popAndPushNamed(context, DetailScreen.id);
