@@ -1,11 +1,13 @@
 class UploadModel {
   final String image;
+  final String title;
 
-  UploadModel({required this.image});
+  UploadModel({required this.image,required this.title});
 
   factory UploadModel.fromJson(Map<String, dynamic> json) {
     return UploadModel(
       image: json['image'],
+      title: json['title'],
     );
   }
 

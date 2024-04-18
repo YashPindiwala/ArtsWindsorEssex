@@ -60,7 +60,7 @@ class ArtworkModel {
     List<UploadModel> uploadList = [];
     if (json['uploads'] != null) {
       uploadList = (json['uploads'] as List)
-          .map((upload) => UploadModel(image: upload['image']))
+          .map((upload) => UploadModel(image: upload['image'], title: upload['title']))
           .toList();
     }
     return ArtworkModel(
