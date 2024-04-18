@@ -50,17 +50,10 @@ class ArtworkDB extends ChangeNotifier{
     _loaded = false;
     notifyListeners();
     try {
-      List<Map<String, dynamic>> artworksData = await DatabaseHelper().getAllData(TableName.ArtworkTag, id: id);
-      List<int> artworkIds = artworksData.map<int>((artworkData) => artworkData['artwork_id'] as int).toList();
-
-      for (int artworkId in artworkIds) {
-        List<Map<String, dynamic>> scannedData = await DatabaseHelper().getAllData(TableName.ArtworkScanned, id: artworkId);
-        if (scannedData.isNotEmpty) {
-          _artDB.add(ArtworkScanned.fromMap(scannedData.first));
-        }
-      }
-
-
+      List<Map<String, dynamic>> tags = await DatabaseHelper().getAllData(TableName.ArtworkTag, id: [id]);
+      List<int> artworkIds = tags.map<int>((artworkData) => artworkData['artwork_id'] as int).toList();
+      List<Map<String, dynamic>> scannedData = await DatabaseHelper().getAllData(TableName.ArtworkScanned, id: artworkIds);
+      _artDB.addAll(scannedData.map((data) => ArtworkScanned.fromMap(data)));
     } catch (e) {
       // Handle error
       print('Error fetching artworks from database: $e');
