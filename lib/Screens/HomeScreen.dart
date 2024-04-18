@@ -44,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
     distanceFilter: 3,
   );
   late Set<Marker> markers = Set();
+  double DISTANCE_IN_METERS = 3;
 
 
   @override
@@ -87,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
             double.parse(artwork.location.latitude),
             double.parse(artwork.location.longitude),
           );
-          if (distanceInMeters <= 10) {
+          if (distanceInMeters <= DISTANCE_IN_METERS) {
             markers.add(Marker(
               markerId: MarkerId("${artwork.location.latitude}${artwork.location.longitude}"),
               position: LatLng(double.parse(artwork.location.latitude), double.parse(artwork.location.longitude)),
