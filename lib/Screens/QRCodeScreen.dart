@@ -10,7 +10,9 @@ import 'package:artswindsoressex/Database/DatabaseHelper.dart';
 import 'package:artswindsoressex/Database/TableEnum.dart';
 import 'package:artswindsoressex/Database/ArtworkScanned.dart';
 
+/// Widget for the QR scanner screen.
 class QrScannerScreen extends StatefulWidget {
+  /// Identifier for the QR scanner screen.
   static const id = "QRCodeScreen";
   @override
   _QrScannerScreenState createState() => _QrScannerScreenState();
@@ -56,15 +58,15 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
             left: 100.0,
             right: 100.0,
             child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.75),
-                  borderRadius: BorderRadius.circular(50.0),
-                ),
-                child: Image.asset(
-                  "assets/awe_logo.png",
-                  height: 70,
-                  width: 70,
-                )
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.75),
+                borderRadius: BorderRadius.circular(50.0),
+              ),
+              child: Image.asset(
+                "assets/awe_logo.png",
+                height: 70,
+                width: 70,
+              ),
             ),
           ),
         ],
@@ -72,15 +74,29 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
     );
   }
 
+  /// Callback function for when QR code is scanned.
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.take(1).listen((scanData) async {
-      await Provider.of<ArtworkProvider>(context,listen: false).fetchSingleArtwork(scanData.code!);
-      if(!Provider.of<ArtworkProvider>(context,listen: false).error){
-        var artwork = Provider.of<ArtworkProvider>(context, listen: false).artwork;
-        if(!(await DatabaseHelper().isArtworkIdExists(artwork.artwork_id))){
-          ArtworkScanned artworkScanned = ArtworkScanned.db(artworkId: artwork.artwork_id, title: artwork.title, description: artwork.description, location: artwork.location.latitude + ", " + artwork.location.longitude, imageUrl: artwork.image, unlocked: true,);
-          DatabaseHelper().insertData(TableName.ArtworkScanned, artworkScanned.toMap());
+      await Provider.of<ArtworkProvider>(context, listen: false)
+          .fetchSingleArtwork(scanData.code!);
+      if (!Provider.of<ArtworkProvider>(context, listen: false).error) {
+        var artwork =
+            Provider.of<ArtworkProvider>(context, listen: false).artwork;
+        if (!(await DatabaseHelper().isArtworkIdExists(artwork.artwork_id))) {
+          ArtworkScanned artworkScanned = ArtworkScanned.db(
+            artworkId: artwork.artwork_id,
+            title: artwork.title,
+            description: artwork.description,
+            location:
+                artwork.location.latitude + ", " + artwork.location.longitude,
+            imageUrl: artwork.image,
+            unlocked: true,
+          );
+          DatabaseHelper().insertData(
+            TableName.ArtworkScanned,
+            artworkScanned.toMap(),
+          );
         }
         TransactionRequest.postTransaction(scanData.code!);
         Navigator.popAndPushNamed(context, DetailScreen.id);
@@ -88,70 +104,61 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
     });
   }
 
+  /// Requests camera permission and handles different scenarios.
   _requestCameraPermission() async {
     PermissionStatus status = await Permission.camera.request();
     switch (status) {
       case PermissionStatus.denied:
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Permission Denied'),
-              content: Text('Please enable camera permission in app settings.'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
+        _showPermissionDialog('Permission Denied',
+            'Please enable camera permission in app settings.');
         break;
       case PermissionStatus.permanentlyDenied:
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Permission Denied'),
-              content: Text('Please enable camera permission in app settings.'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('Open Settings'),
-                  onPressed: () {
-                    openAppSettings();
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
+        _showPermissionDialog('Permission Denied',
+            'Please enable camera permission in app settings.', () {
+          openAppSettings();
+        }, 'Open Settings');
         break;
       case PermissionStatus.restricted:
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Permission Restricted'),
-              content: Text('Camera permission is restricted.'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
+        _showPermissionDialog(
+            'Permission Restricted', 'Camera permission is restricted.');
         break;
       default:
         break;
     }
   }
 
+  /// Shows a dialog for camera permission.
+  void _showPermissionDialog(String title, String content,
+      [Function? onPressed, String? actionText]) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (onPressed != null) {
+                  onPressed();
+                }
+              },
+            ),
+            if (actionText != null)
+              TextButton(
+                child: Text(actionText),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  if (onPressed != null) {
+                    onPressed();
+                  }
+                },
+              ),
+          ],
+        );
+      },
+    );
+  }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:card_loading/card_loading.dart';
 
+/// Widget for displaying a shimmer loading effect for cards.
 class CardLoadingShimmer extends StatelessWidget {
-  const CardLoadingShimmer({super.key});
+  const CardLoadingShimmer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -10,9 +11,9 @@ class CardLoadingShimmer extends StatelessWidget {
       slivers: [
         SliverList(
           delegate: SliverChildBuilderDelegate(
-                (context, index) {
+            (context, index) {
               return Padding(
-                padding: const EdgeInsets.only(bottom: 20,top: 20),
+                padding: const EdgeInsets.only(bottom: 20, top: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [

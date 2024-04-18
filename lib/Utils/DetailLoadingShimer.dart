@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:card_loading/card_loading.dart';
 
+/// Widget for displaying loading shimmer effect for detail screen.
 class DetailLoadingShimmer extends StatelessWidget {
-  const DetailLoadingShimmer({super.key});
+  const DetailLoadingShimmer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

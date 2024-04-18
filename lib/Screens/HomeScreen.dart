@@ -15,16 +15,18 @@ import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 import 'package:artswindsoressex/ChangeNotifiers/NavigationProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
-import 'package:provider/provider.dart';
 import 'package:artswindsoressex/Database/DatabaseHelper.dart';
 import 'package:artswindsoressex/Database/TableEnum.dart';
 
+/// The main screen of the application displaying a map with artworks' locations.
 class HomeScreen extends StatefulWidget {
+  /// Identifier for navigation.
   static const id = "HomeScreen";
 
+  /// The initial camera position for the map.
   static const _initialCameraPosition = CameraPosition(
     target: LatLng(42.24833109246298, -83.01939482309436),
-    zoom: 15, //Controls how far the map view is zoomed
+    zoom: 15, // Controls how far the map view is zoomed
   );
 
   const HomeScreen({super.key});
@@ -45,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
   );
   late Set<Marker> markers = Set();
 
-
   @override
   void initState() {
     super.initState();
@@ -60,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-
+  /// Checks and sets up tags for the database if necessary.
   Future<void> _checkAndSetupTagsForDatabase() async {
     final tags = await DatabaseHelper().getAllData(TableName.Tag);
     if (tags.isEmpty) {
@@ -68,14 +69,20 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  /// Sets up tags for the database.
   _setupTagsForDatabase() async {
-    List<TagModel> tagModels = Provider.of<TagProvider>(context,listen: false).tags;
-    List<Map<String, dynamic>> tagMaps = tagModels.map((tag) => tag.toMap()).toList();
+    List<TagModel> tagModels =
+        Provider.of<TagProvider>(context, listen: false).tags;
+    List<Map<String, dynamic>> tagMaps =
+        tagModels.map((tag) => tag.toMap()).toList();
     await DatabaseHelper().insertAllData(TableName.Tag, tagMaps);
   }
 
-  _streamLocation(List<ArtworkModel> artworks){
-    _positionStreamSubscription = Geolocator.getPositionStream(locationSettings: locationSettings).listen((Position position) {
+  /// Streams the location and checks if any artworks are nearby.
+  _streamLocation(List<ArtworkModel> artworks) {
+    _positionStreamSubscription =
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((Position position) {
       setState(() {
         currentPosition = LatLng(position.latitude, position.longitude);
         List<ArtworkModel> list = artworks;
@@ -89,20 +96,23 @@ class _HomeScreenState extends State<HomeScreen> {
           );
           if (distanceInMeters <= 10) {
             markers.add(Marker(
-              markerId: MarkerId("${artwork.location.latitude}${artwork.location.longitude}"),
-              position: LatLng(double.parse(artwork.location.latitude), double.parse(artwork.location.longitude)),
-              infoWindow: InfoWindow(title: artwork.title),
-              icon: ArtworkModel.orangeMarker
-            ));
+                markerId: MarkerId(
+                    "${artwork.location.latitude}${artwork.location.longitude}"),
+                position: LatLng(double.parse(artwork.location.latitude),
+                    double.parse(artwork.location.longitude)),
+                infoWindow: InfoWindow(title: artwork.title),
+                icon: ArtworkModel.orangeMarker));
             showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (context) => _scanDialog(artworkModel: artwork),
+              barrierDismissible: false,
+              context: context,
+              builder: (context) => _scanDialog(artworkModel: artwork),
             );
           } else {
             markers.add(Marker(
-              markerId: MarkerId("${artwork.location.latitude}${artwork.location.longitude}"),
-              position: LatLng(double.parse(artwork.location.latitude), double.parse(artwork.location.longitude)),
+              markerId: MarkerId(
+                  "${artwork.location.latitude}${artwork.location.longitude}"),
+              position: LatLng(double.parse(artwork.location.latitude),
+                  double.parse(artwork.location.longitude)),
               infoWindow: InfoWindow(title: artwork.title),
               icon: ArtworkModel.greyMarker,
             ));
@@ -112,7 +122,8 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  Widget _scanDialog({ArtworkModel? artworkModel}){
+  /// Displays a dialog when an artwork is detected nearby.
+  Widget _scanDialog({ArtworkModel? artworkModel}) {
     _positionStreamSubscription.cancel();
     return AlertDialog(
       title: Text(
@@ -121,7 +132,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       content: Text(
         "Artwork: ${artworkModel!.title}" ?? "",
-        style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 20),
+        style:
+            Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 20),
       ),
       actions: [
         TextButton(
@@ -129,16 +141,15 @@ class _HomeScreenState extends State<HomeScreen> {
               _positionStreamSubscription.resume();
               Navigator.pop(context);
             },
-            child: Text("Cancel")
-        ),
+            child: Text("Cancel")),
         FilledButton(
             onPressed: () {
-              Provider.of<NavigationProvider>(context, listen: false).navigate(0);
+              Provider.of<NavigationProvider>(context, listen: false)
+                  .navigate(0);
               _positionStreamSubscription.cancel();
               Navigator.pop(context);
             },
-            child: Text("Interact")
-        )
+            child: Text("Interact"))
       ],
     );
   }
@@ -159,17 +170,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 return CardLoading(height: MediaQuery.of(context).size.height);
               } else {
                 return GoogleMap(
-                    myLocationEnabled: true,
-                    mapToolbarEnabled: false,
-                    myLocationButtonEnabled: false,
-                    zoomControlsEnabled: false,
-                    initialCameraPosition: CameraPosition(
-                      target: currentPosition,
-                      zoom: 15,
-                    ),
-                    onMapCreated: (controller) =>
-                        _googleMapController = controller,
-                    markers: markers,
+                  myLocationEnabled: true,
+                  mapToolbarEnabled: false,
+                  myLocationButtonEnabled: false,
+                  zoomControlsEnabled: false,
+                  initialCameraPosition: CameraPosition(
+                    target: currentPosition,
+                    zoom: 15,
+                  ),
+                  onMapCreated: (controller) =>
+                      _googleMapController = controller,
+                  markers: markers,
                 ); // Show data if available
               }
             },
@@ -218,7 +229,8 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             // Animate the map to the initial camera position
             _googleMapController.animateCamera(
-              CameraUpdate.newCameraPosition(CameraPosition(target: currentPosition,zoom: 16)),
+              CameraUpdate.newCameraPosition(
+                  CameraPosition(target: currentPosition, zoom: 16)),
             );
           },
           backgroundColor:
@@ -230,12 +242,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  /// Asks for location permission and handles the responses.
   askForPermission() async {
     locationPermission = await Permission.locationWhenInUse.request();
 
     if (locationPermission.isGranted) {
       //get the location
-      List<ArtworkModel> art = Provider.of<ArtworkProvider>(context, listen: false).artworks;
+      List<ArtworkModel> art =
+          Provider.of<ArtworkProvider>(context, listen: false).artworks;
       _streamLocation(art);
     } else if (locationPermission.isDenied) {
       showDialog(

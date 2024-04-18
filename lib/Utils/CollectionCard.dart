@@ -2,19 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+/// Widget for displaying a collection card.
 class CollectionCard extends StatefulWidget {
   final String image;
   final String artName;
   final Color artNameColor;
   final Color cardColor;
-  const CollectionCard({super.key,required this.image,required this.artName,required this.cardColor, required this.artNameColor});
+
+  const CollectionCard({
+    Key? key,
+    required this.image,
+    required this.artName,
+    required this.cardColor,
+    required this.artNameColor,
+  }) : super(key: key);
 
   @override
   State<CollectionCard> createState() => _CollectionCardState();
 }
 
 class _CollectionCardState extends State<CollectionCard> {
-
+  // Hero tag for the image in the card
   String _heroTag = "collection";
 
   @override
@@ -26,17 +34,17 @@ class _CollectionCardState extends State<CollectionCard> {
       child: Column(
         children: [
           Hero(
-              tag: _heroTag,
-              child: AspectRatio(
-                aspectRatio: 3/2,
-                child: CachedNetworkImage(
-                    imageUrl: image,
-                    fit: BoxFit.fill,
-                    errorWidget: (context, url, error) => Image.asset(
-                      "assets/awe_logo.png",
-                    )
+            tag: _heroTag,
+            child: AspectRatio(
+              aspectRatio: 3 / 2,
+              child: CachedNetworkImage(
+                imageUrl: image,
+                fit: BoxFit.fill,
+                errorWidget: (context, url, error) => Image.asset(
+                  "assets/awe_logo.png",
                 ),
-              )
+              ),
+            ),
           ),
           SizedBox(
             width: double.infinity,
@@ -45,7 +53,10 @@ class _CollectionCardState extends State<CollectionCard> {
               color: widget.cardColor,
               child: Text(
                 artName,
-                style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: widget.artNameColor),
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineMedium!
+                    .copyWith(color: widget.artNameColor),
               ),
             ),
           ),
