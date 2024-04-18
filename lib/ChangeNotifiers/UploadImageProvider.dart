@@ -1,19 +1,17 @@
-import 'package:flutter/material.dart'; // Importing Flutter material library
-import 'package:cross_file/cross_file.dart'; // Importing CrossFile for handling file uploads
+import 'package:flutter/material.dart';
+import 'package:cross_file/cross_file.dart';
 
 class UploadImageProvider extends ChangeNotifier {
-  XFile? _image; // Variable to store the uploaded image file
-  XFile? get image => _image; // Getter for the uploaded image file
+  XFile? _image;
+  XFile? get image => _image;
 
-  // Method to set the uploaded image file
   void setImage(XFile imageFile) {
-    _image = imageFile; // Assign the provided image file to _image
-    notifyListeners(); // Notify listeners of data change
+    _image = imageFile;
+    notifyListeners();
   }
 
-  // Method to clear the uploaded image file
   void clearImage() {
-    _image = null; // Clear the uploaded image file
-    notifyListeners(); // Notify listeners of data change
+    _image = null;
+    notifyListeners();
   }
 }

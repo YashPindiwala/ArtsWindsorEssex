@@ -10,9 +10,7 @@ import 'package:artswindsoressex/API/EventRequest.dart';
 import 'package:artswindsoressex/ChangeNotifiers/EventProvider.dart';
 import 'package:provider/provider.dart';
 
-/// Screen for displaying current events and past events.
 class CurrentEvents extends StatefulWidget {
-  /// Identifier for navigation.
   static const id = "CurrentEvents";
 
   const CurrentEvents({super.key});
@@ -40,7 +38,7 @@ class _CurrentEventsState extends State<CurrentEvents>
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
+               Padding(
                 padding: EdgeInsets.all(25),
                 child: Column(
                   children: [
@@ -58,7 +56,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                     Text(
                       "Art Windsor-Essex Events",
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineLarge,
+                      style: Theme.of(context).textTheme.headlineLarge
                     ),
                   ],
                 ),
@@ -102,8 +100,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                               child: CardLoadingShimmer(),
                             );
                           } else {
-                            return _buildEventsContent(
-                                details, Endpoint.GET_EVENT_CURR);
+                            return _buildEventsContent(details, Endpoint.GET_EVENT_CURR);
                           }
                         },
                       ),
@@ -115,8 +112,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                               child: CardLoadingShimmer(),
                             );
                           } else {
-                            return _buildEventsContent(
-                                details, Endpoint.GET_EVENT_PAST);
+                            return _buildEventsContent(details, Endpoint.GET_EVENT_PAST);
                           }
                         },
                       ),
@@ -131,27 +127,25 @@ class _CurrentEventsState extends State<CurrentEvents>
     );
   }
 
-  /// Builds the content of the events.
   Widget _buildEventsContent(List<EventDetails> events, Endpoint endpoint) {
     return RefreshIndicator(
       displacement: 10,
       child: ListView.separated(
-        padding: EdgeInsets.only(bottom: 100, top: 10),
-        itemBuilder: (context, index) {
-          return EventCard(eventDetails: events[index]);
-        },
-        separatorBuilder: (context, index) {
-          return SizedBox(
-            height: 10,
-          );
-        },
-        itemCount: events.length,
-      ),
+          padding: EdgeInsets.only(bottom: 100, top: 10),
+          itemBuilder: (context, index) {
+            return EventCard(eventDetails: events[index]);
+          },
+          separatorBuilder: (context, index) {
+            return SizedBox(
+              height: 10,
+            );
+          },
+          itemCount: events.length),
       onRefresh: () async {
         if (endpoint == Endpoint.GET_EVENT_PAST)
-          Provider.of<EventProvider>(context, listen: false).fetchPastEvents();
+          Provider.of<EventProvider>(context,listen: false).fetchPastEvents();
         else
-          Provider.of<EventProvider>(context, listen: false).fetchPastEvents();
+          Provider.of<EventProvider>(context,listen: false).fetchPastEvents();
       },
     );
   }

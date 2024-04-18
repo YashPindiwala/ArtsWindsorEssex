@@ -1,26 +1,27 @@
-import 'package:flutter/material.dart'; // Importing material package
-import 'dart:ui'; // Importing dart:ui package for ImageFilter
-import 'package:cached_network_image/cached_network_image.dart'; // Importing cached_network_image package
-import '../constants.dart'; // Importing custom constants
-import '../Screens/Models/EventModel.dart'; // Importing EventModel
-import 'ExpandedCardModal.dart'; // Importing ExpandedCardModal widget
+import 'package:flutter/material.dart';
+import '../Screens/Models/EventModel.dart';
+import '../constants.dart';
+import 'ExpandedCardModal.dart';
+import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class EventCard extends StatelessWidget {
   final EventDetails eventDetails;
+  // final Function() onPressed;
 
   const EventCard({
     required this.eventDetails,
+    // required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: (){
         showDialog(
-          barrierDismissible: true,
-          context: context,
-          builder: (context) =>
-              _cardDialog(context), // Calling the _cardDialog method
+            barrierDismissible: true,
+            context: context,
+            builder: (context) => _cardDialog(),
         );
       },
       child: Card(
@@ -29,6 +30,7 @@ class EventCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
         ),
         elevation: 0,
+        // margin: const EdgeInsets.symmetric(vertical: 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -56,19 +58,16 @@ class EventCard extends StatelessWidget {
                       child: CachedNetworkImage(
                         imageUrl: eventDetails.image,
                         fit: BoxFit.fill,
-                        errorWidget: (context, url, error) => Image.asset(
-                            "assets/awe_logo.png"), // Placeholder image in case of error
-                      ),
+                        errorWidget: (context, url, error) => Image.asset("assets/awe_logo.png",)
+                      )
                     ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
                       eventDetails.description,
-                      style: const TextStyle(
-                          fontSize: size13,
-                          color:
-                              textColor), // Customizing text style based on constants
+                      style:
+                          const TextStyle(fontSize: size13, color: textColor),
                     ),
                   ),
                 ],
@@ -76,25 +75,30 @@ class EventCard extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(15),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Text(
-                      eventDetails.date,
-                      style: const TextStyle(
-                        fontSize: size12,
-                        fontWeight: FontWeight.bold,
-                        color: textColor,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          eventDetails.date,
+                          style: const TextStyle(
+                            fontSize: size12,
+                            fontWeight: FontWeight.bold,
+                            color: textColor,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Text(
-                    'Admission: ${eventDetails.admissionFee}',
-                    style: const TextStyle(
-                      fontSize: size12,
-                      fontWeight: FontWeight.bold,
-                      color: textColor,
-                    ),
+                      Text(
+                        'Admission: ${eventDetails.admissionFee}',
+                        style: const TextStyle(
+                          fontSize: size12,
+                          fontWeight: FontWeight.bold,
+                          color: textColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -105,33 +109,28 @@ class EventCard extends StatelessWidget {
     );
   }
 
-  _cardDialog(BuildContext context) {
+  _cardDialog(){
     return BackdropFilter(
-      filter:
-          ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0), // Applying blur effect
-      child: Dialog(
-        backgroundColor: Colors.transparent,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ExpandedCardModal(
-                selectedEvent:
-                    eventDetails), // Showing ExpandedCardModal with selected event details
-            SizedBox(height: 10),
-            FilledButton(
-              onPressed: () {}, // Placeholder onPressed function
-              child: Text(
-                "Visit Our Site",
-                style: TextStyle(color: eventDetails.titleColor),
-              ),
-              style: FilledButton.styleFrom(
-                backgroundColor: eventDetails
-                    .cardColor, // Customizing button background color based on event details
-              ),
+        filter: ImageFilter.blur(sigmaX: 5.0,sigmaY: 5.0),
+        child: Dialog(
+            surfaceTintColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ExpandedCardModal(selectedEvent: eventDetails),
+                SizedBox(height: 10,),
+                FilledButton(
+                  onPressed: () {},
+                  child: Text("Visit Our Site", style: TextStyle(color: eventDetails.titleColor),),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: eventDetails.cardColor, // Background color
+                  ),
+                )
+              ],
             )
-          ],
         ),
-      ),
     );
   }
+
 }

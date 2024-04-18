@@ -5,15 +5,14 @@ import 'dart:math';
 import 'package:intl/intl.dart';
 
 class EventDetails {
-  final String title; // The title of the event
-  final String image; // The image path of the event
-  final String description; // The description of the event
-  final String date; // The date and time of the event
-  final String admissionFee; // The admission fee for the event
-  final Color cardColor; // The color for the event card background
-  final Color titleColor; // The color for the event title
-  static int colorIndex =
-      0; // Static variable to keep track of color index for events
+  final String title;
+  final String image;
+  final String description;
+  final String date;
+  final String admissionFee;
+  final Color cardColor;
+  final Color titleColor;
+  static int colorIndex = 0;
 
   EventDetails({
     required this.title,
@@ -26,47 +25,33 @@ class EventDetails {
   });
 
   factory EventDetails.fromJson(Map<String, dynamic> json) {
-    if (colorIndex >=
-        listOfColors
-            .length) // Reset color index if it exceeds the number of available colors
+    if(colorIndex >= listOfColors.length)
       colorIndex = 0;
 
-    DateTime date =
-        DateTime.parse(json['event_date']); // Parse event date from JSON data
-    String formattedDate =
-        DateFormat.yMMMMEEEEd().format(date); // Format date as a string
-    String formattedTime =
-        DateFormat.jm().format(date); // Format time as a string
+    DateTime date = DateTime.parse(json['event_date']);
+    String formattedDate = DateFormat.yMMMMEEEEd().format(date);
+    String formattedTime = DateFormat.jm().format(date);
 
-    Color card =
-        listOfColors[colorIndex]["card"]!; // Get card color from list of colors
-    Color title = listOfColors[colorIndex]
-        ["title"]!; // Get title color from list of colors
+    Color card = listOfColors[colorIndex]["card"]!;
+    Color title = listOfColors[colorIndex]["title"]!;
 
-    colorIndex++; // Increment color index for the next event
-
+    colorIndex++;
     return EventDetails(
-      title: json['title'] ?? '', // Parse event title from JSON data
-      image: json['image_path'] ?? '', // Parse event image path from JSON data
-      description:
-          json['description'] ?? '', // Parse event description from JSON data
-      date: '$formattedDate at $formattedTime' ??
-          '', // Combine formatted date and time
-      admissionFee: json['admission_fee'].toString() ??
-          '', // Parse event admission fee from JSON data
-      cardColor: card, // Assign card color
-      titleColor: title, // Assign title color
+      title: json['title'] ?? '',
+      image: json['image_path'] ?? '', // remove the example jpg
+      description: json['description'] ?? '',
+      date: '$formattedDate at $formattedTime' ?? '',
+      admissionFee: json['admission_fee'].toString() ?? '',
+      cardColor: card,
+      titleColor: title,
     );
   }
 
   static List<EventDetails> listFromJson(List<dynamic> jsonList) {
-    return jsonList
-        .map((json) => EventDetails.fromJson(json))
-        .toList(); // Convert JSON list to list of EventDetails objects
+    return jsonList.map((json) => EventDetails.fromJson(json)).toList();
   }
 }
 
-// Example list of past events
 List<EventDetails> pastEvents = [
   EventDetails(
     title: 'St. Clair College Art Exhibition',
