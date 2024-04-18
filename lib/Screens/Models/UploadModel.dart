@@ -1,13 +1,11 @@
 class UploadModel {
-  final String image; // The image path
+  final String image;
 
-  UploadModel({
-    required this.image, // Constructor to initialize the image path
-  });
+  UploadModel({required this.image});
 
   factory UploadModel.fromJson(Map<String, dynamic> json) {
     return UploadModel(
-      image: json['image'] ?? '', // Extracting image path from JSON
+      image: json['image'],
     );
   }
 

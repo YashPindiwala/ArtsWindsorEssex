@@ -1,3 +1,4 @@
+import 'package:artswindsoressex/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'AboutApp.dart';
@@ -5,14 +6,11 @@ import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/UploadImageProvider.dart';
 import 'dart:io';
-import 'package:artswindsoressex/constants.dart';
 
-/// Widget for the upload submitted screen.
 class UploadSubmitted extends StatefulWidget {
-  /// Identifier for the upload submitted screen.
   static const id = "UploadSubmitted";
 
-  const UploadSubmitted({Key? key}) : super(key: key);
+  const UploadSubmitted({super.key});
 
   @override
   State<UploadSubmitted> createState() => _UploadSubmittedState();
@@ -26,6 +24,7 @@ class _UploadSubmittedState extends State<UploadSubmitted> {
       appBar: AppBar(
         elevation: 0,
         shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         backgroundColor: backgroundColor,
         actions: [
           IconButton(
@@ -48,13 +47,11 @@ class _UploadSubmittedState extends State<UploadSubmitted> {
           Expanded(
             child: Container(
               padding: EdgeInsets.all(25),
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(25),
-                  topRight: Radius.circular(25),
-                ),
-                color: Colors.white,
-              ),
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25)),
+                  color: Colors.white),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -102,17 +99,11 @@ class _UploadSubmittedState extends State<UploadSubmitted> {
                       ),
                     ),
                     const SizedBox(height: 40),
-                    FilledButton(
-                      onPressed: () {
-                        var artwork =
-                            Provider.of<ArtworkProvider>(context, listen: false)
-                                .artwork;
-                        Provider.of<ArtworkProvider>(context, listen: false)
-                            .fetchSingleArtwork(artwork.artwork_id.toString());
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Return"),
-                    ),
+                    FilledButton(onPressed: () {
+                      var artwork = Provider.of<ArtworkProvider>(context, listen: false).artwork;
+                      Provider.of<ArtworkProvider>(context, listen: false).fetchSingleArtwork(artwork.artwork_id.toString());
+                      Navigator.pop(context);
+                    }, child: const Text("Return")),
                   ],
                 ),
               ),

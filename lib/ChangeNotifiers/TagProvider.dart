@@ -1,80 +1,61 @@
-import 'package:flutter/material.dart'; // Importing Flutter material library
-import 'package:artswindsoressex/Screens/Models/TagModel.dart'; // Importing TagModel class for tag data
-import 'package:artswindsoressex/API/TagRequest.dart'; // Importing TagRequest class for API requests
+import 'package:flutter/material.dart';
+import 'package:artswindsoressex/Screens/Models/TagModel.dart';
+import 'package:artswindsoressex/API/TagRequest.dart';
 
 class TagProvider extends ChangeNotifier {
-  static TagModel noSelection =
-      TagModel(tag: "", id: 0); // Placeholder for no selection
+  static TagModel noSelection = TagModel(tag: "",id: 0);
+  List<TagModel> _tags = [];
+  List<TagModel> get tags => _tags;
 
-  List<TagModel> _tags = []; // List to store tags
-  List<TagModel> get tags => _tags; // Getter for tags list
+  TagModel? _selectedTag;
+  TagModel? get selectedTag => _selectedTag;
 
-  TagModel? _selectedTag; // Currently selected tag
-  TagModel? get selectedTag => _selectedTag; // Getter for selected tag
+  List<bool> _selectedTagsBool = [];
+  List<bool> get selectedTagsBool => _selectedTagsBool;
 
-  List<bool> _selectedTagsBool =
-      []; // List to track selected tags with boolean values
-  List<bool> get selectedTagsBool =>
-      _selectedTagsBool; // Getter for selected tags boolean list
+  List<TagModel> _selectedTags = [];
+  List<TagModel> get selectedTags => _selectedTags;
 
-  List<TagModel> _selectedTags = []; // List to store selected tags
-  List<TagModel> get selectedTags =>
-      _selectedTags; // Getter for selected tags list
+  bool _loaded = false;
+  bool get loaded => _loaded;
 
-  bool _loaded = false; // Flag to indicate if data is loaded
-  bool get loaded => _loaded; // Getter for data load status
-
-  // Constructor
   TagProvider() {
-    _loaded = false; // Initialize data load status
-    _selectedTag = null; // Initialize selected tag
+    _loaded = false;
+    _selectedTag = null;
   }
 
-  // Method to fetch tags from the API
   Future<void> fetchTags() async {
     try {
-      _loaded = false; // Set data load status to false
-      notifyListeners(); // Notify listeners of data change
-      _tags = await TagRequest.getAllTags(); // Fetch tags using API request
-      _loaded = true; // Set data load status to true
-      _selectedTagsBool = List.generate(_tags.length,
-          (index) => false); // Initialize selected tags boolean list
+      _loaded = false;
+      notifyListeners();
+      _tags = await TagRequest.getAllTags();
+      _loaded = true;
+      _selectedTagsBool = List.generate(_tags.length, (index) => false);
     } catch (e) {
-      // Handle error if fetching data fails
+      // Handle error
       print('Error fetching tags: $e');
     } finally {
-      notifyListeners(); // Notify listeners of data change
+      notifyListeners();
     }
   }
 
-  // Method to select a tag
   void selectTag(TagModel tag) {
-    _selectedTag = tag; // Set the selected tag
-    notifyListeners(); // Notify listeners of data change
+    _selectedTag = tag;
+    notifyListeners();
   }
 
-  // Method to update the list of selected tags
   void updateTagsList(int index, bool value) {
-    _selectedTagsBool[index] = value; // Update the selected tag boolean value
-    // Update the list of selected tags based on boolean values
-    _selectedTags = _tags
-        .asMap()
-        .entries
-        .where((entry) => _selectedTagsBool[entry.key])
-        .map((entry) => entry.value)
-        .toList();
-    notifyListeners(); // Notify listeners of data change
+    _selectedTagsBool[index] = value;
+    _selectedTags = _tags.asMap().entries.where((entry) => _selectedTagsBool[entry.key]).map((entry) => entry.value).toList();
+    notifyListeners();
   }
 
-  // Method to clear the list of selected tags
-  void clearSelectedTags() {
-    _selectedTagsBool = List.generate(
-        _tags.length, (index) => false); // Reset the selected tags boolean list
-    _selectedTags.clear(); // Clear the list of selected tags
-    notifyListeners(); // Notify listeners of data change
+  void clearSelectedTags(){
+    _selectedTagsBool = List.generate(_tags.length, (index) => false);
+    _selectedTags.clear();
+    notifyListeners();
   }
 
-  // Method to select multiple tags
   void selectMultipleTag(List<TagModel> tags) {
     tags.forEach((tag) {
       int index = _tags.indexWhere((t) => t.id == tag.id);
@@ -83,7 +64,7 @@ class TagProvider extends ChangeNotifier {
       }
     });
 
-    // Update the list of selected tags
+    // Update _selectedTags list
     _selectedTags = _tags
         .asMap()
         .entries
@@ -91,6 +72,8 @@ class TagProvider extends ChangeNotifier {
         .map((entry) => entry.value)
         .toList();
 
-    notifyListeners(); // Notify listeners of data change
+    notifyListeners();
   }
+
+
 }

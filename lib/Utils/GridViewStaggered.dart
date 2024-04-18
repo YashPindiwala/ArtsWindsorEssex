@@ -1,14 +1,15 @@
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart'; // Importing flutter_staggered_grid_view package
-import 'package:flutter/material.dart'; // Importing material package
-import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart'; // Importing ArtworkModel
-import 'package:cached_network_image/cached_network_image.dart'; // Importing cached_network_image package
-import 'package:artswindsoressex/Screens/DetailScreen.dart'; // Importing DetailScreen
-import 'package:provider/provider.dart'; // Importing provider package
-import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart'; // Importing ArtworkProvider
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter/material.dart';
+import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
+import 'package:artswindsoressex/Screens/Models/TagModel.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:artswindsoressex/Screens/DetailScreen.dart';
+import 'package:provider/provider.dart';
+import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
 
 class GridViewStaggered extends StatefulWidget {
-  const GridViewStaggered({Key? key, required this.artworks});
-  final List<ArtworkModel> artworks; // List of artwork models
+  const GridViewStaggered({super.key,required this.artworks});
+  final List<ArtworkModel> artworks;
 
   @override
   State<GridViewStaggered> createState() => _GridViewStaggeredState();
@@ -18,38 +19,29 @@ class _GridViewStaggeredState extends State<GridViewStaggered> {
   @override
   Widget build(BuildContext context) {
     return MasonryGridView.count(
-      padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).size.height *
-              0.15), // Padding at the bottom
-      crossAxisCount: 2, // Number of columns
-      crossAxisSpacing: 10, // Spacing between columns
-      mainAxisSpacing: 12, // Spacing between rows
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.15),
+      crossAxisCount: 2,
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 12,
       shrinkWrap: true,
-      itemCount: widget.artworks.length, // Total number of artworks
+      itemCount: widget.artworks.length,
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            Provider.of<ArtworkProvider>(context, listen: false)
-                .fetchSingleArtwork(widget.artworks[index].artwork_id
-                    .toString()); // Fetch single artwork when tapped
-            Navigator.pushNamed(
-                context, DetailScreen.id); // Navigate to detail screen
+            Provider.of<ArtworkProvider>(context, listen: false).fetchSingleArtwork(widget.artworks[index].artwork_id.toString());
+            Navigator.pushNamed(context, DetailScreen.id);
           },
           child: Container(
-            decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.circular(25)), // Rounded border decoration
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
             child: ClipRRect(
-              borderRadius:
-                  BorderRadius.circular(15), // ClipRRect with rounded border
+              borderRadius: BorderRadius.circular(15),
               child: CachedNetworkImage(
-                  imageUrl: widget
-                      .artworks[index].image, // Image URL from artwork model
-                  fit: BoxFit.fill, // Fill the available space
+                  imageUrl: widget.artworks[index].image,
+                  fit: BoxFit.fill,
                   errorWidget: (context, url, error) => Image.asset(
-                        // Error widget for image loading failures
-                        "assets/awe_logo.png",
-                      )),
+                    "assets/awe_logo.png",
+                  )
+              ),
             ),
           ),
         );
