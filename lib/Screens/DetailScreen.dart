@@ -16,6 +16,7 @@ import 'package:artswindsoressex/Screens/Navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/NavigationProvider.dart';
 import 'package:artswindsoressex/Utils/UserUploadList.dart';
+import 'package:artswindsoressex/Screens/Models/UploadModel.dart';
 
 class DetailScreen extends StatefulWidget {
   static const id = "DetailScreen";
@@ -67,6 +68,7 @@ class _DetailScreenState extends State<DetailScreen> {
               } else {
                 ArtworkModel artwork = value.artwork;
                 List<TagModel> tag = artwork.tags;
+                List<UploadModel> uploads = artwork.uploads.where((element) => element.visible == true && element.approved == true).toList();
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -140,7 +142,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     Visibility(
-                        visible: artwork.uploads.isNotEmpty,
+                        visible: uploads.isNotEmpty,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -154,7 +156,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             SizedBox(
                               height: 10,
                             ),
-                            UserUploadList(uploads: artwork.uploads,),
+                            UserUploadList(uploads: uploads,),
                           ],
                         )),
                     SizedBox(

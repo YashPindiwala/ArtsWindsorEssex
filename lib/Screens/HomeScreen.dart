@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
     distanceFilter: 3,
   );
   late Set<Marker> markers = Set();
-  double DISTANCE_IN_METERS = 3;
+  double DISTANCE_IN_METERS = 10;
 
 
   @override
