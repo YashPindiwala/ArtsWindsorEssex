@@ -1,6 +1,5 @@
 import 'ApiManager.dart';
 import 'Endpoints.dart';
-import 'dart:convert';
 
 class TransactionRequest{
   static void postTransaction(String artwork_id) async {

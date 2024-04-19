@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
-import 'AboutApp.dart';
 import 'package:artswindsoressex/Screens/forms/CommentForm.dart';
 import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
@@ -13,7 +12,6 @@ import 'package:artswindsoressex/API/CommentRequest.dart';
 import 'package:artswindsoressex/Utils/ListViewShimmerHZ.dart';
 import 'package:artswindsoressex/Screens/forms/UserUploadForm.dart';
 import 'package:artswindsoressex/Screens/Navigation.dart';
-import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/NavigationProvider.dart';
 import 'package:artswindsoressex/Utils/UserUploadList.dart';
 import 'package:artswindsoressex/Screens/Models/UploadModel.dart';

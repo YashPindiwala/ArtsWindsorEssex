@@ -4,8 +4,6 @@ import 'package:artswindsoressex/Screens/AboutApp.dart';
 import 'package:artswindsoressex/Utils/CollectionList.dart';
 import 'package:artswindsoressex/Utils/TagsView.dart';
 import 'package:provider/provider.dart';
-import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
-import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
 import 'package:artswindsoressex/Screens/Models/TagModel.dart';
 import 'package:artswindsoressex/Utils/ListViewShimmerHZ.dart';
 import 'package:artswindsoressex/Utils/CardLoadingShimmer.dart';

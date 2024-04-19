@@ -4,7 +4,6 @@ import 'package:artswindsoressex/Screens/DetailScreen.dart';
 import 'package:artswindsoressex/Database/ArtworkScanned.dart';
 import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/ArtworkProvider.dart';
-import 'package:artswindsoressex/constants.dart';
 
 class CollectionList extends StatefulWidget {
   final List<ArtworkScanned> artworks;

@@ -7,8 +7,6 @@ import 'package:artswindsoressex/Screens/Models/TagModel.dart';
 import 'package:artswindsoressex/Utils/GridLoadingShimmer.dart';
 import 'package:artswindsoressex/Utils/ListViewShimmerHZ.dart';
 import 'package:artswindsoressex/Utils/TagsView.dart';
-import 'package:artswindsoressex/API/ArtworkRequest.dart';
-import 'package:artswindsoressex/API/TagRequest.dart';
 import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/ArtHubProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
@@ -24,13 +22,9 @@ class ArtHubScreen extends StatefulWidget {
 
 class _ArtHubScreenState extends State<ArtHubScreen> {
 
-  late Future _allArtworks, _allTags;
-
   @override
   void initState() {
     super.initState();
-    // _fetchAllArtworks();
-    // _fetchAllTags();
   }
 
   @override

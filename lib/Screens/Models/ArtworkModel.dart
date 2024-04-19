@@ -4,7 +4,6 @@ import 'TagModel.dart';
 import 'UploadModel.dart';
 import 'dart:ui';
 import '../../constants.dart';
-import 'dart:math';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ArtworkModel {

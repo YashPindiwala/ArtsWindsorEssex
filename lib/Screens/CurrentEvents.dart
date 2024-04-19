@@ -6,7 +6,6 @@ import '../Utils/EventCard.dart';
 import 'AboutApp.dart';
 import 'package:artswindsoressex/Utils/CardLoadingShimmer.dart';
 import 'package:artswindsoressex/Screens/Models/EventModel.dart';
-import 'package:artswindsoressex/API/EventRequest.dart';
 import 'package:artswindsoressex/ChangeNotifiers/EventProvider.dart';
 import 'package:provider/provider.dart';
 

@@ -24,7 +24,6 @@ class ArtworkDB extends ChangeNotifier{
       _artDB = artworksData.map((map) => ArtworkScanned.fromMap(map)).toList();
     } catch (e) {
       // Handle error
-      print('Error fetching artworks from database: $e');
     }
     _loaded = true;
     notifyListeners();
@@ -39,7 +38,6 @@ class ArtworkDB extends ChangeNotifier{
       _tagDB.sort((a, b) => a.tag.compareTo(b.tag));
     } catch (e) {
       // Handle error
-      print('Error fetching artworks from database: $e');
     }
     _loaded = true;
     notifyListeners();
@@ -56,7 +54,6 @@ class ArtworkDB extends ChangeNotifier{
       _artDB.addAll(scannedData.map((data) => ArtworkScanned.fromMap(data)));
     } catch (e) {
       // Handle error
-      print('Error fetching artworks from database: $e');
     }
     _loaded = true;
     notifyListeners();

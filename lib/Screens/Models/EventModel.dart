@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../constants.dart';
-import 'dart:math';
 import 'package:intl/intl.dart';
 
 class EventDetails {
@@ -40,7 +39,7 @@ class EventDetails {
       title: json['title'] ?? '',
       image: json['image_path'] ?? '', // remove the example jpg
       description: json['description'] ?? '',
-      date: '$formattedDate at $formattedTime' ?? '',
+      date: '$formattedDate at $formattedTime',
       admissionFee: json['admission_fee'].toString() ?? '',
       cardColor: card,
       titleColor: title,

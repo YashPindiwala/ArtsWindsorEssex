@@ -94,11 +94,9 @@ class ApiManager{
       if (response.statusCode == 201) {
         return true;
       } else {
-        print('Failed to upload image. Status code: ${response.statusCode}');
         return false;
       }
     } catch (error) {
-      print('Error uploading image: $error');
       return false;
     }
   }

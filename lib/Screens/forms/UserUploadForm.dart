@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/UploadImageProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
 import 'package:artswindsoressex/Utils/ListViewShimmerHZ.dart';
-import 'package:artswindsoressex/Screens/Models/TagModel.dart';
 import 'package:artswindsoressex/Screens/UploadSubmitted.dart';
 
 class UserUploadForm extends StatefulWidget {

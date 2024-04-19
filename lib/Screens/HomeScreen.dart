@@ -5,7 +5,6 @@ import 'package:artswindsoressex/constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'AboutApp.dart';
 import 'package:card_loading/card_loading.dart';
-import 'package:artswindsoressex/API/ArtworkRequest.dart';
 import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
 import 'package:artswindsoressex/Screens/Models/TagModel.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -15,17 +14,12 @@ import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 import 'package:artswindsoressex/ChangeNotifiers/NavigationProvider.dart';
 import 'package:artswindsoressex/ChangeNotifiers/TagProvider.dart';
-import 'package:provider/provider.dart';
 import 'package:artswindsoressex/Database/DatabaseHelper.dart';
 import 'package:artswindsoressex/Database/TableEnum.dart';
 
 class HomeScreen extends StatefulWidget {
   static const id = "HomeScreen";
 
-  static const _initialCameraPosition = CameraPosition(
-    target: LatLng(42.24833109246298, -83.01939482309436),
-    zoom: 15, //Controls how far the map view is zoomed
-  );
 
   const HomeScreen({super.key});
 
@@ -80,7 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         currentPosition = LatLng(position.latitude, position.longitude);
         List<ArtworkModel> list = artworks;
-        List<LocationDetails> locations = [];
         for (var artwork in list) {
           double distanceInMeters = Geolocator.distanceBetween(
             currentPosition.latitude,

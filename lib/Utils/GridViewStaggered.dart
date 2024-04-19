@@ -1,7 +1,6 @@
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/Screens/Models/ArtworkModel.dart';
-import 'package:artswindsoressex/Screens/Models/TagModel.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:artswindsoressex/Screens/DetailScreen.dart';
 import 'package:provider/provider.dart';
