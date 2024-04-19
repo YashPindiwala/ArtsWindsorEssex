@@ -47,6 +47,11 @@
     <key>UIApplicationSupportsIndirectInputEvents</key>
     <true/>
 
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>https</string>
+    </array>
+
     <key>NSPhotoLibraryUsageDescription</key>
     <string>This app requires to select your images from gallery to upload as artwork.</string>
 

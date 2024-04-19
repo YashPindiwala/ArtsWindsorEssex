@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:artswindsoressex/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutApp extends StatefulWidget {
   static const id = "AboutApp";
@@ -64,13 +65,25 @@ class _AboutAppState extends State<AboutApp> {
                             const Spacer(),
                             const Spacer(),
                             OutlinedButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  if (await canLaunchUrl(Uri.parse(siteHomeUrl))) {
+                                  await launchUrl(Uri.parse(siteHomeUrl), mode: LaunchMode.externalApplication, );
+                                  } else {
+                                  throw 'Could not launch $siteHomeUrl';
+                                  }
+                                },
                                 style: OutlinedButton.styleFrom(
                                     side: const BorderSide(color: orangeColor)),
                                 child: const Text("Visit AWE")),
                             const Spacer(),
                             FilledButton(
-                                onPressed: () {}, child: const Text("Visit SCC")),
+                                onPressed: () async {
+                                  if (await canLaunchUrl(Uri.parse(siteScWebStClair))) {
+                                  await launchUrl(Uri.parse(siteScWebStClair), mode: LaunchMode.externalApplication, );
+                                  } else {
+                                  throw 'Could not launch $siteScWebStClair';
+                                  }
+                                }, child: const Text("Visit SCC")),
                             const Spacer(),
                             const Spacer(),
                           ],

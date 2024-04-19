@@ -23,3 +23,7 @@ List<Map<String, Color>> listOfColors = [
   {"card" : mintColor, "title" : purpleColor},
   {"card" : yellowColor, "title" : hotPinkColor},
 ];
+
+const siteHomeUrl = "https://artwindsoressex.ca";
+const siteEventUrl = "https://artwindsoressex.ca/events-workshops/";
+const siteScWebStClair = "https://scweb.ca";

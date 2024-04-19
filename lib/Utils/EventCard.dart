@@ -4,6 +4,8 @@ import '../constants.dart';
 import 'ExpandedCardModal.dart';
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class EventCard extends StatelessWidget {
   final EventDetails eventDetails;
@@ -121,7 +123,13 @@ class EventCard extends StatelessWidget {
                 ExpandedCardModal(selectedEvent: eventDetails),
                 SizedBox(height: 10,),
                 FilledButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    if (await canLaunchUrl(Uri.parse(siteEventUrl))) {
+                      await launchUrl(Uri.parse(siteEventUrl), mode: LaunchMode.externalApplication, );
+                    } else {
+                      throw 'Could not launch $siteEventUrl';
+                    }
+                  },
                   child: Text("Visit Our Site", style: TextStyle(color: eventDetails.titleColor),),
                   style: FilledButton.styleFrom(
                     backgroundColor: eventDetails.cardColor, // Background color
