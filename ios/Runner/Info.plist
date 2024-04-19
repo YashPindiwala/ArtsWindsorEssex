@@ -5,7 +5,8 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>
-    <string>Artswindsoressex</string>
+    <string>Art Windsor-Essex</string>
+
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
     <key>CFBundleIdentifier</key>
@@ -13,7 +14,7 @@
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
-    <string>artswindsoressex</string>
+    <string>Art Windsor-Essex</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
@@ -53,13 +54,16 @@
     <string>To scan QR code please grant camera access</string>
 
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Need location when in use</string>
+    <string>Need location access to show nearby artworks.</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>Always and when in use!</string>
+    <string>Need location access to show nearby artworks even when the app is in the background.</string>
     <key>NSLocationUsageDescription</key>
-    <string>Older devices need location.</string>
+    <string>Older devices need location access to show nearby artworks.</string>
     <key>NSLocationAlwaysUsageDescription</key>
-    <string>Can I have location always?</string>
+    <string>Need location access to show nearby artworks even when the app is in the background.</string>
+
+
+
 
 </dict>
 </plist>
