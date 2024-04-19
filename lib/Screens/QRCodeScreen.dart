@@ -12,7 +12,6 @@ import 'package:artswindsoressex/Database/ArtworkScanned.dart';
 import 'package:artswindsoressex/Database/ArtworkTag.dart';
 import 'package:artswindsoressex/Screens/Models/TagModel.dart';
 
-
 class QrScannerScreen extends StatefulWidget {
   static const id = "QRCodeScreen";
   @override
@@ -20,19 +19,19 @@ class QrScannerScreen extends StatefulWidget {
 }
 
 class _QrScannerScreenState extends State<QrScannerScreen> {
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  QRViewController? controller;
-  Barcode? result;
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR'); // Key for the QRView widget
+  QRViewController? controller; // Controller for the QRView
+  Barcode? result; // Result of the QR code scan
 
   @override
   void initState() {
     super.initState();
-    _requestCameraPermission();
+    _requestCameraPermission(); // Request camera permission when the screen is initialized
   }
 
   @override
   void dispose() {
-    controller?.dispose();
+    controller?.dispose(); // Dispose of the QR controller when the screen is disposed
     super.dispose();
   }
 
@@ -75,18 +74,19 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
     );
   }
 
+  // Callback for when QRView is created
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.take(1).listen((scanData) async {
-      await Provider.of<ArtworkProvider>(context,listen: false).fetchSingleArtwork(scanData.code!);
-      if(!Provider.of<ArtworkProvider>(context,listen: false).error){
+      await Provider.of<ArtworkProvider>(context, listen: false).fetchSingleArtwork(scanData.code!);
+      if (!Provider.of<ArtworkProvider>(context, listen: false).error) {
         var artwork = Provider.of<ArtworkProvider>(context, listen: false).artwork;
-        if(!(await DatabaseHelper().isArtworkIdExists(artwork.artwork_id))){
+        if (!(await DatabaseHelper().isArtworkIdExists(artwork.artwork_id))) {
           ArtworkScanned artworkScanned = ArtworkScanned.db(artworkId: artwork.artwork_id, title: artwork.title, description: artwork.description, location: artwork.location.latitude + ", " + artwork.location.longitude, imageUrl: artwork.image, unlocked: true,);
           DatabaseHelper().insertData(TableName.ArtworkScanned, artworkScanned.toMap());
 
           List<TagModel> tagModels = artwork.tags;
-          List<Map<String,dynamic>> artworkTags = tagModels.map((tag) => ArtworkTag(artworkId: artworkScanned.artworkId, tagId: tag.id).toMap()).toList();
+          List<Map<String, dynamic>> artworkTags = tagModels.map((tag) => ArtworkTag(artworkId: artworkScanned.artworkId, tagId: tag.id).toMap()).toList();
 
           DatabaseHelper().insertAllData(TableName.ArtworkTag, artworkTags);
         }
@@ -96,6 +96,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
     });
   }
 
+  // Request camera permission
   _requestCameraPermission() async {
     PermissionStatus status = await Permission.camera.request();
     switch (status) {
@@ -161,5 +162,4 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
         break;
     }
   }
-
 }

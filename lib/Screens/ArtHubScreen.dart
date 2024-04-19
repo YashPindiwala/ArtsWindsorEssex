@@ -35,17 +35,19 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
           padding: EdgeInsets.only(top: 25, left: 25, right: 25),
           child: Column(
             children: [
+              // AppBar
               Row(
                 children: [
                   Spacer(),
                   IconButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, AboutApp.id);
+                      Navigator.pushNamed(context, AboutApp.id); // Navigate to AboutApp screen
                     },
                     icon: const Icon(Icons.info_outline_rounded),
                   ),
                 ],
               ),
+              // Title
               Text(
                 "Look Again! Outside: St. Clair College Art Hub",
                 style: Theme
@@ -55,61 +57,54 @@ class _ArtHubScreenState extends State<ArtHubScreen> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 10,),
+              // Tag Filter
               Consumer<TagProvider>(
-                  builder: (context, tagProvider, child) {
-                    List<TagModel> tags = tagProvider.tags;
-                    var noSelection = tagProvider.selectedTag == TagProvider.noSelection;
-                    if(!tagProvider.loaded){
-                      return ListViewShimmerHZ();
-                    }else {
-                      return TagsView(tags: tags, deselectAll: noSelection, isCollection: false,);
-                    }
-                  },
+                builder: (context, tagProvider, child) {
+                  List<TagModel> tags = tagProvider.tags;
+                  var noSelection = tagProvider.selectedTag == TagProvider.noSelection;
+                  if(!tagProvider.loaded){
+                    return ListViewShimmerHZ(); // Show shimmer effect while loading
+                  }else {
+                    return TagsView(tags: tags, deselectAll: noSelection, isCollection: false,); // Show tags for filtering
+                  }
+                },
               ),
               SizedBox(
                 height: 20,
               ),
+              // Artworks Grid
               Expanded(
-                  child: Consumer<ArtHubProvider>(
-                    builder: (context, artHubProvider, child) {
-                      List<ArtworkModel> details = artHubProvider.artHub;
-                      if (!artHubProvider.loaded) {
-                        return Center(
-                          child: GridLoadingShimmer(),
-                        );
-                      } else {
-                        return Consumer<TagProvider>(
-                          builder: (context, value, child) {
-                            var matching = details.where((element) =>
-                                element.tags.any((tag) => tag.tag == value.selectedTag?.tag)).toList();
-                            return RefreshIndicator(
-                              displacement: 10,
-                              child: GridViewStaggered(
-                                artworks: matching.isNotEmpty ? matching : details,
-                              ),
-                              onRefresh: () async {
-                                Provider.of<ArtHubProvider>(context, listen: false).fetchArtHub();
-                                Provider.of<TagProvider>(context, listen: false).selectTag(TagProvider.noSelection);
-                              },
-                            );
-                          },
-                        ); // Show data if available
-                      }
-                    },
-                  ),
+                child: Consumer<ArtHubProvider>(
+                  builder: (context, artHubProvider, child) {
+                    List<ArtworkModel> details = artHubProvider.artHub;
+                    if (!artHubProvider.loaded) {
+                      return Center(
+                        child: GridLoadingShimmer(), // Show shimmer effect while loading
+                      );
+                    } else {
+                      return Consumer<TagProvider>(
+                        builder: (context, value, child) {
+                          var matching = details.where((element) =>
+                              element.tags.any((tag) => tag.tag == value.selectedTag?.tag)).toList();
+                          return RefreshIndicator(
+                            displacement: 10,
+                            child: GridViewStaggered(
+                              artworks: matching.isNotEmpty ? matching : details, // Show filtered or all artworks
+                            ),
+                            onRefresh: () async {
+                              Provider.of<ArtHubProvider>(context, listen: false).fetchArtHub(); // Refresh artworks
+                              Provider.of<TagProvider>(context, listen: false).selectTag(TagProvider.noSelection); // Deselect tag
+                            },
+                          );
+                        },
+                      ); // Show data if available
+                    }
+                  },
+                ),
               ),
             ],
           ),
         )
     );
   }
-
-  // //Methods
-  // _fetchAllArtworks() async {
-  //   _allArtworks = ArtworkRequest.getAllArtworks();
-  // }
-  //
-  // _fetchAllTags() async {
-  //   _allTags = TagRequest.getAllTags();
-  // }
 }

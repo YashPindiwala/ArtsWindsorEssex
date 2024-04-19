@@ -23,12 +23,12 @@ class _CollectionScreenState extends State<CollectionScreen> {
   @override
   void initState() {
     super.initState();
+    // Fetch tag and art databases when the screen is initialized
     Future.delayed(Duration.zero, () {
       Provider.of<ArtworkDB>(context, listen: false).fetchTagDB();
       Provider.of<ArtworkDB>(context, listen: false).fetchArtDB();
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +41,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
               Row(
                 children: [
                   Spacer(),
+                  // IconButton to navigate to AboutApp screen
                   IconButton(
                     onPressed: () {
                       Navigator.pushNamed(context, AboutApp.id);
@@ -49,18 +50,20 @@ class _CollectionScreenState extends State<CollectionScreen> {
                   ),
                 ],
               ),
+              // Heading of the screen
               Text(
                 _heading,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               SizedBox(height: 10),
+              // TagsView widget to display tags
               Consumer<ArtworkDB>(
                 builder: (context, value, child) {
                   if (!value.loaded) {
-                    return ListViewShimmerHZ();
+                    return ListViewShimmerHZ(); // Shimmer effect while loading
                   } else {
-                    return TagsView(tags: value.tagDB, deselectAll: false, isCollection: true );
+                    return TagsView(tags: value.tagDB, deselectAll: false, isCollection: true);
                   }
                 },
               ),
@@ -71,10 +74,11 @@ class _CollectionScreenState extends State<CollectionScreen> {
                 child: Consumer<ArtworkDB>(
                   builder: (context, value, child) {
                     TagModel? selectedTag = value.selectedTag;
-                    if(!value.loaded){
-                      return CardLoadingShimmer();
-                    }else{
-                      if(value.artDB.isEmpty){
+                    if (!value.loaded) {
+                      return CardLoadingShimmer(); // Shimmer effect while loading
+                    } else {
+                      if (value.artDB.isEmpty) {
+                        // Display message if no artwork is unlocked yet
                         return Center(
                           child: Text(
                             "No artwork unlocked yet.",
@@ -82,7 +86,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                           ),
                         );
                       }
-                      return CollectionList(artworks: value.artDB,);
+                      return CollectionList(artworks: value.artDB); // Display list of artworks
                     }
                   },
                 ),

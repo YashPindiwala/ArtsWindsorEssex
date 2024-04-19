@@ -37,7 +37,8 @@ class _CurrentEventsState extends State<CurrentEvents>
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Padding(
+              // App bar with title and info icon
+              Padding(
                 padding: EdgeInsets.all(25),
                 child: Column(
                   children: [
@@ -55,12 +56,13 @@ class _CurrentEventsState extends State<CurrentEvents>
                     Text(
                       "Art Windsor-Essex Events",
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineLarge
+                      style: Theme.of(context).textTheme.headlineLarge,
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 20),
+              // Tab bar for switching between current and past events
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 25),
                 decoration: BoxDecoration(
@@ -84,6 +86,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                 ),
               ),
               const SizedBox(height: 20),
+              // Display current or past events based on the selected tab
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -91,6 +94,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                   child: TabBarView(
                     controller: _tabController,
                     children: [
+                      // Display current events
                       Consumer<EventProvider>(
                         builder: (context, eventProvider, child) {
                           List<EventDetails> details = eventProvider.eventsCurr;
@@ -103,6 +107,7 @@ class _CurrentEventsState extends State<CurrentEvents>
                           }
                         },
                       ),
+                      // Display past events
                       Consumer<EventProvider>(
                         builder: (context, eventProvider, child) {
                           List<EventDetails> details = eventProvider.eventsPast;
@@ -126,25 +131,28 @@ class _CurrentEventsState extends State<CurrentEvents>
     );
   }
 
+  // Build the list of events with a refresh indicator
   Widget _buildEventsContent(List<EventDetails> events, Endpoint endpoint) {
     return RefreshIndicator(
       displacement: 10,
       child: ListView.separated(
-          padding: EdgeInsets.only(bottom: 100, top: 10),
-          itemBuilder: (context, index) {
-            return EventCard(eventDetails: events[index]);
-          },
-          separatorBuilder: (context, index) {
-            return SizedBox(
-              height: 10,
-            );
-          },
-          itemCount: events.length),
+        padding: EdgeInsets.only(bottom: 100, top: 10),
+        itemBuilder: (context, index) {
+          return EventCard(eventDetails: events[index]);
+        },
+        separatorBuilder: (context, index) {
+          return SizedBox(
+            height: 10,
+          );
+        },
+        itemCount: events.length,
+      ),
       onRefresh: () async {
+        // Refresh the list of events based on the selected tab
         if (endpoint == Endpoint.GET_EVENT_PAST)
           Provider.of<EventProvider>(context,listen: false).fetchPastEvents();
         else
-          Provider.of<EventProvider>(context,listen: false).fetchPastEvents();
+          Provider.of<EventProvider>(context,listen: false).fetchCurrEvents();
       },
     );
   }
